@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Demo Page</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" media="screen">
+
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Housify</a>
+        </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li id="usernameNavElement"></li>
+                <li id="loginNavElement"><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
+                <li id="ordersInfoNavElement"></li>
+                <li id="cartNavElement"></li>
+                <li id="logoutNavElement" style="display: none"><a href="#">Logout</a></li>
+                <li id="signUpNavElement" data-toggle="modal" data-target="#signUpModal"><a href="#">Sign Up</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="container" id="container">
+
+</div>
+
+<hr>
+
+<footer>
+    <p>Descriptions and images from Zillow.com</p>
+</footer>
+</div>
+
+<!-- Modals -->
+
+<!-- loginModal -->
+<div class="modal fade" id="loginModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Log In</h4>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email address</label>
+                        <input type="email" class="form-control" id="loginEmail" placeholder="Email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" class="form-control" id="loginPassword" placeholder="Password" name="password">
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- signUpModal -->
+<div class="modal fade" id="signUpModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Sign Up</h4>
+            </div>
+            <div class="modal-body">
+                <form id="signUpForm">
+                    <div class="form-group">
+                        <label for="signUpEmail">Email Address</label>
+                        <input type="email" class="form-control" id="signUpEmail" placeholder="Email Address" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="signUpPassword">Password</label>
+                        <input type="password" class="form-control" id="signUpPassword" placeholder="Password" name="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="signUpPasswordCheck">Password (again)</label>
+                        <input type="password" class="form-control" id="signUpPasswordCheck" placeholder="Password" name="passwordCheck">
+                    </div>
+                    <div class="form-group">
+                        <label for="signUpFirstName">First Name</label>
+                        <input type="textarea" class="form-control" id="signUpFirstName" placeholder="First Name" name="first_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="signUpLastName">Last Name</label>
+                        <input type="textarea" class="form-control" id="signUpLastName" placeholder="Last Name" name="last_name">
+                    </div>
+                    
+                    <div id="datetimepicker" class="input-append date">
+                        <label for="signUpDate">Date of Birth</label>
+                        <input type="text" class="form-control" placeholder="Date of Birth" name="date_of_birth"></input>
+                        <span class="add-on">
+                            <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                        </span>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- userInfoModal -->
+<div class="modal fade" id="userInfoModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">User Info</h4>
+            </div>
+            <div class="modal-body" id="userContent">
+                <p>User Info Aera</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- orderInfoModal -->
+<div class="modal fade" id="ordersInfoModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Orders Info</h4>
+            </div>
+            <div class="modal-body" id="ordersContent">
+                <p>Order Info Aera</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- houseInfoModal -->
+<div class="modal fade" id="houseInfoModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">House Info</h4>
+            </div>
+            <div class="modal-body" id="houseContent">
+                <p>House Info Aera</p>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-default" id="paymentButton">Submit Comment</button> -->
+                <!-- <button type="button" class="btn btn-default" id="emptyCart">Empty</button> -->
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
+
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
