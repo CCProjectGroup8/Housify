@@ -7,6 +7,8 @@ jwt_token = null; //recived from server, passed back doing payment
 
 items_id = [];
 
+coords = [];
+
 rec_i = [];
 
 var accountDisplayHandler = {
@@ -131,6 +133,12 @@ function render_items () {
                 // console.log("i= " + i + "\n");
                 // console.log(items_data[i]['houseId']);
                 items_id.push(items_data[i]['houseId']);
+                // coords.push(items_data[i]['address']['coordinate']['lat']);
+                // coords.push(items_data[i]['address']['coordinate']['lng']);
+                marker = new google.maps.Marker({
+                  position: new google.maps.LatLng(items_data[i]['address']['coordinate']['lat'], items_data[i]['address']['coordinate']['lng']),
+                  map: map
+                });
 
                 if (i%3==0){
                     innerHTML = innerHTML + "<div class=\"row\">";
@@ -503,6 +511,17 @@ function houseDetail() {
            alert("Unable to view details.");
         }
     });
+}
+
+function initMap(){
+    map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 2,
+      center: {lat: -33.865427, lng: 151.196123},
+      mapTypeId: 'terrain'
+    });
+    // console.log(coords);
+    // console.log(coords.length);
+    
 }
 
 function ResponseHandler(e, item_id) {
