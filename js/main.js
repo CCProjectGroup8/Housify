@@ -135,10 +135,23 @@ function render_items () {
                 items_id.push(items_data[i]['houseId']);
                 // coords.push(items_data[i]['address']['coordinate']['lat']);
                 // coords.push(items_data[i]['address']['coordinate']['lng']);
+                
+                // map part
+                
                 marker = new google.maps.Marker({
                   position: new google.maps.LatLng(items_data[i]['address']['coordinate']['lat'], items_data[i]['address']['coordinate']['lng']),
                   map: map
                 });
+                var infowindow = new google.maps.InfoWindow({
+                  content: items_data[i]['title']
+                });
+                marker.addListener('click', function() {
+                  map.setZoom(8);
+                  map.setCenter(marker.getPosition());
+                  infowindow.open(marker.get('map'), marker);
+                });
+
+                // end of map part
 
                 if (i%3==0){
                     innerHTML = innerHTML + "<div class=\"row\">";
@@ -515,13 +528,12 @@ function houseDetail() {
 
 function initMap(){
     map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 2,
+      zoom: 1,
       center: {lat: -33.865427, lng: 151.196123},
       mapTypeId: 'terrain'
     });
     // console.log(coords);
     // console.log(coords.length);
-    
 }
 
 function ResponseHandler(e, item_id) {
