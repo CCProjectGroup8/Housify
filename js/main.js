@@ -424,11 +424,12 @@ function houseDetail() {
         // data: JSON.stringify(cleanData),
         dataType: 'json',
         success: function(service_data) {
-           items_data = service_data['message']['results'];
-           items_data = items_data['Item'];
-           innerHTML = "";
+            console.log(service_data);
+            items_data = service_data['message']['house'];
+            items_data = items_data['Item'];
+            innerHTML = "";
              console.log(items_data);
-             
+
              innerHTML = "";
              innerHTML = innerHTML + "<table class=\"table\">";
              innerHTML = innerHTML + "<thead><tr>";
@@ -459,7 +460,7 @@ function houseDetail() {
              // }
 
              /* comment part */
-
+            // @todo: need to revise this comment part
              innerHTML = innerHTML + "<table class=\"table\">";
              innerHTML = innerHTML + "<thead><tr>";
              // innerHTML = innerHTML + "<th>#</th>";
