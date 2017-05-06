@@ -40,9 +40,13 @@ function updateAuthenticationStatus(){
     $('#logoutNavElement').show();
     $('#loginNavElement').hide();
     $('#signUpNavElement').hide();
+    displayUserInfo();
+
   } else {
     $('#loginNavElement').show().append('<a href="#" data-toggle="modal" data-target="#loginModal">Login</a>');
     $('#usernameNavElement').hide();
+    $('#userNavElement').hide();
+
   }
 }
 
@@ -106,7 +110,6 @@ $('#signUpForm').submit(function(e){
             return;
         }
         alert("sign up successful!");
-
         // console.log('user name is ' + JSON.stringify(result));
         login(username, password);
     });
@@ -151,6 +154,7 @@ function login(username, password) {
     var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
     cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: function (result) {
+            localStorage.setItem('username', username);
             localStorage.setItem('token', JSON.stringify(result.idToken.jwtToken));
             updateAuthenticationStatus();
             window.location.reload();
@@ -167,3 +171,12 @@ function login(username, password) {
 
     });
 }
+
+function displayUserInfo() {
+  var username = localStorage.getItem('username');
+  var insertHTML = "<a href=\"#\" data-toggle=\"modal\" data-target=\"#userInfoModal\">Hello, " + username + "</a>";
+
+  $('#usernameNavElement').append(insertHTML);
+  $('#usernameNavElement').show();
+}
+

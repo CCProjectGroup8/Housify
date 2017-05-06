@@ -22,33 +22,33 @@ var accountDisplayHandler = {
 };
 
 var handler = StripeCheckout.configure({
-  key: 'pk_test_zsMITwkFAOrv7IiPAY2jCm11',
-  image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
-  locale: 'auto',
-  token: function(token) {
-    cleanData = {};
-    cleanData['resource'] = "order";
-    cleanData['stripeToken'] = token.id;
-    cleanData['stripeEmail'] = accountDisplayHandler.userName;
-    console.log(cleanData);
-    $.ajax({
-        type: "POST",
-        url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/orderpayment',
-        crossDomain: true,
-        contentType: 'application/json',
-        data: JSON.stringify(cleanData),
-        dataType: 'json',
-        success: function(service_data) {
-           // accountDisplayHandler.cartNavElement.hide();
-           innerHTML = "";
-           $("#houseContent").html(innerHTML);
-        },
-        error: function (e) {
-           alert("Unable to purchase.");
-        }
-    });
+    key: 'pk_test_zsMITwkFAOrv7IiPAY2jCm11',
+    image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+    locale: 'auto',
+    token: function(token) {
+        cleanData = {};
+        cleanData['resource'] = "order";
+        cleanData['stripeToken'] = token.id;
+        cleanData['stripeEmail'] = accountDisplayHandler.userName;
+        console.log(cleanData);
+        $.ajax({
+            type: "POST",
+            url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/orderpayment',
+            crossDomain: true,
+            contentType: 'application/json',
+            data: JSON.stringify(cleanData),
+            dataType: 'json',
+            success: function(service_data) {
+                // accountDisplayHandler.cartNavElement.hide();
+                innerHTML = "";
+                $("#houseContent").html(innerHTML);
+            },
+            error: function (e) {
+                alert("Unable to purchase.");
+            }
+        });
 
-  }
+    }
 });
 
 accountDisplayHandler.logOut = function () {
@@ -107,37 +107,37 @@ function render_items () {
         // data: JSON.stringify(cleanData),
         dataType: 'json',
         success: function(service_data){
-           // console.log(service_data);
-           items_data = service_data['message'];
-           items_data = items_data['results'];
-           // console.log(items_data);
-           for(var item in items_data){
+            // console.log(service_data);
+            items_data = service_data['message'];
+            items_data = items_data['results'];
+            // console.log(items_data);
+            for(var item in items_data){
                 // console.log(item);
                 itemLength++;
-           }
-           // console.log(itemLength);
-           innerHTML = "";
+            }
+            // console.log(itemLength);
+            innerHTML = "";
 
-           for(var i=0;i<itemLength;i++){
+            for(var i=0;i<itemLength;i++){
                 // console.log("i= " + i + "\n");
                 // console.log(items_data[i]['houseId']);
                 items_id.push(items_data[i]['houseId']);
                 // coords.push(items_data[i]['address']['coordinate']['lat']);
                 // coords.push(items_data[i]['address']['coordinate']['lng']);
-                
+
                 // map part
-                
+
                 marker = new google.maps.Marker({
-                  position: new google.maps.LatLng(items_data[i]['address']['coordinate']['lat'], items_data[i]['address']['coordinate']['lng']),
-                  map: map
+                    position: new google.maps.LatLng(items_data[i]['address']['coordinate']['lat'], items_data[i]['address']['coordinate']['lng']),
+                    map: map
                 });
                 var infowindow = new google.maps.InfoWindow({
-                  content: items_data[i]['title']
+                    content: items_data[i]['title']
                 });
                 marker.addListener('click', function() {
-                  map.setZoom(8);
-                  map.setCenter(marker.getPosition());
-                  infowindow.open(marker.get('map'), marker);
+                    map.setZoom(8);
+                    map.setCenter(marker.getPosition());
+                    infowindow.open(marker.get('map'), marker);
                 });
 
                 // end of map part
@@ -164,63 +164,63 @@ function render_items () {
                 if (i%3==2){
                     innerHTML = innerHTML + "<div class=\"row\">";
                 }
-           }
-           if (itemLength%3!=2){
+            }
+            if (itemLength%3!=2){
                 innerHTML = innerHTML + "<div class=\"row\">";
-           }
-           $("#container").html(innerHTML);
-           for (var i=0;i<itemLength;i++){
+            }
+            $("#container").html(innerHTML);
+            for (var i=0;i<itemLength;i++){
                 target_string = "#item" + i;
                 $( target_string ).click(function() {
                     houseDetail();
-                    
+
                 });
             }
         },
         error: function (e) {
-           alert("Unable to retrieve your data.");
+            alert("Unable to retrieve your data.");
         }
     });
 }
 
-// accountDisplayHandler.userInfo = function() {
-//     console.log(jwt_token);
-
-//     cleanData = {};
-//     cleanData['resource'] = 'customer';
-//     cleanData['type'] = 'CustomerInfo';
-//     cleanData['jwt'] = jwt_token;
-//     $.ajax({
-//         type: "POST",
-//         url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/info',
-//         crossDomain: true,
-//         contentType: 'application/json',
-//         data: JSON.stringify(cleanData),
-//         dataType: 'json',
-//         success: function(service_data){
-//            if (service_data['status']=='success'){
-//                customer_data = service_data['customer']
-//                insertHTML = "";
-//                insertHTML = insertHTML + "<table class=\"table table-hover\">";
-//                insertHTML = insertHTML + "<tbody>";
-//                insertHTML = insertHTML + "<tr>" + "<td>ID</td><td>" + customer_data['id']+ "</td></tr>";
-//                insertHTML = insertHTML + "<tr>" + "<td>First Name</td><td>" + customer_data['first_name']+ "</td></tr>";
-//                insertHTML = insertHTML + "<tr>" + "<td>Last Name</td><td>" + customer_data['last_name']+ "</td></tr>";
-//                insertHTML = insertHTML + "<tr>" + "<td>Date of Birth</td><td>" + customer_data['date_of_birth']+ "</td></tr>";
-//                insertHTML = insertHTML + "<tr>" + "<td>Balance</td><td>" + customer_data['balance']+ "</td></tr>";
-//                insertHTML = insertHTML + "</tbody>";
-//                insertHTML = insertHTML + "</table>";
-//                $("#userContent").html(insertHTML);
-//            }
-//            else{
-//                alert("No accessibility.");
-//            }
-//         },
-//         error: function (e) {
-//            alert("Unable to retrieve your data.");
-//         }
-//     });
-// }
+accountDisplayHandler.userInfo = function() {
+    // console.log(jwt_token);
+    //
+    // cleanData = {};
+    // cleanData['resource'] = 'customer';
+    // cleanData['type'] = 'CustomerInfo';
+    // cleanData['jwt'] = jwt_token;
+    // $.ajax({
+    //     type: "POST",
+    //     url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/info',
+    //     crossDomain: true,
+    //     contentType: 'application/json',
+    //     data: JSON.stringify(cleanData),
+    //     dataType: 'json',
+    //     success: function(service_data){
+    //        if (service_data['status']=='success'){
+    //            customer_data = service_data['customer']
+    //            insertHTML = "";
+    //            insertHTML = insertHTML + "<table class=\"table table-hover\">";
+    //            insertHTML = insertHTML + "<tbody>";
+    //            insertHTML = insertHTML + "<tr>" + "<td>ID</td><td>" + customer_data['id']+ "</td></tr>";
+    //            insertHTML = insertHTML + "<tr>" + "<td>First Name</td><td>" + customer_data['first_name']+ "</td></tr>";
+    //            insertHTML = insertHTML + "<tr>" + "<td>Last Name</td><td>" + customer_data['last_name']+ "</td></tr>";
+    //            insertHTML = insertHTML + "<tr>" + "<td>Date of Birth</td><td>" + customer_data['date_of_birth']+ "</td></tr>";
+    //            insertHTML = insertHTML + "<tr>" + "<td>Balance</td><td>" + customer_data['balance']+ "</td></tr>";
+    //            insertHTML = insertHTML + "</tbody>";
+    //            insertHTML = insertHTML + "</table>";
+    //            $("#userContent").html(insertHTML);
+    //        }
+    //        else{
+    //            alert("No accessibility.");
+    //        }
+    //     },
+    //     error: function (e) {
+    //        alert("Unable to retrieve your data.");
+    //     }
+    // });
+}
 
 // accountDisplayHandler.ordersInfo = function() {
 //     console.log(jwt_token);
@@ -241,14 +241,14 @@ function render_items () {
 //                orders_data = service_data['orders']
 //                insertHTML = "";
 //                // "<div id=\"carouselControls\" class=\"carousel slide\" data-ride=\"carousel\"><div class=\"carousel-inner\" role=\"listbox\">";
- 
+
 //                var jsLength=0;
 //                for(var order in orders_data){
-                    
+
 //                     jsLength++;
 //                }       
 //                for(var i=0;i<jsLength;i++){
-                    
+
 //                     insertHTML = insertHTML + "<div class=\"card text-center\">";
 //                     insertHTML = insertHTML + "<div class=\"card-header\">";
 //                     insertHTML = insertHTML + "Order ID: #" + orders_data[i]['id'];
@@ -289,7 +289,7 @@ function render_items () {
 // }
 
 // accountDisplayHandler.houseInfo = function(service_data) {
-     
+
 // }
 
 // accountDisplayHandler.emptyCart = function () {
@@ -380,13 +380,13 @@ function render_items () {
 //         'password':     formData['password'],
 //         'date_of_birth': formData['date_of_birth']
 //     }
-    
+
 //     $.ajax({
 //          type: "POST",
 //          url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/signup',
 //          crossDomain: true,
 //          contentType: 'application/json',
-         
+
 //          data: JSON.stringify(cleanData),
 //          dataType: 'json',
 //          success: function(data) {
@@ -401,9 +401,57 @@ function render_items () {
 //      });
 // }
 
-function submitForm(formData) {
+function submitForm(formData, houseID, caller_num) {
     // TODO
+    // console.log(formData);
+    cleanData = {};
+    // cleanData['token'] = "fakeId";
+    cleanData['houseId'] = houseID;
+    cleanData['content'] = formData['commentContent'];
+    console.log(caller_num);
 
+    $.ajax({
+        type: "POST",
+        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/comment',
+        crossDomain: true,
+        contentType: 'application/json',
+
+        data: JSON.stringify(cleanData),
+        dataType: 'json',
+        success: function(service_data) {
+            // console.log("ahahahah")
+            //TODO
+            // accountDisplayHandler.logIn(formData.email);
+            // $('#signUpModal').modal('hide')
+            // alert("Please confirm your email.");
+            document.getElementById("houseInfoClose").click();
+            // console.log(typeof(caller_num));
+            // console.log(caller_num);
+            // console.log("close complete");
+            // console.log("item"+caller_num);
+            // item_name = "item" + caller_num;
+            // document.getElementById(item_name).click();
+            // document.getElementById("item"+caller_num).click();
+            // $('#'+caller_id).click();
+        },
+        failure: function (service_data) {
+            // alert(data.errorMessage)
+            alert("Unable to submit comment");
+        }
+    });
+}
+
+function timeConverter(UNIX_timestamp){
+    var a = new Date(UNIX_timestamp * 1000);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+    return time;
 }
 
 function houseDetail() {
@@ -415,7 +463,9 @@ function houseDetail() {
     // }
     cleanData = {};
     // console.log(cleanData);
+    caller_num = event.target.value;
     caller_id = items_id[parseInt(event.target.value)];
+    // console.log(caller_id);
     $.ajax({
         type: "GET",
         url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/house/' + caller_id,
@@ -424,105 +474,144 @@ function houseDetail() {
         // data: JSON.stringify(cleanData),
         dataType: 'json',
         success: function(service_data) {
-            console.log(service_data);
-            items_data = service_data['message']['house'];
-            items_data = items_data['Item'];
+
+            // console.log(service_data);
+            items_data = service_data['message']['house']['Item'];
+            // items_data = items_data['Item'];
             innerHTML = "";
-             console.log(items_data);
+            // console.log(items_data);
 
-             innerHTML = "";
-             innerHTML = innerHTML + "<table class=\"table\">";
-             innerHTML = innerHTML + "<thead><tr>";
-             // innerHTML = innerHTML + "<th>#</th>";
-             innerHTML = innerHTML + "<th>Name</th>";
-             // innerHTML = innerHTML + "<th>ID</th>";
-             innerHTML = innerHTML + "<th>Size</th>";
-             innerHTML = innerHTML + "<th>Street</th>";
-             innerHTML = innerHTML + "<th>Zip</th>";
-             innerHTML = innerHTML + "</tr></thead>";
-             // var jsLength=0;
-             // cart_items = [];
-             // for(var item in items_data){
-             //      jsLength++;
-             // }
-             innerHTML = innerHTML + "<tbody>";
-             // for(var i=0;i<jsLength;i++){
-                  // cart_items.push(items_data[i]['id']);
+            innerHTML = "";
+            innerHTML = innerHTML + "<table class=\"table\">";
+            innerHTML = innerHTML + "<thead><tr>";
+            // innerHTML = innerHTML + "<th>#</th>";
+            innerHTML = innerHTML + "<th>Name</th>";
+            // innerHTML = innerHTML + "<th>ID</th>";
+            innerHTML = innerHTML + "<th>Size</th>";
+            innerHTML = innerHTML + "<th>Street</th>";
+            innerHTML = innerHTML + "<th>Zip</th>";
+            innerHTML = innerHTML + "</tr></thead>";
+            // var jsLength=0;
+            // cart_items = [];
+            // for(var item in items_data){
+            //      jsLength++;
+            // }
+            innerHTML = innerHTML + "<tbody>";
+            // for(var i=0;i<jsLength;i++){
+            // cart_items.push(items_data[i]['id']);
 
-              innerHTML = innerHTML + "<tr>";
-              // innerHTML = innerHTML + "<th scope=\"row\">" + "</th>";
-              innerHTML = innerHTML + "<td>" + items_data['title'] + "</td>";
-              // innerHTML = innerHTML + "<td>" + items_data[i]['houseId'] + "</td>";
-              innerHTML = innerHTML + "<td>" + items_data['size'] + "</td>";
-              innerHTML = innerHTML + "<td>" + items_data['address']['street'] + "</td>";
-              innerHTML = innerHTML + "<td>" + items_data['address']['zip'] + "</td>";
-              innerHTML = innerHTML + "</tr>";
-             // }
+            innerHTML = innerHTML + "<tr>";
+            // innerHTML = innerHTML + "<th scope=\"row\">" + "</th>";
+            innerHTML = innerHTML + "<td>" + items_data['title'] + "</td>";
+            // innerHTML = innerHTML + "<td>" + items_data[i]['houseId'] + "</td>";
+            innerHTML = innerHTML + "<td>" + items_data['size'] + "</td>";
+            innerHTML = innerHTML + "<td>" + items_data['address']['street'] + "</td>";
+            innerHTML = innerHTML + "<td>" + items_data['address']['zip'] + "</td>";
+            innerHTML = innerHTML + "</tr>";
+            // }
 
-             /* comment part */
+            /* comment part */
+
+            items_data = service_data['message']['comment']
+            // console.log(items_data);
+
+
             // @todo: need to revise this comment part
-             innerHTML = innerHTML + "<table class=\"table\">";
-             innerHTML = innerHTML + "<thead><tr>";
-             // innerHTML = innerHTML + "<th>#</th>";
-             innerHTML = innerHTML + "<th>Username</th>";
-             // innerHTML = innerHTML + "<th>ID</th>";
-             innerHTML = innerHTML + "<th>Time</th>";
-             innerHTML = innerHTML + "<th>Comment</th>";
-             // innerHTML = innerHTML + "<th>Zip</th>";
-             innerHTML = innerHTML + "</tr></thead>";
-             innerHTML = innerHTML + "<tbody>";
-             innerHTML = innerHTML + "<tr>";
-             innerHTML = innerHTML + "<td>" + items_data['title'] + "</td>";
-             // innerHTML = innerHTML + "<td>" + items_data[i]['houseId'] + "</td>";
-             innerHTML = innerHTML + "<td>" + items_data['size'] + "</td>";
-             innerHTML = innerHTML + "<td>" + items_data['address']['street'] + "</td>";
-             // innerHTML = innerHTML + "<td>" + items_data['address']['zip'] + "</td>";
-             innerHTML = innerHTML + "</tr>";
 
-             innerHTML = innerHTML + "</tbody></table>";
+            innerHTML = innerHTML + "<table class=\"table\">";
+            innerHTML = innerHTML + "<thead><tr>";
+            // innerHTML = innerHTML + "<th>#</th>";
+            innerHTML = innerHTML + "<th>commentID</th>";
+            // innerHTML = innerHTML + "<th>ID</th>";
+            innerHTML = innerHTML + "<th>Time</th>";
+            innerHTML = innerHTML + "<th>Content</th>";
+            // innerHTML = innerHTML + "<th>Zip</th>";
+            innerHTML = innerHTML + "</tr></thead>";
+            innerHTML = innerHTML + "<tbody>";
 
-             /* end of comment part */
+            for(var i=0;i<items_data.length;i++){
+                // cart_items.push(items_data[i]['id']);
+                innerHTML = innerHTML + "<tr>";
+                innerHTML = innerHTML + "<td>" + items_data[i]['commentId'] + "</td>";
+                // innerHTML = innerHTML + "<td>" + items_data[i]['houseId'] + "</td>";
+                innerHTML = innerHTML + "<td>" + timeConverter(items_data[i]['timestamp']) + "</td>";
+                innerHTML = innerHTML + "<td>" + items_data[i]['content'] + "</td>";
+                // innerHTML = innerHTML + "<td>" + items_data['address']['zip'] + "</td>";
+                innerHTML = innerHTML + "</tr>";
 
-             /* submit comment part */
+            }
+            innerHTML = innerHTML + "</tbody></table>";
 
-             innerHTML = innerHTML + "<form id=\"commentForm\">";
-             innerHTML = innerHTML + "<div class=\"form-group\">";
-             innerHTML = innerHTML + "<label for=\"commentContent\">Comment Content</label>";
-             innerHTML = innerHTML + "<input type=\"comment\" class=\"form-control\" id=\"commentContent\" placeholder=\"Comment Content\" name=\"commentContent\">";
-             innerHTML = innerHTML + "</div>";
-             innerHTML = innerHTML + "<button type=\"submit\" class=\"btn btn-default\">Submit Comment</button></form>";
+            /* end of comment part */
 
-             /* end of submit comment part */
+            /* submit comment part */
 
-             $("#houseContent").html(innerHTML);
+            innerHTML = innerHTML + "<form id=\"commentForm\">";
+            innerHTML = innerHTML + "<div class=\"form-group\">";
+            innerHTML = innerHTML + "<label for=\"commentContent\">Comment Content</label>";
+            innerHTML = innerHTML + "<input type=\"comment\" class=\"form-control\" id=\"commentContent\" placeholder=\"Comment Content\" name=\"commentContent\">";
+            innerHTML = innerHTML + "</div>";
+            innerHTML = innerHTML + "<button type=\"submit\" class=\"btn btn-default\">Submit Comment</button></form>";
+
+            /* end of submit comment part */
+
+            $("#houseContent").html(innerHTML);
+
+            /* new comment function */
+            $('#commentForm').submit(function (e) {
+                e.preventDefault();
+                var formData = $(this).serializeArray().reduce(
+                    function(accumulater, curr) {
+                        accumulater[curr.name] = curr.value;
+                        return accumulater;
+                    }
+                    , {});
+                submitForm(formData, service_data['message']['house']['Item']['houseId'], caller_num);
+            });
         },
         error: function (e) {
-           alert("Unable to view details.");
+            alert("Unable to view details.");
         }
     });
 }
 
 function initMap(){
+
+    init_position = [];
+    init_position['lat'] = -33.865427;
+    init_position['lng'] = 151.196123;
+
     map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 1,
-      center: {lat: -33.865427, lng: 151.196123},
-      mapTypeId: 'terrain'
+        zoom: 1,
+        center: {lat: init_position['lat'], lng: init_position['lng']},
+        mapTypeId: 'terrain'
     });
     // console.log(coords);
     // console.log(coords.length);
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                init_position['lat'] = position.coords.latitude;
+                init_position['lng'] = position.coords.longitude;
+                console.log(init_position);
+                map.setZoom(8);
+                map.setCenter({lat: init_position['lat'], lng: init_position['lng']});
+            }
+        )
+    }
 }
 
 function ResponseHandler(e, item_id) {
     e.preventDefault();
     console.log("response function");
     $.ajax({
-      url: $('#item'+item_id).attr('action'),
-      type: "POST",
-      data : $('#item'+item_id).serialize(),
-      success: function(response){
-        console.log('form submitted.');
-        console.log(response);
-      }
+        url: $('#item'+item_id).attr('action'),
+        type: "POST",
+        data : $('#item'+item_id).serialize(),
+        success: function(response){
+            console.log('form submitted.');
+            console.log(response);
+        }
     });
 
     // var ccNum = $('.data-key').val(),
@@ -556,35 +645,10 @@ function ResponseHandler(e, item_id) {
 }
 
 $(document).ready(function() {
+
     render_items();
 
     accountDisplayHandler.logOut();
-
-    // $('#loginForm').submit(function (e) {
-    //     e.preventDefault();
-    //     login($(this).serializeArray().reduce(
-    //         function(accumulater, curr) {
-    //             accumulater[curr.name] = curr.value;
-    //             return accumulater;
-    //         }, {}));
-    // });
-    // $('#signUpForm').submit(function (e) {
-    //     e.preventDefault();
-    //     var formData = $(this).serializeArray().reduce(
-    //         function(accumulater, curr) {
-    //             accumulater[curr.name] = curr.value;
-    //             return accumulater;
-    //         }
-    //         , {});
-    //     if(formData["password"] !== formData["passwordCheck"]) {
-    //         alert("Both password entries must match.");
-    //         return;
-    //     } else if (formData["password"].length < 6) {
-    //         alert("Passwords must be at least 6 character in length.");
-    //         return;
-    //     }
-    //     signUp(formData);
-    // });
 
     /* new comment function */
     $('commentForm').submit(function (e) {
@@ -597,12 +661,12 @@ $(document).ready(function() {
             , {});
         submitForm(formData);
     });
-    
+
     $( "#usernameNavElement" ).click(function() {
-        accountDisplayHandler.userInfo();
+    accountDisplayHandler.userInfo();
     });
     $( "#ordersInfoNavElement" ).click(function() {
-        accountDisplayHandler.ordersInfo();
+    accountDisplayHandler.ordersInfo();
     });
     // $( "#houseNavElement" ).click(function() {
     //     accountDisplayHandler.houseInfo();
@@ -613,17 +677,17 @@ $(document).ready(function() {
     // });
 
     $( "#emptyCart" ).click(function() {
-        accountDisplayHandler.emptyCart();
+    accountDisplayHandler.emptyCart();
     });
     $( "#paymentButton" ).click(function(e) {
-        handler.open({
-            name: 'Cart',
-            description: 'Payment for books',
-            amount: 2000
-        });
-        e.preventDefault();
+    handler.open({
+        name: 'Cart',
+        description: 'Payment for books',
+        amount: 2000
+    });
+    e.preventDefault();
     });
     $( "#datetimepicker" ).datetimepicker({
-        pickTime: false
+    pickTime: false
     });
 });

@@ -91,7 +91,6 @@
 <!-- loginModal -->
 <div class="modal fade" id="loginModal" role="dialog">
     <div class="modal-dialog">
-
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -179,6 +178,7 @@
 <!-- userInfoModal -->
 <div class="modal fade" id="userInfoModal" role="dialog">
     <div class="modal-dialog">
+
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -186,6 +186,43 @@
             </div>
             <div class="modal-body" id="userContent">
                 <p>User Info Aera</p>
+
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label for="signUpUsername">Username</label>
+                        <input type="username" class="form-control" id="signUpUsername" placeholder="Username" name="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="signUpEmail">Email Address</label>
+                        <input type="email" class="form-control" id="signUpEmail" placeholder="Email Address" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="signUpPassword">Password</label>
+                        <input type="password" class="form-control" id="signUpPassword" placeholder="Password" name="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="signUpPasswordCheck">Password (again)</label>
+                        <input type="password" class="form-control" id="signUpPasswordCheck" placeholder="Password" name="passwordCheck">
+                    </div>
+                    <div class="form-group">
+                        <label for="signUpFirstName">First Name</label>
+                        <input type="textarea" class="form-control" id="signUpFirstName" placeholder="First Name" name="first_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="signUpLastName">Last Name</label>
+                        <input type="textarea" class="form-control" id="signUpLastName" placeholder="Last Name" name="last_name">
+                    </div>
+
+                    <div id="datetimepicker" class="input-append date">
+                        <label for="signUpDate">Date of Birth</label>
+                        <input type="text" class="form-control" id="signUpDate" placeholder="Date of Birth" name="date_of_birth"></input>
+                        <span class="add-on">
+                                <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                            </span>
+                    </div>
+
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
