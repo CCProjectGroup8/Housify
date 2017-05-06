@@ -91,18 +91,7 @@ function setCookie(key, value) {
 }
 
 function getCookie(key) {
-    // var name = key + "=";
-    // //var decodedCookie = decodeURIComponent(document.cookie);
-    // var ca = jwt_token.split(';');
-    // for(var i = 0; i < ca.length; i++) {
-    //     var c = ca[i];
-    //     while (c.charAt(0) == ' ') {
-    //         c = c.substring(1);
-    //     }
-    //     if (c.indexOf(name) == 0) {
-    //         return c.substring(name.length, c.length);
-    //     }
-    // }
+
     return jwt_token;
 }
 
@@ -194,237 +183,223 @@ function render_items () {
     });
 }
 
-accountDisplayHandler.userInfo = function() {
-    console.log(jwt_token);
+// accountDisplayHandler.userInfo = function() {
+//     console.log(jwt_token);
 
-    cleanData = {};
-    cleanData['resource'] = 'customer';
-    cleanData['type'] = 'CustomerInfo';
-    cleanData['jwt'] = jwt_token;
-    $.ajax({
-        type: "POST",
-        url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/info',
-        crossDomain: true,
-        contentType: 'application/json',
-        data: JSON.stringify(cleanData),
-        dataType: 'json',
-        success: function(service_data){
-           if (service_data['status']=='success'){
-               customer_data = service_data['customer']
-               insertHTML = "";
-               insertHTML = insertHTML + "<table class=\"table table-hover\">";
-               insertHTML = insertHTML + "<tbody>";
-               insertHTML = insertHTML + "<tr>" + "<td>ID</td><td>" + customer_data['id']+ "</td></tr>";
-               insertHTML = insertHTML + "<tr>" + "<td>First Name</td><td>" + customer_data['first_name']+ "</td></tr>";
-               insertHTML = insertHTML + "<tr>" + "<td>Last Name</td><td>" + customer_data['last_name']+ "</td></tr>";
-               insertHTML = insertHTML + "<tr>" + "<td>Date of Birth</td><td>" + customer_data['date_of_birth']+ "</td></tr>";
-               insertHTML = insertHTML + "<tr>" + "<td>Balance</td><td>" + customer_data['balance']+ "</td></tr>";
-               insertHTML = insertHTML + "</tbody>";
-               insertHTML = insertHTML + "</table>";
-               $("#userContent").html(insertHTML);
-           }
-           else{
-               alert("No accessibility.");
-           }
-        },
-        error: function (e) {
-           alert("Unable to retrieve your data.");
-        }
-    });
-}
+//     cleanData = {};
+//     cleanData['resource'] = 'customer';
+//     cleanData['type'] = 'CustomerInfo';
+//     cleanData['jwt'] = jwt_token;
+//     $.ajax({
+//         type: "POST",
+//         url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/info',
+//         crossDomain: true,
+//         contentType: 'application/json',
+//         data: JSON.stringify(cleanData),
+//         dataType: 'json',
+//         success: function(service_data){
+//            if (service_data['status']=='success'){
+//                customer_data = service_data['customer']
+//                insertHTML = "";
+//                insertHTML = insertHTML + "<table class=\"table table-hover\">";
+//                insertHTML = insertHTML + "<tbody>";
+//                insertHTML = insertHTML + "<tr>" + "<td>ID</td><td>" + customer_data['id']+ "</td></tr>";
+//                insertHTML = insertHTML + "<tr>" + "<td>First Name</td><td>" + customer_data['first_name']+ "</td></tr>";
+//                insertHTML = insertHTML + "<tr>" + "<td>Last Name</td><td>" + customer_data['last_name']+ "</td></tr>";
+//                insertHTML = insertHTML + "<tr>" + "<td>Date of Birth</td><td>" + customer_data['date_of_birth']+ "</td></tr>";
+//                insertHTML = insertHTML + "<tr>" + "<td>Balance</td><td>" + customer_data['balance']+ "</td></tr>";
+//                insertHTML = insertHTML + "</tbody>";
+//                insertHTML = insertHTML + "</table>";
+//                $("#userContent").html(insertHTML);
+//            }
+//            else{
+//                alert("No accessibility.");
+//            }
+//         },
+//         error: function (e) {
+//            alert("Unable to retrieve your data.");
+//         }
+//     });
+// }
 
-accountDisplayHandler.ordersInfo = function() {
-    console.log(jwt_token);
+// accountDisplayHandler.ordersInfo = function() {
+//     console.log(jwt_token);
 
-    cleanData = {};
-    cleanData['resource'] = 'customer';
-    cleanData['type'] = 'CustomerAccount';
-    cleanData['jwt'] = jwt_token;
-    $.ajax({
-        type: "POST",
-        url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/order',
-        crossDomain: true,
-        contentType: 'application/json',
-        data: JSON.stringify(cleanData),
-        dataType: 'json',
-        success: function(service_data){
-           if (service_data['status']=='success'){
-               orders_data = service_data['orders']
-               insertHTML = "";
-               // "<div id=\"carouselControls\" class=\"carousel slide\" data-ride=\"carousel\"><div class=\"carousel-inner\" role=\"listbox\">";
+//     cleanData = {};
+//     cleanData['resource'] = 'customer';
+//     cleanData['type'] = 'CustomerAccount';
+//     cleanData['jwt'] = jwt_token;
+//     $.ajax({
+//         type: "POST",
+//         url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/order',
+//         crossDomain: true,
+//         contentType: 'application/json',
+//         data: JSON.stringify(cleanData),
+//         dataType: 'json',
+//         success: function(service_data){
+//            if (service_data['status']=='success'){
+//                orders_data = service_data['orders']
+//                insertHTML = "";
+//                // "<div id=\"carouselControls\" class=\"carousel slide\" data-ride=\"carousel\"><div class=\"carousel-inner\" role=\"listbox\">";
  
-               var jsLength=0;
-               for(var order in orders_data){
-                    // alert(order);
-                    // insertHTML = insertHTML + "<p>"+ order['id'] + "</p>";
-                    // insertHTML = insertHTML + "<p>"+ order['item_name'] + "</p>";
-                    // insertHTML = insertHTML + "<p>"+ order['price'] + "</p>";
-                    // insertHTML = insertHTML + "<p>"+ order['address'] + "</p>";
-                    // insertHTML = insertHTML + "<p>"+ order['payment_method'] + "</p>";
-                    // insertHTML = insertHTML + "<p>"+ order['time'] + "</p>";
-                    jsLength++;
-               }       
-               for(var i=0;i<jsLength;i++){
-                    // insertHTML = insertHTML + "<p>"+ orders_data[i]['id'] + "</p>";
-                    // insertHTML = insertHTML + "<p>"+ orders_data[i]['item_name'] + "</p>";
-                    // insertHTML = insertHTML + "<p>"+ orders_data[i]['price'] + "</p>";
-                    // insertHTML = insertHTML + "<p>"+ orders_data[i]['address'] + "</p>";
-                    // insertHTML = insertHTML + "<p>"+ orders_data[i]['payment_method'] + "</p>";
-                    // insertHTML = insertHTML + "<p>"+ orders_data[i]['time'] + "</p>";
-                    // insertHTML = insertHTML + "<div class=\"carousel-item active\"><img class=\"d-block img-fluid\" src=\"images/" + orders_data[i]['item_name'] + ".png></div>";
-                    // if (i==0) itemActive = " active"; else itemActive = "";
-                    // insertHTML = insertHTML + "<div class=\"carousel-item" + itemActive + "\"><img class=\"d-block img-fluid\" src=\"images/Practical%20DevOps.png\"></div>";
-                    insertHTML = insertHTML + "<div class=\"card text-center\">";
-                    insertHTML = insertHTML + "<div class=\"card-header\">";
-                    insertHTML = insertHTML + "Order ID: #" + orders_data[i]['id'];
-                    insertHTML = insertHTML + "</div>";
-                    insertHTML = insertHTML + "<div class=\"card-block\">";
-                    insertHTML = insertHTML + "<h4 class=\"card-title\">";
-                    insertHTML = insertHTML + orders_data[i]['item_name'] + "</h4>";
-                    insertHTML = insertHTML + "<p class=\"card-text\">";
+//                var jsLength=0;
+//                for(var order in orders_data){
+                    
+//                     jsLength++;
+//                }       
+//                for(var i=0;i<jsLength;i++){
+                    
+//                     insertHTML = insertHTML + "<div class=\"card text-center\">";
+//                     insertHTML = insertHTML + "<div class=\"card-header\">";
+//                     insertHTML = insertHTML + "Order ID: #" + orders_data[i]['id'];
+//                     insertHTML = insertHTML + "</div>";
+//                     insertHTML = insertHTML + "<div class=\"card-block\">";
+//                     insertHTML = insertHTML + "<h4 class=\"card-title\">";
+//                     insertHTML = insertHTML + orders_data[i]['item_name'] + "</h4>";
+//                     insertHTML = insertHTML + "<p class=\"card-text\">";
 
-                    insertHTML = insertHTML + "<table class=\"table table-hover\">";
-                    insertHTML = insertHTML + "<thead><tr>" + "<th>Details</th>" + "</tr></thead>";
-                    insertHTML = insertHTML + "<tbody>";
-                    insertHTML = insertHTML + "<tr>" + "<td>Price</td><td>" + orders_data[i]['price']+ "</td></tr>";
-                    insertHTML = insertHTML + "<tr>" + "<td>Address</td><td>" + orders_data[i]['address']+ "</td></tr>";
-                    insertHTML = insertHTML + "<tr>" + "<td>Payment Method</td><td>" + orders_data[i]['payment_method']+ "</td></tr>";
-                    insertHTML = insertHTML + "<tr>" + "<td>Time</td><td>" + orders_data[i]['time']+ "</td></tr>";
-                    insertHTML = insertHTML + "</tbody>";
-                    insertHTML = insertHTML + "</table>";
+//                     insertHTML = insertHTML + "<table class=\"table table-hover\">";
+//                     insertHTML = insertHTML + "<thead><tr>" + "<th>Details</th>" + "</tr></thead>";
+//                     insertHTML = insertHTML + "<tbody>";
+//                     insertHTML = insertHTML + "<tr>" + "<td>Price</td><td>" + orders_data[i]['price']+ "</td></tr>";
+//                     insertHTML = insertHTML + "<tr>" + "<td>Address</td><td>" + orders_data[i]['address']+ "</td></tr>";
+//                     insertHTML = insertHTML + "<tr>" + "<td>Payment Method</td><td>" + orders_data[i]['payment_method']+ "</td></tr>";
+//                     insertHTML = insertHTML + "<tr>" + "<td>Time</td><td>" + orders_data[i]['time']+ "</td></tr>";
+//                     insertHTML = insertHTML + "</tbody>";
+//                     insertHTML = insertHTML + "</table>";
 
-                    insertHTML = insertHTML + "</p>";
-                    // insertHTML = insertHTML + "<a href=\"#\" class=\"btn btn-primary\">Go somewhere</a>";
-                    insertHTML = insertHTML + "</div>" + "<div class=\"card-footer text-muted\">";
-                    // insertHTML = insertHTML + orders_data[i]['time'] + "</div></div>";
-                    insertHTML = insertHTML + "</div></div>";
-               }
-               // alert(insertHTML);
-               $("#ordersContent").html(insertHTML);
-           }
-           else{
-               insertHTML = "";
-               $("#ordersContent").html(insertHTML);
-           }
-        },
-        error: function (e) {
-           alert("Unable to retrieve your data.");
-        }
-    });
-}
+//                     insertHTML = insertHTML + "</p>";
+//                     // insertHTML = insertHTML + "<a href=\"#\" class=\"btn btn-primary\">Go somewhere</a>";
+//                     insertHTML = insertHTML + "</div>" + "<div class=\"card-footer text-muted\">";
+//                     // insertHTML = insertHTML + orders_data[i]['time'] + "</div></div>";
+//                     insertHTML = insertHTML + "</div></div>";
+//                }
+//                // alert(insertHTML);
+//                $("#ordersContent").html(insertHTML);
+//            }
+//            else{
+//                insertHTML = "";
+//                $("#ordersContent").html(insertHTML);
+//            }
+//         },
+//         error: function (e) {
+//            alert("Unable to retrieve your data.");
+//         }
+//     });
+// }
 
 // accountDisplayHandler.houseInfo = function(service_data) {
      
 // }
 
-accountDisplayHandler.emptyCart = function () {
-    console.log(cart_items);
-    var cartLength=0;
-    for(var item in cart_items){
-        cartLength++;
-    }
+// accountDisplayHandler.emptyCart = function () {
+//     console.log(cart_items);
+//     var cartLength=0;
+//     for(var item in cart_items){
+//         cartLength++;
+//     }
 
-    cleanData = {};
-    cleanData['resource'] = "shoppingcart";
-    cleanData['type'] = "DeleteCart";
-    cleanData['jwt'] = jwt_token;
-    for (var i=0;i<cartLength;i++){
-        cleanData['item_id'] = cart_items[i];
-        $.ajax({
-            type: "POST",
-            url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/shoppingcart',
-            crossDomain: true,
-            contentType: 'application/json',
-            data: JSON.stringify(cleanData),
-            dataType: 'json',
-            success: function(service_data) {
-                if (service_data['status']=='success'){
-                    //
-                }
-                else{
-                    alert("No accessibility.");
-                }
-            },
-            error: function (e) {
-                alert("Unable to retrieve your data.");
-            }
-        });
-    }
-    cart_items = [];
-    innerHTML = "";
-    $("#cartContent").html(innerHTML);
-}
+//     cleanData = {};
+//     cleanData['resource'] = "shoppingcart";
+//     cleanData['type'] = "DeleteCart";
+//     cleanData['jwt'] = jwt_token;
+//     for (var i=0;i<cartLength;i++){
+//         cleanData['item_id'] = cart_items[i];
+//         $.ajax({
+//             type: "POST",
+//             url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/shoppingcart',
+//             crossDomain: true,
+//             contentType: 'application/json',
+//             data: JSON.stringify(cleanData),
+//             dataType: 'json',
+//             success: function(service_data) {
+//                 if (service_data['status']=='success'){
+//                     //
+//                 }
+//                 else{
+//                     alert("No accessibility.");
+//                 }
+//             },
+//             error: function (e) {
+//                 alert("Unable to retrieve your data.");
+//             }
+//         });
+//     }
+//     cart_items = [];
+//     innerHTML = "";
+//     $("#cartContent").html(innerHTML);
+// }
 
-function login(formData) {
-    cleanData = {};
-    cleanData['resource'] = "customer";
-    cleanData['type'] = "LogIn";
-    cleanData['customer'] = {
-        'id':       formData['email'],
-        'password': formData['password']
-    }
-    // console.log(cleanData);
+// function login(formData) {
+//     cleanData = {};
+//     cleanData['resource'] = "customer";
+//     cleanData['type'] = "LogIn";
+//     cleanData['customer'] = {
+//         'id':       formData['email'],
+//         'password': formData['password']
+//     }
+//     // console.log(cleanData);
+//
+//     $.ajax({
+//         type: "POST",
+//         url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/login',
+//         crossDomain: true,
+//         contentType: 'application/json',
+//         // header:{
+//         //     'Access-Control-Allow-Origin': "*"
+//         // },
+//         data: JSON.stringify(cleanData),
+//         dataType: 'json',
+//         success: function(service_data){
+//            if (service_data['status']=='success'){
+//                accountDisplayHandler.logIn(formData.email);
+//                $('#loginModal').modal('hide')
+//                //set jwt_token
+//                setCookie("jwt_token", service_data['jwt']);
+//            }
+//            else{
+//                alert("Invalid email or password.");
+//                accountDisplayHandler.logOut();
+//            }
+//         },
+//         error: function (e) {
+//            alert("error");
+//            accountDisplayHandler.logOut();
+//         }
+//     });
+// }
+
+// function signUp(formData) { //new acccount
+//     cleanData = {};
+//     cleanData['resource'] = "customer";
+//     cleanData['type'] = "SignUp";
+//     cleanData['customer'] = {
+//         'id':           formData['email'],
+//         'first_name':   formData['first_name'],
+//         'last_name':    formData['last_name'],
+//         'password':     formData['password'],
+//         'date_of_birth': formData['date_of_birth']
+//     }
     
-    $.ajax({
-        type: "POST",
-        url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/login',
-        crossDomain: true,
-        contentType: 'application/json',
-        // header:{
-        //     'Access-Control-Allow-Origin': "*"
-        // },
-        data: JSON.stringify(cleanData),
-        dataType: 'json',
-        success: function(service_data){
-           if (service_data['status']=='success'){
-               accountDisplayHandler.logIn(formData.email);
-               $('#loginModal').modal('hide')
-               //set jwt_token
-               setCookie("jwt_token", service_data['jwt']);
-           }
-           else{
-               alert("Invalid email or password.");
-               accountDisplayHandler.logOut();
-           }
-        },
-        error: function (e) {
-           alert("error");
-           accountDisplayHandler.logOut();
-        }
-    });
-}
-
-function signUp(formData) { //new acccount
-    cleanData = {};
-    cleanData['resource'] = "customer";
-    cleanData['type'] = "SignUp";
-    cleanData['customer'] = {
-        'id':           formData['email'],
-        'first_name':   formData['first_name'],
-        'last_name':    formData['last_name'],
-        'password':     formData['password'],
-        'date_of_birth': formData['date_of_birth']
-    }
-    
-    $.ajax({
-         type: "POST",
-         url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/signup',
-         crossDomain: true,
-         contentType: 'application/json',
+//     $.ajax({
+//          type: "POST",
+//          url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/signup',
+//          crossDomain: true,
+//          contentType: 'application/json',
          
-         data: JSON.stringify(cleanData),
-         dataType: 'json',
-         success: function(data) {
-             //TODO
-             // accountDisplayHandler.logIn(formData.email);
-             $('#signUpModal').modal('hide')
-             alert("Please confirm your email.");
-         },
-         failure: function (data) {
-             alert(data.errorMessage)
-         }
-     });
-}
+//          data: JSON.stringify(cleanData),
+//          dataType: 'json',
+//          success: function(data) {
+//              //TODO
+//              // accountDisplayHandler.logIn(formData.email);
+//              $('#signUpModal').modal('hide')
+//              alert("Please confirm your email.");
+//          },
+//          failure: function (data) {
+//              alert(data.errorMessage)
+//          }
+//      });
+// }
 
 function submitForm(formData) {
     // TODO
@@ -584,31 +559,31 @@ $(document).ready(function() {
 
     accountDisplayHandler.logOut();
 
-    $('#loginForm').submit(function (e) {
-        e.preventDefault();
-        login($(this).serializeArray().reduce(
-            function(accumulater, curr) {
-                accumulater[curr.name] = curr.value;
-                return accumulater;
-            }, {}));
-    });
-    $('#signUpForm').submit(function (e) {
-        e.preventDefault();
-        var formData = $(this).serializeArray().reduce(
-            function(accumulater, curr) {
-                accumulater[curr.name] = curr.value;
-                return accumulater;
-            }
-            , {});
-        if(formData["password"] !== formData["passwordCheck"]) {
-            alert("Both password entries must match.");
-            return;
-        } else if (formData["password"].length < 4) {
-            alert("Passwords must be at least 5 character in length.");
-            return;
-        }
-        signUp(formData);
-    });
+    // $('#loginForm').submit(function (e) {
+    //     e.preventDefault();
+    //     login($(this).serializeArray().reduce(
+    //         function(accumulater, curr) {
+    //             accumulater[curr.name] = curr.value;
+    //             return accumulater;
+    //         }, {}));
+    // });
+    // $('#signUpForm').submit(function (e) {
+    //     e.preventDefault();
+    //     var formData = $(this).serializeArray().reduce(
+    //         function(accumulater, curr) {
+    //             accumulater[curr.name] = curr.value;
+    //             return accumulater;
+    //         }
+    //         , {});
+    //     if(formData["password"] !== formData["passwordCheck"]) {
+    //         alert("Both password entries must match.");
+    //         return;
+    //     } else if (formData["password"].length < 6) {
+    //         alert("Passwords must be at least 6 character in length.");
+    //         return;
+    //     }
+    //     signUp(formData);
+    // });
 
     /* new comment function */
     $('commentForm').submit(function (e) {
@@ -631,9 +606,11 @@ $(document).ready(function() {
     // $( "#houseNavElement" ).click(function() {
     //     accountDisplayHandler.houseInfo();
     // });
-    $( "#logoutNavElement" ).click(function() {
-        accountDisplayHandler.logOut();
-    });
+
+    // $( "#logoutNavElement" ).click(function() {
+    //     accountDisplayHandler.logOut();
+    // });
+
     $( "#emptyCart" ).click(function() {
         accountDisplayHandler.emptyCart();
     });

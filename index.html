@@ -10,7 +10,24 @@
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" media="screen">
-
+    <script src="./assets/jsbn.js"></script>
+    <script src="./assets/jsbn2.js"></script>
+    <script src="./assets/sjcl.js"></script>
+    <script src="./assets/moment.min.js"></script>
+    <script src="./assets/aws-cognito-sdk.min.js"></script>
+    <script src="./assets/amazon-cognito-identity.min.js"></script>
+    <script src="./assets/aws-sdk.min.js"></script>
+    <script src="./assets/gateway/lib/apiGatewayCore/apiGatewayClient.js"></script>
+    <script src="./assets/gateway/lib/apiGatewayCore/sigV4Client.js"></script>
+    <script src="./assets/gateway/lib/apiGatewayCore/simpleHttpClient.js"></script>
+    <script src="./assets/gateway/lib/apiGatewayCore/utils.js"></script>
+    <script src="./assets/gateway/lib/axios/dist/axios.standalone.js"></script>
+    <script src="./assets/gateway/lib/CryptoJS/rollups/hmac-sha256.js"></script>
+    <script src="./assets/gateway/lib/CryptoJS/rollups/sha256.js"></script>
+    <script src="./assets/gateway/lib/CryptoJS/components/enc-base64.js"></script>
+    <script src="./assets/gateway/lib/CryptoJS/components/hmac.js"></script>
+    <script src="./assets/gateway/lib/url-template/url-template.js"></script>
+    <script src="./assets/gateway/apigClient.js"></script>
     <style>
        #map {
         height: 400px;
@@ -37,9 +54,10 @@
             <ul class="nav navbar-nav navbar-right">
                 <li id="usernameNavElement"></li>
                 <li id="loginNavElement"><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
+                <li id="userNavElement"></li> <!-- display when logged in -->
                 <li id="ordersInfoNavElement"></li>
                 <li id="cartNavElement"></li>
-                <li id="logoutNavElement" style="display: none"><a href="#">Logout</a></li>
+                <li id="logoutNavElement" data-toggle="modal" style="display: none"><a href="#" style="cursor: pointer;" onclick="logout()">Logout</a></li>
                 <li id="signUpNavElement" data-toggle="modal" data-target="#signUpModal"><a href="#">Sign Up</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -52,9 +70,8 @@
 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-<script src="../static/js/bootstrap.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="../assets/js/ie10-viewport-bug-workaround.js"></script>
+<!--<script src="./assets/js/ie10-viewport-bug-workaround.js"></script>-->
 
 <!-- end of map part -->
 
@@ -84,8 +101,8 @@
             <div class="modal-body">
                 <form id="loginForm">
                     <div class="form-group">
-                        <label for="loginEmail">Email address</label>
-                        <input type="email" class="form-control" id="loginEmail" placeholder="Email" name="email">
+                        <label for="loginUsername">Username</label>
+                        <input type="username" class="form-control" id="loginUsername" placeholder="Username" name="username">
                     </div>
                     <div class="form-group">
                         <label for="loginPassword">Password</label>
@@ -116,6 +133,10 @@
             <div class="modal-body">
                 <form id="signUpForm">
                     <div class="form-group">
+                        <label for="signUpUsername">Username</label>
+                        <input type="username" class="form-control" id="signUpUsername" placeholder="Username" name="username">
+                    </div>
+                    <div class="form-group">
                         <label for="signUpEmail">Email Address</label>
                         <input type="email" class="form-control" id="signUpEmail" placeholder="Email Address" name="email">
                     </div>
@@ -138,7 +159,7 @@
                     
                     <div id="datetimepicker" class="input-append date">
                         <label for="signUpDate">Date of Birth</label>
-                        <input type="text" class="form-control" placeholder="Date of Birth" name="date_of_birth"></input>
+                        <input type="text" class="form-control" id="signUpDate" placeholder="Date of Birth" name="date_of_birth"></input>
                         <span class="add-on">
                             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                         </span>
@@ -219,7 +240,8 @@
 
 <script src="https://checkout.stripe.com/checkout.js"></script>
 <script src="js/main.js"></script>
-
+<!-- cognito -->
+<script src="./assets/app.js"></script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAovkBO68rNju_an3XHa29XmUQ0RWq55Is&callback=initMap">
 </script>
