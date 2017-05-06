@@ -68,26 +68,8 @@ function updateAuthenticationStatus(){
 //   }
 // }
 
-// $('#newsletter').submit(function(e){
-//   e.preventDefault();
-//
-//   var client = apigClientFactory.newClient();
-//
-//   client.userUsernameGetRequest({}, {username:$('#username').val()}, {})
-//   .then(function(data){
-//     if(data.data.statusCode == 200){
-//       // $('#newsletter').hide();
-//       // $('#response').append('<div class="alert alert-success">'+ data.data.message +'</div>')
-//     } else {
-//       // $('#newsletter').hide();
-//       // $('#response').append('<div class="alert alert-danger">'+ data.data.message +'</div>')
-//     }
-//   })
-//
-// })
 
-
-// Sign up function
+// Sign up action
 $('#signUpForm').submit(function(e){
     e.preventDefault();
     AWSCognito.config.region = 'us-east-1';
@@ -96,34 +78,6 @@ $('#signUpForm').submit(function(e){
     });
     // Need to provide placeholder keys unless unauthorised user access is enabled for user pool
     AWSCognito.config.update({accessKeyId: 'anything', secretAccessKey: 'anything'});
-
-    // var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool({
-    //     UserPoolId : 'us-east-1_5Yw8TA9yC',
-    //     ClientId : '1quiqgcinu0ku9ihi686ga6h7m'
-    // });
-    //
-    // var userData = {
-    //     // UserPoolId: 'us-east-1_5Yw8TA9yC',
-    //     ClientId: '1quiqgcinu0ku9ihi686ga6h7m',
-    //     Username: $('#signUpUsername').val(),
-    //     Password: $('#signUpPassword').val(),
-    //     UserAttributes: [
-    //         {
-    //             Name: 'email',
-    //             Value: $('#signUpEmail').val()
-    //         }
-    //     ]
-    // };
-    // var provider = new AWS.CognitoIdentityServiceProvider();
-    // provider.signUp(userData, function(err, data) {
-    //     if (err) {
-    //         alert("sign up error");
-    //         // callback(err)
-    //     } else {
-    //         alert("signup success");
-    //         // callback(null, {"status": "success"});
-    //     }
-    // });
 
     var poolData = {
         UserPoolId : 'us-east-1_5Yw8TA9yC', // Your user pool id here
@@ -148,54 +102,41 @@ $('#signUpForm').submit(function(e){
     userPool.signUp(username, password, attributeList, null, function(err, result){
         if (err) {
             alert("sign up failed: " + err);
+            console.log(err);
             return;
         }
-        alert("sign up ok");
-        console.log('user name is ' + result.user.getUsername());
+        alert("sign up successful!");
+
+        // console.log('user name is ' + JSON.stringify(result));
+        login(username, password);
     });
 })
 
 
-// login function
+// login action
 $('#loginForm').submit(function(e){
     e.preventDefault();
+
+    var username = $('#loginUsername').val();
+    var password = $('#loginPassword').val();
+
+    login(username,password);
+
+
+})
+
+// login function
+function login(username, password) {
     AWSCognito.config.region = 'us-east-1';
     AWSCognito.config.credentials = new AWS.CognitoIdentityCredentials({
-      IdentityPoolId: 'us-east-1:9e5b0f52-67a2-48dd-a112-815bc5037a3b'
+        IdentityPoolId: 'us-east-1:9e5b0f52-67a2-48dd-a112-815bc5037a3b'
     });
     // // Need to provide placeholder keys unless unauthorised user access is enabled for user pool
     AWSCognito.config.update({accessKeyId: 'anything', secretAccessKey: 'anything'});
 
-    // var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool({
-    //   UserPoolId : 'us-east-1_5Yw8TA9yC',
-    //   ClientId : '1quiqgcinu0ku9ihi686ga6h7m'
-    // });
-    //
-    // var authenticationData = {
-    //   Username : $('#loginUsername').val(),
-    //   Password : $('#loginPassword').val(),
-    // };
-    // var userData = {
-    //   Username : $('#loginUsername').val(),
-    //   Pool : userPool
-    // };
-    // var authenticationDetails = new AWSCognito.CognitoIdentityServiceProvider.AuthenticationDetails(authenticationData);
-    // var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
-    //
-    // cognitoUser.authenticateUser(authenticationDetails, {
-    //   onSuccess: function (result) {
-    //     localStorage.setItem('token', JSON.stringify(result.idToken.jwtToken));
-    //     // window.location = '/';
-    //     alert("login success");
-    //   },
-    //   onFailure: function(err) {
-    //     alert("login failed");
-    //     console.log(err);
-    //   }
-    // });
     var authenticationData = {
-        Username : $('#loginUsername').val(),
-        Password : $('#loginPassword').val(),
+        Username : username,
+        Password : password,
     };
     var authenticationDetails = new AWSCognito.CognitoIdentityServiceProvider.AuthenticationDetails(authenticationData);
     var poolData = {
@@ -204,7 +145,7 @@ $('#loginForm').submit(function(e){
     };
     var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
     var userData = {
-        Username : $('#loginUsername').val(),
+        Username : username,
         Pool : userPool
     };
     var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
@@ -213,22 +154,11 @@ $('#loginForm').submit(function(e){
             localStorage.setItem('token', JSON.stringify(result.idToken.jwtToken));
             updateAuthenticationStatus();
             window.location.reload();
-            // console.log('access token + ' + result.getAccessToken().getJwtToken());
-            // alert("login success");
-
-            // AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-            //     IdentityPoolId : '...', // your identity pool id here
-            //     Logins : {
-            //         // Change the key below according to the specific region your user pool is in.
-            //         'cognito-idp.<region>.amazonaws.com/<YOUR_USER_POOL_ID>' : result.getIdToken().getJwtToken()
-            //     }
-            // });
-
         },
 
         onFailure: function(err) {
-            // console.log("login failed");
-            // alert(err);
+            console.log("login failed");
+            console.log(err);
             insertHTML = '<span style="color:red;" id="loginError">';
             insertHTML = insertHTML + err.toString().split(':')[1];
             insertHTML = insertHTML + '</span>';
@@ -236,4 +166,4 @@ $('#loginForm').submit(function(e){
         },
 
     });
-})
+}
