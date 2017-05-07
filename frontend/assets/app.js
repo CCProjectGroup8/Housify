@@ -76,7 +76,7 @@ function updateAuthenticationStatus(){
 // Sign up action
 $('#signUpForm').submit(function(e){
     e.preventDefault();
-    if($('#signUpPassword').val() !== $('#passwordCheck').val()) {
+    if($('#signUpPassword').val() !== $('#signUpPasswordCheck').val()) {
         alert("The password you entered do not match.");
         return;
     }
