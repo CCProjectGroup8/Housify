@@ -12,13 +12,10 @@ iterations = 10
 regularization_parameter = 0.1
 
 sc = SparkContext()
-datasets_path = os.path.join('.', 'datasets')
-
-complete_dataset_path = os.path.join(datasets_path, 'ml-latest.zip')
-small_dataset_path = os.path.join(datasets_path, 'ml-latest-small.zip')
+datasets_path = os.path.join('.', 'data')
 
 # Load the complete dataset file
-complete_ratings_file = os.path.join(datasets_path, 'ml-latest', 'ratings.csv')
+complete_ratings_file = os.path.join(datasets_path, 'comments.csv')
 complete_ratings_raw_data = sc.textFile(complete_ratings_file)
 complete_ratings_raw_data_header = complete_ratings_raw_data.take(1)[0]
 
