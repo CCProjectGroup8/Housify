@@ -548,9 +548,9 @@ function houseDetail() {
             innerHTML = innerHTML + "</tbody></table>";
 
             /* end of comment part */
-
+            var user = localStorage.getItem("token");
             /* submit comment part */
-
+            if (user){
             innerHTML = innerHTML + "<form id=\"commentForm\">";
             innerHTML = innerHTML + "<div class=\"form-group\">";
             
@@ -590,6 +590,16 @@ function houseDetail() {
                     , {});
                 submitForm(formData, service_data['message']['house']['Item']['houseId'], caller_num);
             });
+            }
+            else{
+                innerHTML = innerHTML + "<button type=\"submit\" class=\"btn btn-default\" id=\"jumpLogin\" data-toggle=\"modal\" data-target=\"#loginModal\">Please Login</button>";
+                $("#houseContent").html(innerHTML);
+                $('#jumpLogin').click(function () {
+                    document.getElementById("houseInfoClose").click();
+                    // document.getElementById("loginNavElement").click();
+                });
+
+            }
         },
         error: function (e) {
             alert("Unable to view details.");
