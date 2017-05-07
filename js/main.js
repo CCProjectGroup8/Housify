@@ -191,6 +191,7 @@ function render_items () {
 }
 
 accountDisplayHandler.userInfo = function() {
+    alert("should render user info");
     // console.log(jwt_token);
     //
     // cleanData = {};
@@ -521,9 +522,6 @@ function houseDetail() {
 
             items_data = service_data['message']['comment']
             // console.log(items_data);
-
-
-            // @todo: need to revise this comment part
 
             innerHTML = innerHTML + "<table class=\"table\">";
             innerHTML = innerHTML + "<thead><tr>";
