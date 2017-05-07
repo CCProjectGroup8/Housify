@@ -555,7 +555,24 @@ function houseDetail() {
 
             innerHTML = innerHTML + "<form id=\"commentForm\">";
             innerHTML = innerHTML + "<div class=\"form-group\">";
+            
+            innerHTML = innerHTML + "<div class=\"stars\">";
+            innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-1\" id=\"star-1\" />";
+            innerHTML = innerHTML + "<label class=\"star-1\" for=\"star-1\">1</label>";
+            innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-2\" id=\"star-2\" />";
+            innerHTML = innerHTML + "<label class=\"star-2\" for=\"star-2\">2</label>";
+            innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-3\" id=\"star-3\" />";
+            innerHTML = innerHTML + "<label class=\"star-3\" for=\"star-3\">3</label>";
+            innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-4\" id=\"star-4\" />";
+            innerHTML = innerHTML + "<label class=\"star-4\" for=\"star-4\">4</label>";
+            innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-5\" id=\"star-5\" />";
+            innerHTML = innerHTML + "<label class=\"star-5\" for=\"star-5\">5</label>";
+
+            innerHTML = innerHTML + "<span></span></div>";
+        
+
             innerHTML = innerHTML + "<label for=\"commentContent\">Comment Content</label>";
+
             innerHTML = innerHTML + "<input type=\"comment\" class=\"form-control\" id=\"commentContent\" placeholder=\"Comment Content\" name=\"commentContent\">";
             innerHTML = innerHTML + "</div>";
             innerHTML = innerHTML + "<button type=\"submit\" class=\"btn btn-default\">Submit Comment</button></form>";
