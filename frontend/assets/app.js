@@ -113,8 +113,30 @@ $('#signUpForm').submit(function(e){
             console.log(err);
             return;
         }
+        //register user in db
+        $.ajax({
+            type: "POST",
+            url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/user',
+            crossDomain: true,
+            contentType: 'application/json',
+
+            data: JSON.stringify({
+                'username': username,
+                'email': $('#signUpEmail').val(),
+            }),
+            dataType: 'json',
+            success: function (res) {
+                console.log(res);
+                return;
+            },
+            failure: function (err) {
+                console.log(err);
+                alert('error in sign up...');
+            }
+        });
+
         alert("sign up successful!");
-        // console.log('user name is ' + JSON.stringify(result));
+
         login(username, password);
     });
 })
