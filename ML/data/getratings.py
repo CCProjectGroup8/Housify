@@ -10,8 +10,8 @@ sys.setdefaultencoding('utf8')
 
 # Get service resource
 dynamodb = boto3.resource('dynamodb',
-                          aws_access_key_id = 'AKIAJXDMVQWDOX33MAUA',
-                          aws_secret_access_key = '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',
+                          aws_access_key_id = '',
+                          aws_secret_access_key = '',
                           region_name = 'us-east-1'
                           )
 comment_table = dynamodb.Table('commentair')
