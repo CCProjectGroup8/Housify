@@ -212,11 +212,17 @@ accountDisplayHandler.userInfo = function () {
         success: function(service_data){
            // console.log(service_data);
            data = service_data['message']['results']['Item'];
-           console.log(data['email']);
+           // console.log(data['email']);
            $( '#profileFirstEmail' ).val(data['email']);
            $( '#profileAddr' ).val(data['address']['street']);
            $( '#profileCity' ).val(data['address']['city']);
            $( '#profileZipcode' ).val(data['address']['zip']);
+           if(data['sex']=='female'){
+                console.log("female");
+                $( '#gender1' ).prop("checked", true);
+           } else {
+                $( '#gender2' ).prop("checked", true);
+           }
            $( '#signUpDate' ).val(data['dob']);
         },
         error: function (e) {
