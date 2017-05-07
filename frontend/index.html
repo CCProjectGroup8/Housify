@@ -216,15 +216,6 @@
                                 <label class="radio-inline"> <input type="radio" id='gender1' name="gender" value="female">Female</label>
                                 <label class="radio-inline" style="margin-left:0;"> <input type="radio" id='gender2' name="gender" value="male">Male  </label>
 
-                                <!--<label class="radio-inline">-->
-                                    <!--<input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 1-->
-                                <!--</label>-->
-                                <!--<label class="radio-inline">-->
-                                    <!--<input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 2-->
-                                <!--</label>-->
-                                <!--<label class="radio-inline">-->
-                                    <!--<input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> 3-->
-                                <!--</label>-->
                             </div>
 
                         </div>
@@ -238,22 +229,29 @@
                         </div>
                     </div>
 
-                    <!-- City -->
-                    <div class="form-group col-md-6" style="padding-left: 0;">
-                        <label for="profileCity">City</label>
-                        <input type="text" class="form-control" id="profileCity" placeholder="City" name="city">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- City -->
+                            <div class="form-group" style="padding-left: 0;">
+                                <label for="profileCity">City</label>
+                                <input type="text" class="form-control" id="profileCity" placeholder="City" name="city">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <!-- Zipcode -->
+                            <div class="form-group" style="padding-right: 0;">
+                                <label for="profileZipcode">Zipcode</label>
+                                <input type="text" class="form-control" id="profileZipcode" placeholder="Zipcode" name="zipcode">
+                            </div>
+
+                        </div>
                     </div>
 
-                    <!-- Zipcode -->
-                    <div class="form-group col-md-6" style="padding-right: 0;">
-                        <label for="profileZipcode">Zipcode</label>
-                        <input type="text" class="form-control" id="profileZipcode" placeholder="Zipcode" name="zipcode">
-                    </div>
-
-                    <div class="input-group input-group-unstyled">
+                    <div class="input-group input-group-unstyled" style="width: 100%;">
 
                         <!-- dob -->
-                        <div id="datetimepicker" class="input-append date col-md-6">
+                        <div id="datetimepicker" class="input-append date">
                             <label for="signUpDate">Date of Birth</label>
 
                             <div class="form-group input-group input-group-unstyled">
@@ -263,6 +261,7 @@
                                 </span>
                             </div>
                         </div>
+
                     </div>
 
                     <button type="submit" class="btn btn-default">Update</button>
