@@ -76,6 +76,10 @@ function updateAuthenticationStatus(){
 // Sign up action
 $('#signUpForm').submit(function(e){
     e.preventDefault();
+    if($('#signUpPassword').val() !== $('#passwordCheck').val()) {
+        alert("The password you entered do not match.");
+        return;
+    }
     AWSCognito.config.region = 'us-east-1';
     AWSCognito.config.credentials = new AWS.CognitoIdentityCredentials({
         IdentityPoolId: 'us-east-1:9e5b0f52-67a2-48dd-a112-815bc5037a3b'
