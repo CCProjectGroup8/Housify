@@ -552,8 +552,10 @@ function houseDetail() {
             /* submit comment part */
             if (user){
             innerHTML = innerHTML + "<form id=\"commentForm\">";
-            innerHTML = innerHTML + "<div class=\"form-group\">";
-            
+            innerHTML = innerHTML + '<div class="form-group" style="background: rgba(250,250,249,0.9);border:1px solid #bbb;padding:10px;border-radius:3px;box-shadow:inset 0 1px 2px rgba(0,0,0,0.15);">';
+
+            innerHTML = innerHTML + "<label for=\"commentContent\">Comment Content</label>";
+
             innerHTML = innerHTML + "<div class=\"stars\">";
             innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-1\" id=\"star-1\" />";
             innerHTML = innerHTML + "<label class=\"star-1\" for=\"star-1\">1</label>";
@@ -566,13 +568,10 @@ function houseDetail() {
             innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-5\" id=\"star-5\" />";
             innerHTML = innerHTML + "<label class=\"star-5\" for=\"star-5\">5</label>";
 
-            innerHTML = innerHTML + "<span></span></div>";
-        
-
-            innerHTML = innerHTML + "<label for=\"commentContent\">Comment Content</label>";
-
-            innerHTML = innerHTML + "<input type=\"comment\" class=\"form-control\" id=\"commentContent\" placeholder=\"Comment Content\" name=\"commentContent\">";
+            innerHTML = innerHTML + '<span></span></div><hr style="margin-top:5px; margin-bottom: 10px">';
+                innerHTML = innerHTML + "<textarea rows='5' style='background: rgba(250,250,249,0.9);' type=\"comment\" class=\"form-control\" id=\"commentContent\" placeholder=\"Comment Content\" name=\"commentContent\"></textarea>";
             innerHTML = innerHTML + "</div>";
+
             innerHTML = innerHTML + "<button type=\"submit\" class=\"btn btn-default\">Submit Comment</button></form>";
 
             /* end of submit comment part */
@@ -591,6 +590,7 @@ function houseDetail() {
                 submitForm(formData, service_data['message']['house']['Item']['houseId'], caller_num);
             });
             }
+
             else{
                 innerHTML = innerHTML + "<button type=\"submit\" class=\"btn btn-default\" id=\"jumpLogin\" data-toggle=\"modal\" data-target=\"#loginModal\">Please Login</button>";
                 $("#houseContent").html(innerHTML);
@@ -598,7 +598,6 @@ function houseDetail() {
                     document.getElementById("houseInfoClose").click();
                     // document.getElementById("loginNavElement").click();
                 });
-
             }
         },
         error: function (e) {
