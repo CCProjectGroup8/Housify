@@ -262,7 +262,8 @@ function submitForm(formData, houseID, caller_num) {
             // accountDisplayHandler.logIn(formData.email);
             // $('#signUpModal').modal('hide')
             // alert("Please confirm your email.");
-            document.getElementById("houseInfoClose").click();
+            // document.getElementById("houseInfoClose").click();
+            houseDetailRerender();
             // console.log(typeof(caller_num));
             // console.log(caller_num);
             // console.log("close complete");
@@ -300,13 +301,14 @@ function houseDetail() {
     //     return;
     // }
     cleanData = {};
+    commentLength = 0;
     // console.log(cleanData);
     caller_num = event.target.value;
     caller_id = items_id[parseInt(event.target.value)];
     // console.log(caller_id);
     $.ajax({
         type: "GET",
-        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/house/' + caller_id + "?page=" + parseInt(caller_num),
+        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/house/' + caller_id + "?page=" + now_page[parseInt(caller_num)],
         crossDomain: true,
         contentType: 'application/json',
         // data: JSON.stringify(cleanData),
@@ -350,7 +352,8 @@ function houseDetail() {
 
             /* comment part */
 
-            items_data = service_data['message']['comment']
+            items_data = service_data['message']['comment'];
+            commentLength = items_data.length;
             // console.log(items_data);
 
             innerHTML = innerHTML + "<table class=\"table\">";
@@ -443,8 +446,12 @@ function houseDetail() {
                 // document.getElementById("houseInfoClose").click();
                 // document.getElementById("loginNavElement").click();
                 // alert("Next Page!");
-                now_page[parseInt(caller_num)]++;
-                houseDetailRerender();
+                // console.log(service_data['message']['comment'].length);
+                // alert(commentLength);
+                if (commentLength>=10){
+                    now_page[parseInt(caller_num)]++;
+                    houseDetailRerender();
+                }
                 // document.getElementById("houseInfoClose").click();
                 // document.getElementById("item"+caller_num).click();
             });
@@ -514,7 +521,8 @@ function houseDetailRerender() {
 
             /* comment part */
 
-            items_data = service_data['message']['comment']
+            items_data = service_data['message']['comment'];
+            commentLength = items_data.length;
             // console.log(items_data);
 
             innerHTML = innerHTML + "<table class=\"table\">";
@@ -608,8 +616,11 @@ function houseDetailRerender() {
                 // document.getElementById("houseInfoClose").click();
                 // document.getElementById("loginNavElement").click();
                 // alert("Next Page!");
-                now_page[parseInt(caller_num)]++;
-                houseDetailRerender();
+                // alert(commentLength);
+                if (commentLength>=10){
+                    now_page[parseInt(caller_num)]++;
+                    houseDetailRerender();
+                }
                 // document.getElementById("houseInfoClose").click();
                 // document.getElementById("item"+caller_num).click();
             });
