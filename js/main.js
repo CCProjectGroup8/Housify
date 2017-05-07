@@ -142,7 +142,7 @@ function render_items () {
 
                 // end of map part
 
-                if (i%3==0){
+                if (i%2==0){
                     innerHTML = innerHTML + "<div class=\"row\">";
 
                 }
@@ -168,11 +168,11 @@ function render_items () {
                 // innerHTML = innerHTML + "<a href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</a>";
                 innerHTML = innerHTML + "</div></div></div>";
 
-                if (i%3==2){
+                if (i%2==1){
                     innerHTML = innerHTML + "</div>";
                 }
             }
-            if (itemLength%3!=2){
+            if (itemLength%2!=1){
                 innerHTML = innerHTML + "</div>";
             }
             $("#container").html(innerHTML);
@@ -610,7 +610,9 @@ function initMap(){
     });
     // console.log(coords);
     // console.log(coords.length);
+
     if (navigator.geolocation) {
+
         navigator.geolocation.getCurrentPosition(
             function(position) {
                 init_position['lat'] = position.coords.latitude;
