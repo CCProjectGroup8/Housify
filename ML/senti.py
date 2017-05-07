@@ -9,7 +9,7 @@ import watson_developer_cloud.natural_language_understanding.features.v1 as \
     features
 
 
-dynamodb = boto3.resource('dynamodb', aws_access_key_id = 'AKIAJXDMVQWDOX33MAUA', aws_secret_access_key = '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', region_name = 'us-east-1')
+dynamodb = boto3.resource('dynamodb', aws_access_key_id = '...', aws_secret_access_key = '...', region_name = 'us-east-1')
 
 #nlu = NaturalLanguageUnderstandingV1(version='2017-02-27',
                                 #     username="fcb6e0f2-c8d7-458b-a4b0-800df20ba12b",
