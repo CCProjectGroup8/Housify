@@ -210,7 +210,7 @@ accountDisplayHandler.userInfo = function () {
         // data: JSON.stringify(cleanData),
         dataType: 'json',
         success: function(service_data){
-           // console.log(service_data);
+           console.log(service_data);
            data = service_data['message']['results']['Item'];
            // console.log(data['email']);
            $( '#profileEmail' ).val(data['email']);
@@ -286,11 +286,11 @@ function submitProfileForm(formData){
     console.log(formData);
     cleanData = {};
     cleanData['username'] = username;
-    cleanData['email'] = formData['email'];
-    cleanData['city'] = formData['city'];
-    cleanData['street'] = formData['address'];
-    cleanData['zip'] = formData['zipcode'];
-    cleanData['sex'] = formData['gender'];
+    cleanData['email'] = formData['email'] ? formData['email']: "" ;
+    cleanData['city'] = formData['city'] ? formData['city']: "" ;
+    cleanData['street'] = formData['address'] ? formData['address']: "" ;
+    cleanData['zip'] = formData['zipcode'] ? formData['zipcode']: "" ;
+    cleanData['sex'] = formData['gender'] ? formData['gender']: "" ;
     console.log(cleanData);
 
         // "username": "ziba2",
@@ -316,6 +316,7 @@ function submitProfileForm(formData){
             // houseDetailRerender();
             console.log(service_data);
             alert("Update success!");
+            $('#profileClose').click();
             
         },
         failure: function (service_data) {

@@ -204,7 +204,7 @@
                             <div style="padding-left: 0;">
                                 <div class="form-group">
                                     <label for="profileEmail">Email</label>
-                                    <input type="text" class="form-control" id="profileEmail" placeholder="Email" name="email">
+                                    <input required type="text" class="form-control" id="profileEmail" placeholder="Email" name="email">
                                 </div>
                             </div>
                         </div>
@@ -213,8 +213,8 @@
                             <!-- sex -->
                             <div class="form-inline form-group col-md-6">
                                 <label >Gender</label> <br>
-                                <label class="radio-inline"> <input type="radio" id='gender2' name="gender" value="male">Male  </label>
-                                <label class="radio-inline" style="margin-left:0;"> <input type="radio" id='gender1' name="gender" value="female">Female</label>
+                                <label class="radio-inline"> <input required type="radio" id='gender2' name="gender" value="male">Male  </label>
+                                <label class="radio-inline" style="margin-left:0;"> <input required type="radio" id='gender1' name="gender" value="female">Female</label>
 
                             </div>
 
@@ -255,7 +255,7 @@
                             <label for="signUpDate">Date of Birth</label>
 
                             <div class="form-group input-group input-group-unstyled">
-                                <input type="text" name="date_of_birth" class="form-control" placeholder="Date of Birth" id="signUpDate"/>
+                                <input required type="text" name="date_of_birth" class="form-control" placeholder="Date of Birth" id="signUpDate"/>
                                 <span class="input-group-addon add-on">
                                 <i class=" fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                                 </span>
@@ -268,7 +268,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="profileClose" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
