@@ -196,40 +196,33 @@ accountDisplayHandler.userInfo = function () {
     // alert("should render user info");
     // console.log(jwt_token);
     //
-    // cleanData = {};
+    var user = localStorage.getItem("username");
+    // console.log(user);
+    cleanData = {};
     // cleanData['resource'] = 'customer';
     // cleanData['type'] = 'CustomerInfo';
     // cleanData['jwt'] = jwt_token;
-    // $.ajax({
-    //     type: "POST",
-    //     url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/info',
-    //     crossDomain: true,
-    //     contentType: 'application/json',
-    //     data: JSON.stringify(cleanData),
-    //     dataType: 'json',
-    //     success: function(service_data){
-    //        if (service_data['status']=='success'){
-    //            customer_data = service_data['customer']
-    //            insertHTML = "";
-    //            insertHTML = insertHTML + "<table class=\"table table-hover\">";
-    //            insertHTML = insertHTML + "<tbody>";
-    //            insertHTML = insertHTML + "<tr>" + "<td>ID</td><td>" + customer_data['id']+ "</td></tr>";
-    //            insertHTML = insertHTML + "<tr>" + "<td>First Name</td><td>" + customer_data['first_name']+ "</td></tr>";
-    //            insertHTML = insertHTML + "<tr>" + "<td>Last Name</td><td>" + customer_data['last_name']+ "</td></tr>";
-    //            insertHTML = insertHTML + "<tr>" + "<td>Date of Birth</td><td>" + customer_data['date_of_birth']+ "</td></tr>";
-    //            insertHTML = insertHTML + "<tr>" + "<td>Balance</td><td>" + customer_data['balance']+ "</td></tr>";
-    //            insertHTML = insertHTML + "</tbody>";
-    //            insertHTML = insertHTML + "</table>";
-    //            $("#userContent").html(insertHTML);
-    //        }
-    //        else{
-    //            alert("No accessibility.");
-    //        }
-    //     },
-    //     error: function (e) {
-    //        alert("Unable to retrieve your data.");
-    //     }
-    // });
+    $.ajax({
+        type: "GET",
+        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/user/' + user,
+        crossDomain: true,
+        contentType: 'application/json',
+        // data: JSON.stringify(cleanData),
+        dataType: 'json',
+        success: function(service_data){
+           // console.log(service_data);
+           data = service_data['message']['results']['Item'];
+           console.log(data['email']);
+           $( '#profileFirstEmail' ).val(data['email']);
+           $( '#profileAddr' ).val(data['address']['street']);
+           $( '#profileCity' ).val(data['address']['city']);
+           $( '#profileZipcode' ).val(data['address']['zip']);
+           $( '#signUpDate' ).val(data['dob']);
+        },
+        error: function (e) {
+           alert("Unable to retrieve your data.");
+        }
+    });
 }
 
 
