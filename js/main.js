@@ -149,9 +149,16 @@ function render_items () {
 
                 innerHTML = innerHTML + "<div class=\"col-sm-6 col-md-4\">";
                 innerHTML = innerHTML + "<div class=\"thumbnail\">";
+                
                 innerHTML = innerHTML + "<img src=\"";
-                // innerHTML = innerHTML + "images/" + items_data[i]['id'] + ".png\" " + "alt=\"" + items_data[i]['item_name'] + "\">";
-                innerHTML = innerHTML + "images/" + "placeholder.jpg\" " + "alt=\"" + items_data[i]['houseId'] + "\">";
+                // // innerHTML = innerHTML + "images/" + items_data[i]['id'] + ".png\" " + "alt=\"" + items_data[i]['item_name'] + "\">";
+                // innerHTML = innerHTML + "images/" + "placeholder.jpg\" " + "alt=\"" + items_data[i]['houseId'] + "\">";
+                // img = document.createElement('img');
+                // img.src = "https://a0.muscache.com/im/pictures/e94a2c71-d8c7-40dc-8ebd-5d519bc36a94.jpg?aki_policy=large";
+                // document.body.appendChild(img);
+                innerHTML = innerHTML + "https://a0.muscache.com/im/pictures/e94a2c71-d8c7-40dc-8ebd-5d519bc36a94.jpg?aki_policy=large";
+                innerHTML = innerHTML + "\">";
+                
                 innerHTML = innerHTML + "<div class=\"caption\">";
                 innerHTML = innerHTML + "<h3>" + items_data[i]['size'] + "</h3>";
                 innerHTML = innerHTML + "<p>" + items_data[i]['address']['street'] + "</p>";
