@@ -11,6 +11,8 @@ coords = [];
 
 rec_i = [];
 
+now_page = [];
+
 var accountDisplayHandler = {
     userName: null,
     loginNavElement: $("#loginNavElement"),
@@ -99,6 +101,7 @@ function render_items () {
     var itemLength=0;
 
     cleanData = {};
+    now_page = [];
     $.ajax({
         type: "GET",
         url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod',
@@ -122,6 +125,7 @@ function render_items () {
                 // console.log("i= " + i + "\n");
                 // console.log(items_data[i]['houseId']);
                 items_id.push(items_data[i]['houseId']);
+                now_page.push(0);
                 // coords.push(items_data[i]['address']['coordinate']['lat']);
                 // coords.push(items_data[i]['address']['coordinate']['lng']);
 
@@ -180,7 +184,6 @@ function render_items () {
                 target_string = "#item" + i;
                 $( target_string ).click(function() {
                     houseDetail();
-
                 });
             }
         },
@@ -476,7 +479,7 @@ function houseDetail() {
     // console.log(caller_id);
     $.ajax({
         type: "GET",
-        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/house/' + caller_id,
+        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/house/' + caller_id + "?page=" + parseInt(caller_num),
         crossDomain: true,
         contentType: 'application/json',
         // data: JSON.stringify(cleanData),
@@ -547,6 +550,14 @@ function houseDetail() {
             }
             innerHTML = innerHTML + "</tbody></table>";
 
+            /* button of page */
+            innerHTML = innerHTML + "<table><tbody>";
+            innerHTML = innerHTML + "<td style='width:33%;'><button type=\"button\" class=\"btn btn-default\" id=\"prePage\">Previous Page</button></td>";
+            innerHTML = innerHTML + "<td style='width:33%;text-align:center;'>" + now_page[parseInt(caller_num)] + "</td>";
+            innerHTML = innerHTML + "<td style='width:33%;'><button type=\"button\" class=\"btn btn-default\" id=\"nextPage\">Next Page</button><td>";
+            innerHTML = innerHTML + "</tbody></table><br><br>";
+            /* end of button of page */
+
             /* end of comment part */
             var user = localStorage.getItem("token");
             /* submit comment part */
@@ -592,14 +603,203 @@ function houseDetail() {
             });
             }
             else{
-                innerHTML = innerHTML + "<button type=\"submit\" class=\"btn btn-default\" id=\"jumpLogin\" data-toggle=\"modal\" data-target=\"#loginModal\">Please Login</button>";
+                innerHTML = innerHTML + "<button type=\"button\" class=\"btn btn-default\" id=\"jumpLogin\" data-toggle=\"modal\" data-target=\"#loginModal\">Please Login</button>";
                 $("#houseContent").html(innerHTML);
                 $('#jumpLogin').click(function () {
+                    // alert("Close!");
                     document.getElementById("houseInfoClose").click();
                     // document.getElementById("loginNavElement").click();
                 });
 
             }
+
+            $( '#nextPage' ).click(function () {
+                // document.getElementById("houseInfoClose").click();
+                // document.getElementById("loginNavElement").click();
+                // alert("Next Page!");
+                now_page[parseInt(caller_num)]++;
+                houseDetailRerender();
+                // document.getElementById("houseInfoClose").click();
+                // document.getElementById("item"+caller_num).click();
+            });
+            $( '#prePage' ).click(function () {
+                // document.getElementById("houseInfoClose").click();
+                // document.getElementById("loginNavElement").click();
+                // alert("Next Page!");
+                if (now_page[parseInt(caller_num)]!=0){
+                    now_page[parseInt(caller_num)]--;
+                    houseDetailRerender();
+                }
+                // document.getElementById("houseInfoClose").click();
+                // document.getElementById("item"+caller_num).click();
+            });
+        
+        },
+        error: function (e) {
+            alert("Unable to view details.");
+        }
+    });
+}
+
+function houseDetailRerender() {
+    $.ajax({
+        type: "GET",
+        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/house/' + caller_id + "?page=" + now_page[parseInt(caller_num)],
+        crossDomain: true,
+        contentType: 'application/json',
+        // data: JSON.stringify(cleanData),
+        dataType: 'json',
+        success: function(service_data) {
+
+            // console.log(service_data);
+            items_data = service_data['message']['house']['Item'];
+            // items_data = items_data['Item'];
+            innerHTML = "";
+            // console.log(items_data);
+
+            innerHTML = "";
+            innerHTML = innerHTML + "<table class=\"table\">";
+            innerHTML = innerHTML + "<thead><tr>";
+            // innerHTML = innerHTML + "<th>#</th>";
+            innerHTML = innerHTML + "<th>Name</th>";
+            // innerHTML = innerHTML + "<th>ID</th>";
+            innerHTML = innerHTML + "<th>Size</th>";
+            innerHTML = innerHTML + "<th>Street</th>";
+            innerHTML = innerHTML + "<th>Zip</th>";
+            innerHTML = innerHTML + "</tr></thead>";
+            // var jsLength=0;
+            // cart_items = [];
+            // for(var item in items_data){
+            //      jsLength++;
+            // }
+            innerHTML = innerHTML + "<tbody>";
+            // for(var i=0;i<jsLength;i++){
+            // cart_items.push(items_data[i]['id']);
+
+            innerHTML = innerHTML + "<tr>";
+            // innerHTML = innerHTML + "<th scope=\"row\">" + "</th>";
+            innerHTML = innerHTML + "<td>" + items_data['title'] + "</td>";
+            // innerHTML = innerHTML + "<td>" + items_data[i]['houseId'] + "</td>";
+            innerHTML = innerHTML + "<td>" + items_data['size'] + "</td>";
+            innerHTML = innerHTML + "<td>" + items_data['address']['street'] + "</td>";
+            innerHTML = innerHTML + "<td>" + items_data['address']['zip'] + "</td>";
+            innerHTML = innerHTML + "</tr>";
+            // }
+
+            /* comment part */
+
+            items_data = service_data['message']['comment']
+            // console.log(items_data);
+
+            innerHTML = innerHTML + "<table class=\"table\">";
+            innerHTML = innerHTML + "<thead><tr>";
+            // innerHTML = innerHTML + "<th>#</th>";
+            innerHTML = innerHTML + "<th>commentID</th>";
+            // innerHTML = innerHTML + "<th>ID</th>";
+            innerHTML = innerHTML + "<th>Time</th>";
+            innerHTML = innerHTML + "<th>Content</th>";
+            // innerHTML = innerHTML + "<th>Zip</th>";
+            innerHTML = innerHTML + "</tr></thead>";
+            innerHTML = innerHTML + "<tbody>";
+
+            for(var i=0;i<items_data.length;i++){
+                // cart_items.push(items_data[i]['id']);
+                innerHTML = innerHTML + "<tr>";
+                innerHTML = innerHTML + "<td>" + items_data[i]['commentId'] + "</td>";
+                // innerHTML = innerHTML + "<td>" + items_data[i]['houseId'] + "</td>";
+                innerHTML = innerHTML + "<td>" + timeConverter(items_data[i]['timestamp']) + "</td>";
+                innerHTML = innerHTML + "<td>" + items_data[i]['content'] + "</td>";
+                // innerHTML = innerHTML + "<td>" + items_data['address']['zip'] + "</td>";
+                innerHTML = innerHTML + "</tr>";
+
+            }
+            innerHTML = innerHTML + "</tbody></table>";
+
+            /* button of page */
+            innerHTML = innerHTML + "<table><tbody>";
+            innerHTML = innerHTML + "<td style='width:33%;'><button type=\"button\" class=\"btn btn-default\" id=\"prePage\">Previous Page</button></td>";
+            innerHTML = innerHTML + "<td style='width:33%;text-align:center;'>" + now_page[parseInt(caller_num)] + "</td>";
+            innerHTML = innerHTML + "<td style='width:33%;'><button type=\"button\" class=\"btn btn-default\" id=\"nextPage\">Next Page</button><td>";
+            innerHTML = innerHTML + "</tbody></table><br><br>";
+
+            /* end of button of page */
+
+            /* end of comment part */
+            var user = localStorage.getItem("token");
+            /* submit comment part */
+            if (user){
+            innerHTML = innerHTML + "<form id=\"commentForm\">";
+            innerHTML = innerHTML + "<div class=\"form-group\">";
+            
+            innerHTML = innerHTML + "<div class=\"stars\">";
+            innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-1\" id=\"star-1\" />";
+            innerHTML = innerHTML + "<label class=\"star-1\" for=\"star-1\">1</label>";
+            innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-2\" id=\"star-2\" />";
+            innerHTML = innerHTML + "<label class=\"star-2\" for=\"star-2\">2</label>";
+            innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-3\" id=\"star-3\" />";
+            innerHTML = innerHTML + "<label class=\"star-3\" for=\"star-3\">3</label>";
+            innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-4\" id=\"star-4\" />";
+            innerHTML = innerHTML + "<label class=\"star-4\" for=\"star-4\">4</label>";
+            innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-5\" id=\"star-5\" />";
+            innerHTML = innerHTML + "<label class=\"star-5\" for=\"star-5\">5</label>";
+
+            innerHTML = innerHTML + "<span></span></div>";
+        
+
+            innerHTML = innerHTML + "<label for=\"commentContent\">Comment Content</label>";
+
+            innerHTML = innerHTML + "<input type=\"comment\" class=\"form-control\" id=\"commentContent\" placeholder=\"Comment Content\" name=\"commentContent\">";
+            innerHTML = innerHTML + "</div>";
+            innerHTML = innerHTML + "<button type=\"submit\" class=\"btn btn-default\">Submit Comment</button></form>";
+
+            /* end of submit comment part */
+
+            $("#houseContent").html(innerHTML);
+
+            /* new comment function */
+            $('#commentForm').submit(function (e) {
+                e.preventDefault();
+                var formData = $(this).serializeArray().reduce(
+                    function(accumulater, curr) {
+                        accumulater[curr.name] = curr.value;
+                        return accumulater;
+                    }
+                    , {});
+                submitForm(formData, service_data['message']['house']['Item']['houseId'], caller_num);
+            });
+            }
+            else{
+                innerHTML = innerHTML + "<button type=\"button\" class=\"btn btn-default\" id=\"jumpLogin\" data-toggle=\"modal\" data-target=\"#loginModal\">Please Login</button>";
+                $("#houseContent").html(innerHTML);
+                $('#jumpLogin').click(function () {
+                    // alert("Close!");
+                    document.getElementById("houseInfoClose").click();
+                    // document.getElementById("loginNavElement").click();
+                });
+
+            }
+
+            $( '#nextPage' ).click(function () {
+                // document.getElementById("houseInfoClose").click();
+                // document.getElementById("loginNavElement").click();
+                // alert("Next Page!");
+                now_page[parseInt(caller_num)]++;
+                houseDetailRerender();
+                // document.getElementById("houseInfoClose").click();
+                // document.getElementById("item"+caller_num).click();
+            });
+            $( '#prePage' ).click(function () {
+                // document.getElementById("houseInfoClose").click();
+                // document.getElementById("loginNavElement").click();
+                // alert("Next Page!");
+                if (now_page[parseInt(caller_num)]!=0){
+                    now_page[parseInt(caller_num)]--;
+                    houseDetailRerender();
+                }
+                // document.getElementById("houseInfoClose").click();
+                // document.getElementById("item"+caller_num).click();
+            });
+        
         },
         error: function (e) {
             alert("Unable to view details.");
