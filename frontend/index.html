@@ -198,28 +198,52 @@
             </div>
             <div class="modal-body" id="userContent">
                 <form id="profileForm">
-                    <div class="col-lg-6" style="padding-left: 0;">
+                    <!-- email -->
+                    <div style="padding-left: 0;">
                         <div class="form-group">
-                            <label for="profileFirstName">First Name</label>
-                            <input type="textarea" class="form-control" id="profileFirstName" placeholder="First Name" name="first_name">
+                            <label for="profileFirstEmail">Email</label>
+                            <input type="text" class="form-control" id="profileFirstEmail" placeholder="Email" name="email">
                         </div>
                     </div>
 
-                    <div class="col-lg-6" style="padding-left: 0;">
+                    <!-- Address - street -->
+                    <div style="padding-left: 0;">
                         <div class="form-group">
-                            <label for="profileLastName">Last Name</label>
-                            <input type="textarea" class="form-control" id="profileLastName" placeholder="Last Name" name="last_name">
+                            <label for="profileAddr">Address</label>
+                            <input type="text" class="form-control" id="profileAddr" placeholder="Address" name="address">
                         </div>
                     </div>
 
-                    <div id="datetimepicker" class="input-append date">
-                        <label for="signUpDate">Date of Birth</label>
+                    <div class="input-group">
+                        <!-- City -->
+                        <div class="form-group col-md-6" style="padding-left: 0;">
+                            <label for="profileCity">City</label>
+                            <input type="text" class="form-control" id="profileCity" placeholder="City" name="city">
+                        </div>
+                        <!-- Zipcode -->
+                        <div class="form-group col-md-6" style="padding-right: 0;">
+                            <label for="profileZipcode">Zipcode</label>
+                            <input type="text" class="form-control" id="profileZipcode" placeholder="Zipcode" name="zipcode">
+                        </div>
+                    </div>
 
-                        <div class="form-group input-group input-group-unstyled">
-                            <input type="text" name="date_of_birth" class="form-control" placeholder="Date of Birth" id="signUpDate"/>
-                            <span class="input-group-addon add-on">
-                            <i class=" fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-                            </span>
+                    <div class="input-group input-group-unstyled">
+                        <!-- sex -->
+                        <div class="form-group col-md-6">
+                            <label>Gender</label>
+                            <label class="radio-inline"> <input type="radio"  name="gender">Female</label>
+                            <label class="radio-inline"><input type="radio" name="gender">Male</label>
+                        </div>
+                        <!-- dob -->
+                        <div id="datetimepicker" class="input-append date col-md-6">
+                            <label for="signUpDate">Date of Birth</label>
+
+                            <div class="form-group input-group input-group-unstyled">
+                                <input type="text" name="date_of_birth" class="form-control" placeholder="Date of Birth" id="signUpDate"/>
+                                <span class="input-group-addon add-on">
+                                <i class=" fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                                </span>
+                            </div>
                         </div>
                     </div>
 

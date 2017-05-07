@@ -263,6 +263,7 @@ function submitForm(formData, houseID, caller_num) {
             // $('#signUpModal').modal('hide')
             // alert("Please confirm your email.");
             // document.getElementById("houseInfoClose").click();
+            alert("comment submit successful!");
             houseDetailRerender();
             // console.log(typeof(caller_num));
             // console.log(caller_num);
