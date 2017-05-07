@@ -169,11 +169,11 @@ function render_items () {
                 innerHTML = innerHTML + "</div></div></div>";
 
                 if (i%3==2){
-                    innerHTML = innerHTML + "<div class=\"row\">";
+                    innerHTML = innerHTML + "</div>";
                 }
             }
             if (itemLength%3!=2){
-                innerHTML = innerHTML + "<div class=\"row\">";
+                innerHTML = innerHTML + "</div>";
             }
             $("#container").html(innerHTML);
             for (var i=0;i<itemLength;i++){
