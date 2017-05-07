@@ -213,7 +213,7 @@ accountDisplayHandler.userInfo = function () {
            // console.log(service_data);
            data = service_data['message']['results']['Item'];
            // console.log(data['email']);
-           $( '#profileFirstEmail' ).val(data['email']);
+           $( '#profileEmail' ).val(data['email']);
            $( '#profileAddr' ).val(data['address']['street']);
            $( '#profileCity' ).val(data['address']['city']);
            $( '#profileZipcode' ).val(data['address']['zip']);
