@@ -429,7 +429,7 @@ function houseDetail() {
                 });
             }
             else {
-                innerHTML = innerHTML + "<button type=\"button\" class=\"btn btn-default\" id=\"jumpLogin\" data-toggle=\"modal\" data-target=\"#loginModal\">Please Login</button>";
+                innerHTML = innerHTML + "<button type=\"button\" class=\"btn btn-default\" id=\"jumpLogin\" data-toggle=\"modal\" data-target=\"#loginModal\">Login to make a comment</button>";
                 $("#houseContent").html(innerHTML);
                 $('#jumpLogin').click(function () {
                     // alert("Close!");
