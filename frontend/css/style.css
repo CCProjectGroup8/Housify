@@ -1,0 +1,43 @@
+body {
+    font-family: 'Raleway', sans-serif;
+    padding-top: 80px;
+}
+
+#brandName{
+    font-weight: 700;
+    font-size: 2.5em;
+}
+
+#navRight {
+    font-size: 1.3em;
+}
+
+#navBar {
+    height: 70px;
+    padding-top: 9px;
+}
+
+
+
+#map {
+    height: 600px;
+    width: 100%;
+    padding-left: 1em;
+
+}
+
+#mapDiv {
+    padding-right: 40px;
+}
+
+#page-title {
+    font-family: 'Lato', sans-serif !important;
+    color: #484848;
+    padding-bottom: 2em;
+}
+
+#container {
+    padding-top: 20px;
+    padding-left: 30px;
+    padding-right: 50px;
+}
