@@ -37,7 +37,7 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top" id="navBar">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -47,9 +47,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Housify</a>
+                <a id="brandName" class="navbar-brand" href="#">Housify</a>
             </div>
-
+            <div class="navbar-collapse" id="navRight">
                 <ul class="nav navbar-nav navbar-right">
                     <li id="usernameNavElement"></li>
                     <li id="loginNavElement"><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
@@ -105,7 +105,7 @@
 
 <hr>
 
-<footer>
+<footer class="container clearfix">
     <p>Columbia University COMS 6998</p>
     <p>Descriptions and images from Airbnb.com</p>
 </footer>

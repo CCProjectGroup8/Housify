@@ -1,7 +1,23 @@
 body {
     font-family: 'Raleway', sans-serif;
-    padding-top: 60px;
+    padding-top: 80px;
 }
+
+#brandName{
+    font-weight: 700;
+    font-size: 2.5em;
+}
+
+#navRight {
+    font-size: 1.3em;
+}
+
+#navBar {
+    height: 70px;
+    padding-top: 9px;
+}
+
+
 
 #map {
     height: 600px;
