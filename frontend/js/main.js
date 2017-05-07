@@ -245,7 +245,7 @@ function submitForm(formData, houseID, caller_num) {
     // cleanData['token'] = "fakeId";
     cleanData['houseId'] = houseID;
     cleanData['content'] = formData['commentContent'];
-    console.log(caller_num);
+    // console.log(caller_num);
 
     $.ajax({
         type: "POST",
@@ -276,6 +276,50 @@ function submitForm(formData, houseID, caller_num) {
         failure: function (service_data) {
             // alert(data.errorMessage)
             alert("Unable to submit comment");
+        }
+    });
+}
+
+function submitProfileForm(formData){
+    // console.log(formData);
+    var username = localStorage.getItem('username');
+    console.log(formData);
+    cleanData = {};
+    cleanData['username'] = username;
+    cleanData['email'] = formData['email'];
+    cleanData['city'] = formData['city'];
+    cleanData['street'] = formData['address'];
+    cleanData['zip'] = formData['zipcode'];
+    cleanData['sex'] = formData['gender'];
+    console.log(cleanData);
+
+        // "username": "ziba2",
+        // "email": "testttt@mail.com",
+        // "phone": "111",
+        // "street": "204 W 108 St",
+        // "city": "New York",
+        // "states": "NY",
+        // "zip": 10025,
+        // "preference": "fake pref",
+        // "sex": "none"
+
+    $.ajax({
+        type: "PUT",
+        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/user/' + username,
+        crossDomain: true,
+        contentType: 'application/json',
+        data: JSON.stringify(cleanData),
+        dataType: 'json',
+        success: function (service_data) {
+            // alert("hahahahahah");
+            // alert("comment submit successful!");
+            // houseDetailRerender();
+            console.log(service_data);
+            alert("Update success!");
+            
+        },
+        failure: function (service_data) {
+            alert("Unable to update profile.");
         }
     });
 }
@@ -758,7 +802,7 @@ $(document).ready(function () {
     accountDisplayHandler.logOut();
 
     /* new comment function */
-    $('commentForm').submit(function (e) {
+    $('#commentForm').submit(function (e) {
         e.preventDefault();
         var formData = $(this).serializeArray().reduce(
             function (accumulater, curr) {
@@ -767,6 +811,17 @@ $(document).ready(function () {
             }
             , {});
         submitForm(formData);
+    });
+
+    $('#profileForm').submit(function (e) {
+        e.preventDefault();
+        var formData = $(this).serializeArray().reduce(
+            function (accumulater, curr) {
+                accumulater[curr.name] = curr.value;
+                return accumulater;
+            }
+            , {});
+        submitProfileForm(formData);
     });
 
     $("#usernameNavElement").click(function () {
