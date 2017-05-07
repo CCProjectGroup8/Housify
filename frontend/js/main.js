@@ -193,7 +193,7 @@ function render_items() {
 }
 
 accountDisplayHandler.userInfo = function () {
-    alert("should render user info");
+    // alert("should render user info");
     // console.log(jwt_token);
     //
     // cleanData = {};

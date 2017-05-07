@@ -198,11 +198,35 @@
             </div>
             <div class="modal-body" id="userContent">
                 <form id="profileForm">
-                    <!-- email -->
-                    <div style="padding-left: 0;">
-                        <div class="form-group">
-                            <label for="profileFirstEmail">Email</label>
-                            <input type="text" class="form-control" id="profileFirstEmail" placeholder="Email" name="email">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- email -->
+                            <div style="padding-left: 0;">
+                                <div class="form-group">
+                                    <label for="profileFirstEmail">Email</label>
+                                    <input type="text" class="form-control" id="profileFirstEmail" placeholder="Email" name="email">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <!-- sex -->
+                            <div class="form-inline form-group col-md-6">
+                                <label >Gender</label> <br>
+                                <label class="radio-inline"> <input type="radio" id='gender1' name="gender" value="female">Female</label>
+                                <label class="radio-inline" style="margin-left:0;"> <input type="radio" id='gender2' name="gender" value="male">Male  </label>
+
+                                <!--<label class="radio-inline">-->
+                                    <!--<input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 1-->
+                                <!--</label>-->
+                                <!--<label class="radio-inline">-->
+                                    <!--<input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 2-->
+                                <!--</label>-->
+                                <!--<label class="radio-inline">-->
+                                    <!--<input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> 3-->
+                                <!--</label>-->
+                            </div>
+
                         </div>
                     </div>
 
@@ -214,26 +238,20 @@
                         </div>
                     </div>
 
-                    <div class="input-group">
-                        <!-- City -->
-                        <div class="form-group col-md-6" style="padding-left: 0;">
-                            <label for="profileCity">City</label>
-                            <input type="text" class="form-control" id="profileCity" placeholder="City" name="city">
-                        </div>
-                        <!-- Zipcode -->
-                        <div class="form-group col-md-6" style="padding-right: 0;">
-                            <label for="profileZipcode">Zipcode</label>
-                            <input type="text" class="form-control" id="profileZipcode" placeholder="Zipcode" name="zipcode">
-                        </div>
+                    <!-- City -->
+                    <div class="form-group col-md-6" style="padding-left: 0;">
+                        <label for="profileCity">City</label>
+                        <input type="text" class="form-control" id="profileCity" placeholder="City" name="city">
+                    </div>
+
+                    <!-- Zipcode -->
+                    <div class="form-group col-md-6" style="padding-right: 0;">
+                        <label for="profileZipcode">Zipcode</label>
+                        <input type="text" class="form-control" id="profileZipcode" placeholder="Zipcode" name="zipcode">
                     </div>
 
                     <div class="input-group input-group-unstyled">
-                        <!-- sex -->
-                        <div class="form-group col-md-6">
-                            <label>Gender</label>
-                            <label class="radio-inline"> <input type="radio"  name="gender">Female</label>
-                            <label class="radio-inline"><input type="radio" name="gender">Male</label>
-                        </div>
+
                         <!-- dob -->
                         <div id="datetimepicker" class="input-append date col-md-6">
                             <label for="signUpDate">Date of Birth</label>
