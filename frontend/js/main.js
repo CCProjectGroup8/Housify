@@ -193,43 +193,42 @@ function render_items() {
 }
 
 accountDisplayHandler.userInfo = function () {
-    alert("should render user info");
+    // alert("should render user info");
     // console.log(jwt_token);
     //
-    // cleanData = {};
+    var user = localStorage.getItem("username");
+    // console.log(user);
+    cleanData = {};
     // cleanData['resource'] = 'customer';
     // cleanData['type'] = 'CustomerInfo';
     // cleanData['jwt'] = jwt_token;
-    // $.ajax({
-    //     type: "POST",
-    //     url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/info',
-    //     crossDomain: true,
-    //     contentType: 'application/json',
-    //     data: JSON.stringify(cleanData),
-    //     dataType: 'json',
-    //     success: function(service_data){
-    //        if (service_data['status']=='success'){
-    //            customer_data = service_data['customer']
-    //            insertHTML = "";
-    //            insertHTML = insertHTML + "<table class=\"table table-hover\">";
-    //            insertHTML = insertHTML + "<tbody>";
-    //            insertHTML = insertHTML + "<tr>" + "<td>ID</td><td>" + customer_data['id']+ "</td></tr>";
-    //            insertHTML = insertHTML + "<tr>" + "<td>First Name</td><td>" + customer_data['first_name']+ "</td></tr>";
-    //            insertHTML = insertHTML + "<tr>" + "<td>Last Name</td><td>" + customer_data['last_name']+ "</td></tr>";
-    //            insertHTML = insertHTML + "<tr>" + "<td>Date of Birth</td><td>" + customer_data['date_of_birth']+ "</td></tr>";
-    //            insertHTML = insertHTML + "<tr>" + "<td>Balance</td><td>" + customer_data['balance']+ "</td></tr>";
-    //            insertHTML = insertHTML + "</tbody>";
-    //            insertHTML = insertHTML + "</table>";
-    //            $("#userContent").html(insertHTML);
-    //        }
-    //        else{
-    //            alert("No accessibility.");
-    //        }
-    //     },
-    //     error: function (e) {
-    //        alert("Unable to retrieve your data.");
-    //     }
-    // });
+    $.ajax({
+        type: "GET",
+        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/user/' + user,
+        crossDomain: true,
+        contentType: 'application/json',
+        // data: JSON.stringify(cleanData),
+        dataType: 'json',
+        success: function(service_data){
+           // console.log(service_data);
+           data = service_data['message']['results']['Item'];
+           // console.log(data['email']);
+           $( '#profileEmail' ).val(data['email']);
+           $( '#profileAddr' ).val(data['address']['street']);
+           $( '#profileCity' ).val(data['address']['city']);
+           $( '#profileZipcode' ).val(data['address']['zip']);
+           if(data['sex']=='female'){
+                console.log("female");
+                $( '#gender1' ).prop("checked", true);
+           } else {
+                $( '#gender2' ).prop("checked", true);
+           }
+           $( '#signUpDate' ).val(data['dob']);
+        },
+        error: function (e) {
+           alert("Unable to retrieve your data.");
+        }
+    });
 }
 
 
@@ -246,7 +245,7 @@ function submitForm(formData, houseID, caller_num) {
     // cleanData['token'] = "fakeId";
     cleanData['houseId'] = houseID;
     cleanData['content'] = formData['commentContent'];
-    console.log(caller_num);
+    // console.log(caller_num);
 
     $.ajax({
         type: "POST",
@@ -263,6 +262,7 @@ function submitForm(formData, houseID, caller_num) {
             // $('#signUpModal').modal('hide')
             // alert("Please confirm your email.");
             // document.getElementById("houseInfoClose").click();
+            alert("comment submit successful!");
             houseDetailRerender();
             // console.log(typeof(caller_num));
             // console.log(caller_num);
@@ -276,6 +276,50 @@ function submitForm(formData, houseID, caller_num) {
         failure: function (service_data) {
             // alert(data.errorMessage)
             alert("Unable to submit comment");
+        }
+    });
+}
+
+function submitProfileForm(formData){
+    // console.log(formData);
+    var username = localStorage.getItem('username');
+    console.log(formData);
+    cleanData = {};
+    cleanData['username'] = username;
+    cleanData['email'] = formData['email'];
+    cleanData['city'] = formData['city'];
+    cleanData['street'] = formData['address'];
+    cleanData['zip'] = formData['zipcode'];
+    cleanData['sex'] = formData['gender'];
+    console.log(cleanData);
+
+        // "username": "ziba2",
+        // "email": "testttt@mail.com",
+        // "phone": "111",
+        // "street": "204 W 108 St",
+        // "city": "New York",
+        // "states": "NY",
+        // "zip": 10025,
+        // "preference": "fake pref",
+        // "sex": "none"
+
+    $.ajax({
+        type: "PUT",
+        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/user/' + username,
+        crossDomain: true,
+        contentType: 'application/json',
+        data: JSON.stringify(cleanData),
+        dataType: 'json',
+        success: function (service_data) {
+            // alert("hahahahahah");
+            // alert("comment submit successful!");
+            // houseDetailRerender();
+            console.log(service_data);
+            alert("Update success!");
+            
+        },
+        failure: function (service_data) {
+            alert("Unable to update profile.");
         }
     });
 }
@@ -758,7 +802,7 @@ $(document).ready(function () {
     accountDisplayHandler.logOut();
 
     /* new comment function */
-    $('commentForm').submit(function (e) {
+    $('#commentForm').submit(function (e) {
         e.preventDefault();
         var formData = $(this).serializeArray().reduce(
             function (accumulater, curr) {
@@ -767,6 +811,17 @@ $(document).ready(function () {
             }
             , {});
         submitForm(formData);
+    });
+
+    $('#profileForm').submit(function (e) {
+        e.preventDefault();
+        var formData = $(this).serializeArray().reduce(
+            function (accumulater, curr) {
+                accumulater[curr.name] = curr.value;
+                return accumulater;
+            }
+            , {});
+        submitProfileForm(formData);
     });
 
     $("#usernameNavElement").click(function () {
