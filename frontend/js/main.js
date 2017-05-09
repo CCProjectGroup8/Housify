@@ -142,7 +142,7 @@ function render_items() {
                     content: items_data[i]['title']
                 });
                 marker.addListener('click', function () {
-                    map.setZoom(8);
+                    map.setZoom(13);
                     map.setCenter(marker.getPosition());
                     infowindow.open(marker.get('map'), marker);
                 });
@@ -262,7 +262,7 @@ function itemRerender() {
                     content: items_data[i]['title']
                 });
                 marker.addListener('click', function () {
-                    map.setZoom(8);
+                    map.setZoom(13);
                     map.setCenter(marker.getPosition());
                     infowindow.open(marker.get('map'), marker);
                 });
