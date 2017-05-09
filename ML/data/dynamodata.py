@@ -8,8 +8,8 @@ context2 = Context(prec=2, rounding=ROUND_UP)
 
 # Get service resource
 dynamodb = boto3.resource('dynamodb',
-                          aws_access_key_id = 'AKIAJXDMVQWDOX33MAUA',
-                          aws_secret_access_key = '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',
+                          aws_access_key_id = '',
+                          aws_secret_access_key = '',
                           region_name = 'us-east-1'
                           )
 

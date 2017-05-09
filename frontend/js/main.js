@@ -10,6 +10,10 @@ coords = [];
 
 rec_i = [];
 
+now_item_page = 0;
+
+itemLength = 0;
+
 now_page = [];
 
 var accountDisplayHandler = {
@@ -97,7 +101,7 @@ function getCookie(key) {
 }
 
 function render_items() {
-    var itemLength = 0;
+    itemLength = 0;
 
     cleanData = {};
     now_page = [];
@@ -159,7 +163,8 @@ function render_items() {
                 // img = document.createElement('img');
                 // img.src = "https://a0.muscache.com/im/pictures/e94a2c71-d8c7-40dc-8ebd-5d519bc36a94.jpg?aki_policy=large";
                 // document.body.appendChild(img);
-                innerHTML = innerHTML + "https://a0.muscache.com/im/pictures/e94a2c71-d8c7-40dc-8ebd-5d519bc36a94.jpg?aki_policy=large";
+                innerHTML = innerHTML + items_data[i]['picture_url'];
+                // innerHTML = innerHTML + "https://a0.muscache.com/im/pictures/e94a2c71-d8c7-40dc-8ebd-5d519bc36a94.jpg?aki_policy=large";
                 innerHTML = innerHTML + "\">";
 
                 innerHTML = innerHTML + "<div class=\"caption\">";
@@ -178,6 +183,13 @@ function render_items() {
             if (itemLength % 2 != 1) {
                 innerHTML = innerHTML + "</div>";
             }
+
+            innerHTML = innerHTML + "<div><table style='width: 100%;'><tbody>";
+            innerHTML = innerHTML + "<td style='width:33%;'><button type=\"button\" class=\"btn btn-default\" id=\"itemPrePage\">Previous Page</button></td>";
+            innerHTML = innerHTML + "<td style='width:33%;text-align:center;'> page " + (now_item_page+1) + "</td>";
+            innerHTML = innerHTML + "<td style='width:33%;text-align:right;'><button type=\"button\" class=\"btn btn-default\" id=\"itemNextPage\">Next Page</button><td>";
+            innerHTML = innerHTML + "</tbody></table><br><br>" + "</div>";
+
             $("#container").html(innerHTML);
             for (var i = 0; i < itemLength; i++) {
                 target_string = "#item" + i;
@@ -185,6 +197,141 @@ function render_items() {
                     houseDetail();
                 });
             }
+
+            $('#itemNextPage').click(function () {
+                if (itemLength>=10){
+                    now_item_page++;
+                    // alert("itemNextPage!");
+                    itemRerender();
+                }
+            });
+            $('#itemPrePage').click(function () {
+                alert("itemPrePage!");
+                if (now_item_page != 0) {
+                    now_item_page--;
+                    // alert("itemNextPage!");
+                    itemRerender();
+                }
+            });
+        },
+        error: function (e) {
+            alert("Unable to retrieve your data.");
+        }
+    });
+}
+
+function itemRerender() {
+    itemLength = 0;
+
+    cleanData = {};
+    now_page = [];
+    $.ajax({
+        type: "GET",
+        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod',
+        crossDomain: true,
+        contentType: 'application/json',
+        // data: JSON.stringify(cleanData),
+        dataType: 'json',
+        success: function (service_data) {
+            // console.log(service_data);
+            items_data = service_data['message'];
+            items_data = items_data['results'];
+            // console.log(items_data);
+            for (var item in items_data) {
+                // console.log(item);
+                itemLength++;
+            }
+            // console.log(itemLength);
+            innerHTML = "";
+
+            for (var i = 0; i < itemLength; i++) {
+                // console.log("i= " + i + "\n");
+                // console.log(items_data[i]['houseId']);
+                items_id.push(items_data[i]['houseId']);
+                now_page.push(0);
+                // coords.push(items_data[i]['address']['coordinate']['lat']);
+                // coords.push(items_data[i]['address']['coordinate']['lng']);
+
+                // map part
+
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(items_data[i]['address']['coordinate']['lat'], items_data[i]['address']['coordinate']['lng']),
+                    map: map
+                });
+                var infowindow = new google.maps.InfoWindow({
+                    content: items_data[i]['title']
+                });
+                marker.addListener('click', function () {
+                    map.setZoom(8);
+                    map.setCenter(marker.getPosition());
+                    infowindow.open(marker.get('map'), marker);
+                });
+
+                // end of map part
+
+                if (i % 2 == 0) {
+                    innerHTML = innerHTML + "<div class=\"row\">";
+
+                }
+
+                innerHTML = innerHTML + "<div class=\"col-sm-6 col-md-4\">";
+                innerHTML = innerHTML + "<div class=\"thumbnail\">";
+
+                innerHTML = innerHTML + "<img src=\"";
+                // // innerHTML = innerHTML + "images/" + items_data[i]['id'] + ".png\" " + "alt=\"" + items_data[i]['item_name'] + "\">";
+                // innerHTML = innerHTML + "images/" + "placeholder.jpg\" " + "alt=\"" + items_data[i]['houseId'] + "\">";
+                // img = document.createElement('img');
+                // img.src = "https://a0.muscache.com/im/pictures/e94a2c71-d8c7-40dc-8ebd-5d519bc36a94.jpg?aki_policy=large";
+                // document.body.appendChild(img);
+                innerHTML = innerHTML + items_data[i]['picture_url'];
+                // innerHTML = innerHTML + "https://a0.muscache.com/im/pictures/e94a2c71-d8c7-40dc-8ebd-5d519bc36a94.jpg?aki_policy=large";
+                innerHTML = innerHTML + "\">";
+
+                innerHTML = innerHTML + "<div class=\"caption\">";
+                innerHTML = innerHTML + "<h3>" + items_data[i]['size'] + "</h3>";
+                innerHTML = innerHTML + "<p>" + items_data[i]['address']['street'] + "</p>";
+                innerHTML = innerHTML + "<p>" + items_data[i]['address']['zip'] + "</p>";
+
+                innerHTML = innerHTML + "<button type=\"button\" class=\"btn btn-default\" id=\"item" + i + "\" value=\"" + i + "\" href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</button>";
+                // innerHTML = innerHTML + "<a href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</a>";
+                innerHTML = innerHTML + "</div></div></div>";
+
+                if (i % 2 == 1) {
+                    innerHTML = innerHTML + "</div>";
+                }
+            }
+            if (itemLength % 2 != 1) {
+                innerHTML = innerHTML + "</div>";
+            }
+
+            innerHTML = innerHTML + "<div><table style='width: 100%;'><tbody>";
+            innerHTML = innerHTML + "<td style='width:33%;'><button type=\"button\" class=\"btn btn-default\" id=\"itemPrePage\">Previous Page</button></td>";
+            innerHTML = innerHTML + "<td style='width:33%;text-align:center;'> page " + (now_item_page+1) + "</td>";
+            innerHTML = innerHTML + "<td style='width:33%;text-align:right;'><button type=\"button\" class=\"btn btn-default\" id=\"itemNextPage\">Next Page</button><td>";
+            innerHTML = innerHTML + "</tbody></table><br><br>" + "</div>";
+
+            $("#container").html(innerHTML);
+            for (var i = 0; i < itemLength; i++) {
+                target_string = "#item" + i;
+                $(target_string).click(function () {
+                    houseDetail();
+                });
+            }
+
+            $('#itemNextPage').click(function () {
+                // alert("itemNextPage!");
+                if (itemLength>=10){
+                    now_item_page++;
+                    itemRerender();
+                }
+            });
+            $('#itemPrePage').click(function () {
+                // alert("itemPrePage!");
+                if (now_item_page != 0) {
+                    now_item_page--;
+                    itemRerender();
+                }
+            });
         },
         error: function (e) {
             alert("Unable to retrieve your data.");
@@ -339,18 +486,32 @@ function timeConverter(UNIX_timestamp) {
 }
 
 function houseDetail() {
-    // alert("add item!");
-    // alert("houseDetail");
-    // if (jwt_token==""){
-    //     alert("Please sign in first.");
-    //     return;
-    // }
-    cleanData = {};
     commentLength = 0;
     // console.log(cleanData);
     caller_num = event.target.value;
     caller_id = items_id[parseInt(event.target.value)];
     // console.log(caller_id);
+
+    cleanData = {};
+    cleanData['username'] = localStorage.getItem('username');
+    // console.log(localStorage.getItem('username'));
+    cleanData['houseId'] = caller_id;
+    /* log post */
+    $.ajax({
+        type: "POST",
+        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/logdata',
+        crossDomain: true,
+        contentType: 'application/json',
+        data: JSON.stringify(cleanData),
+        dataType: 'json',
+        success: function (service_data) {
+            alert('Helaoshi shi shabi!');
+        },
+        error: function (e) {
+            alert("Fail to upload log data.");
+        }
+    });
+    /* detail post */
     $.ajax({
         type: "GET",
         url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/house/' + caller_id + "?page=" + now_page[parseInt(caller_num)],
