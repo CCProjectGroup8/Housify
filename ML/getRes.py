@@ -4,6 +4,7 @@ import json
 import sys
 from decimal import *
 from google.cloud import language
+import config as key
 
 
 def getRes():
@@ -15,8 +16,8 @@ def getRes():
 
     # Get service resource
     dynamodb = boto3.resource('dynamodb',
-                              aws_access_key_id = '...',
-                              aws_secret_access_key = '...',
+                              aws_access_key_id = key.aws['accessKeyId'],
+                              aws_secret_access_key = key.aws['secretAccessKey'],
                               region_name = 'us-east-1'
                               )
     tablecomment = dynamodb.Table('comments')
