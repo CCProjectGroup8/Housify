@@ -5,7 +5,7 @@ import sys
 from decimal import *
 from google.cloud import language
 import config as key
-
+import log
 
 def getRes():
 
@@ -13,6 +13,9 @@ def getRes():
     sys.setdefaultencoding('utf8')
 
     context = Context(prec=2, rounding=ROUND_UP)
+
+    # get log info for rating
+    loginfo = log.count_log() 
 
     # Get service resource
     dynamodb = boto3.resource('dynamodb',
@@ -42,7 +45,15 @@ def getRes():
         except:
             continue
 
-        rates = context.create_decimal_from_float(0.5 * float(rate_site) + 0.5 * float(rate_content))
+	if i['reviewerId'] in loginfo:
+		if i['houseId'] in loginfo[i['reviewerId']]:
+			logcnt = loginfo[i['reviewerId']][i['houseId']]
+		else:
+			logcnt = 0
+	else:
+		logcnt = 0
+        rates = context.create_decimal_from_float(0.4 * float(rate_site) + 0.4 * float(rate_content) + 0.2 * float(logcnt))
+
         # tuple = (i['reviewerId'], i['houseId'], str(rates))
         # result.append(tuple)
         reviewer =  i['reviewerId']
@@ -67,8 +78,15 @@ def getRes():
               # print rate_content
           except:
               continue
+	  if i['reviewerId'] in loginfo:
+		if i['houseId'] in loginfo[i['reviewerId']]:
+			logcnt = loginfo[i['reviewerId']][i['houseId']]
+		else:
+			logcnt = 0
+	  else:
+	  	logcnt = 0
+          rates = context.create_decimal_from_float(0.4 * float(rate_site) + 0.4 * float(rate_content) + 0.2 * float(logcnt))
 
-          rates = context.create_decimal_from_float(0.5 * float(rate_site) + 0.5 * float(rate_content))
           # tuple = (i['reviewerId'], i['houseId'], str(rates))
           # result.append(tuple)
           reviewer = i['reviewerId']

@@ -9,6 +9,7 @@ import boto3
 import getRes
 import knn
 import config as key
+import log
 
 result = getRes.getRes()
 
@@ -134,4 +135,4 @@ for key in result:
 		Item = recresult
 	)		
 
-	knn.recommend()
+knn.recommend()
