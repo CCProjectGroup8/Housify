@@ -8,13 +8,14 @@ import math
 import boto3
 import getRes
 import knn
+import config as key
 
 result = getRes.getRes()
 
 # get table heree
 dynamodb = boto3.resource('dynamodb',
-                          aws_access_key_id = '',
-                          aws_secret_access_key = '',
+                          aws_access_key_id = key.aws['accessKeyId'],
+                          aws_secret_access_key = key.aws['secretAccessKey'],
                           region_name = 'us-east-1'
                           )
 recommendtable= dynamodb.Table('recommendresult')
