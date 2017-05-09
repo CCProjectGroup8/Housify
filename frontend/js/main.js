@@ -107,7 +107,7 @@ function render_items() {
     now_page = [];
     $.ajax({
         type: "GET",
-        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod?page=' + now_item_page,
+        url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod?page=' + now_item_page,
         crossDomain: true,
         contentType: 'application/json',
         // data: JSON.stringify(cleanData),
@@ -227,7 +227,7 @@ function itemRerender() {
     now_page = [];
     $.ajax({
         type: "GET",
-        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod?page=' + now_item_page,
+        url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod?page=' + now_item_page,
         crossDomain: true,
         contentType: 'application/json',
         // data: JSON.stringify(cleanData),
@@ -326,7 +326,7 @@ function itemRerender() {
                 }
             });
             $('#itemPrePage').click(function () {
-                alert("itemPrePage!");
+                // alert("itemPrePage!");
                 if (now_item_page != 0) {
                     now_item_page--;
                     // alert("itemNextPage!");
@@ -352,7 +352,7 @@ accountDisplayHandler.userInfo = function () {
     // cleanData['jwt'] = jwt_token;
     $.ajax({
         type: "GET",
-        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/user/' + user,
+        url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod/user/' + user,
         crossDomain: true,
         contentType: 'application/json',
         // data: JSON.stringify(cleanData),
@@ -388,16 +388,18 @@ accountDisplayHandler.userInfo = function () {
 
 function submitForm(formData, houseID, caller_num) {
     // TODO
-    // console.log(formData);
+    console.log(formData);
     cleanData = {};
     // cleanData['token'] = "fakeId";
     cleanData['houseId'] = houseID;
+    cleanData['username'] = localStorage.getItem('username');
     cleanData['content'] = formData['commentContent'];
+    cleanData['rating'] = formData['star'];
     // console.log(caller_num);
 
     $.ajax({
         type: "POST",
-        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/comment',
+        url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod/comment',
         crossDomain: true,
         contentType: 'application/json',
 
@@ -453,7 +455,7 @@ function submitProfileForm(formData){
 
     $.ajax({
         type: "PUT",
-        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/user/' + username,
+        url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod/user/' + username,
         crossDomain: true,
         contentType: 'application/json',
         data: JSON.stringify(cleanData),
@@ -491,7 +493,7 @@ function houseDetail() {
     // console.log(cleanData);
     caller_num = event.target.value;
     caller_id = items_id[parseInt(event.target.value)];
-    // console.log(caller_id);
+    console.log(caller_id);
 
     cleanData = {};
     cleanData['username'] = localStorage.getItem('username');
@@ -500,13 +502,13 @@ function houseDetail() {
     /* log post */
     $.ajax({
         type: "POST",
-        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/logdata',
+        url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod/logdata',
         crossDomain: true,
         contentType: 'application/json',
         data: JSON.stringify(cleanData),
         dataType: 'json',
         success: function (service_data) {
-            alert('Helaoshi shi shabi!');
+            // alert('Helaoshi shi shabi!');
         },
         error: function (e) {
             alert("Fail to upload log data.");
@@ -515,15 +517,16 @@ function houseDetail() {
     /* detail post */
     $.ajax({
         type: "GET",
-        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/house/' + caller_id + "?page=" + now_page[parseInt(caller_num)],
+        url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod/house/' + caller_id + "?page=" + now_page[parseInt(caller_num)],
         crossDomain: true,
         contentType: 'application/json',
         // data: JSON.stringify(cleanData),
         dataType: 'json',
         success: function (service_data) {
 
-            // console.log(service_data);
-            items_data = service_data['message']['house']['Item'];
+            console.log(service_data);
+            if (service_data)
+            items_data = service_data['house'];
             // items_data = items_data['Item'];
             innerHTML = "";
             // console.log(items_data);
@@ -559,14 +562,14 @@ function houseDetail() {
 
             /* comment part */
 
-            items_data = service_data['message']['comment'];
+            items_data = service_data['comment'];
             commentLength = items_data.length;
             // console.log(items_data);
 
             innerHTML = innerHTML + "<table class=\"table\">";
             innerHTML = innerHTML + "<thead><tr>";
             // innerHTML = innerHTML + "<th>#</th>";
-            innerHTML = innerHTML + "<th>commentID</th>";
+            innerHTML = innerHTML + "<th>Reviewer</th>";
             // innerHTML = innerHTML + "<th>ID</th>";
             innerHTML = innerHTML + "<th>Time</th>";
             innerHTML = innerHTML + "<th>Content</th>";
@@ -577,9 +580,9 @@ function houseDetail() {
             for (var i = 0; i < items_data.length; i++) {
                 // cart_items.push(items_data[i]['id']);
                 innerHTML = innerHTML + "<tr>";
-                innerHTML = innerHTML + "<td>" + items_data[i]['commentId'] + "</td>";
+                innerHTML = innerHTML + "<td>" + items_data[i]['reviewerName'] + "</td>";
                 // innerHTML = innerHTML + "<td>" + items_data[i]['houseId'] + "</td>";
-                innerHTML = innerHTML + "<td>" + timeConverter(items_data[i]['timestamp']) + "</td>";
+                innerHTML = innerHTML + "<td>" + items_data[i]['timestamp'] + "</td>";
                 innerHTML = innerHTML + "<td>" + items_data[i]['content'] + "</td>";
                 // innerHTML = innerHTML + "<td>" + items_data['address']['zip'] + "</td>";
                 innerHTML = innerHTML + "</tr>";
@@ -604,16 +607,16 @@ function houseDetail() {
 
                 innerHTML = innerHTML + "<label for=\"commentContent\">Comment Content</label>";
 
-                innerHTML = innerHTML + "<div class=\"stars\">";
-                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-1\" id=\"star-1\" />";
+                innerHTML = innerHTML + "<div class=\"stars\" id=\"stars\">";
+                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-1\" id=\"star-1\" value=\"1\"/>";
                 innerHTML = innerHTML + "<label class=\"star-1\" for=\"star-1\">1</label>";
-                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-2\" id=\"star-2\" />";
+                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-2\" id=\"star-2\" value=\"2\"/>";
                 innerHTML = innerHTML + "<label class=\"star-2\" for=\"star-2\">2</label>";
-                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-3\" id=\"star-3\" />";
+                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-3\" id=\"star-3\" value=\"3\"/>";
                 innerHTML = innerHTML + "<label class=\"star-3\" for=\"star-3\">3</label>";
-                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-4\" id=\"star-4\" />";
+                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-4\" id=\"star-4\" value=\"4\"/>";
                 innerHTML = innerHTML + "<label class=\"star-4\" for=\"star-4\">4</label>";
-                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-5\" id=\"star-5\" />";
+                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-5\" id=\"star-5\" value=\"5\"/>";
                 innerHTML = innerHTML + "<label class=\"star-5\" for=\"star-5\">5</label>";
 
                 innerHTML = innerHTML + '<span></span></div><hr style="margin-top:5px; margin-bottom: 10px">';
@@ -635,7 +638,21 @@ function houseDetail() {
                             return accumulater;
                         }
                         , {});
-                    submitForm(formData, service_data['message']['house']['Item']['houseId'], caller_num);
+                    // console.log(document.getElementById("stars"));
+                    // console.log($( '#star-1' ));
+                    // console.log($( '#star-2' ));
+                    // console.log($( '#star-3' ));
+                    // console.log($( '#star-4' ));
+                    // console.log($( '#star-5' ));
+                    // var temp = document.getElementsByName("star");
+                    // var ratio = "";
+                    // for(var i=0;i<temp.length;i++){
+                    //     if(temp[i].checked){
+                    //         radio = temp[i].value; 
+                    //     }
+                    // }
+                    // console.log(ratio);
+                    submitForm(formData, service_data['house']['houseId'], caller_num);
                 });
             }
             else {
@@ -682,17 +699,41 @@ function houseDetail() {
 }
 
 function houseDetailRerender() {
+
+    commentLength = 0;
+
+    cleanData = {};
+    cleanData['username'] = localStorage.getItem('username');
+    // console.log(localStorage.getItem('username'));
+    cleanData['houseId'] = caller_id;
+    /* log post */
+    $.ajax({
+        type: "POST",
+        url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod/logdata',
+        crossDomain: true,
+        contentType: 'application/json',
+        data: JSON.stringify(cleanData),
+        dataType: 'json',
+        success: function (service_data) {
+            // alert('Helaoshi shi shabi!');
+        },
+        error: function (e) {
+            alert("Fail to upload log data.");
+        }
+    });
+    /* detail post */
     $.ajax({
         type: "GET",
-        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/house/' + caller_id + "?page=" + now_page[parseInt(caller_num)],
+        url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod/house/' + caller_id + "?page=" + now_page[parseInt(caller_num)],
         crossDomain: true,
         contentType: 'application/json',
         // data: JSON.stringify(cleanData),
         dataType: 'json',
         success: function (service_data) {
 
-            // console.log(service_data);
-            items_data = service_data['message']['house']['Item'];
+            console.log(service_data);
+            if (service_data)
+            items_data = service_data['house'];
             // items_data = items_data['Item'];
             innerHTML = "";
             // console.log(items_data);
@@ -728,14 +769,14 @@ function houseDetailRerender() {
 
             /* comment part */
 
-            items_data = service_data['message']['comment'];
+            items_data = service_data['comment'];
             commentLength = items_data.length;
             // console.log(items_data);
 
             innerHTML = innerHTML + "<table class=\"table\">";
             innerHTML = innerHTML + "<thead><tr>";
             // innerHTML = innerHTML + "<th>#</th>";
-            innerHTML = innerHTML + "<th>commentID</th>";
+            innerHTML = innerHTML + "<th>Reviewer</th>";
             // innerHTML = innerHTML + "<th>ID</th>";
             innerHTML = innerHTML + "<th>Time</th>";
             innerHTML = innerHTML + "<th>Content</th>";
@@ -746,9 +787,9 @@ function houseDetailRerender() {
             for (var i = 0; i < items_data.length; i++) {
                 // cart_items.push(items_data[i]['id']);
                 innerHTML = innerHTML + "<tr>";
-                innerHTML = innerHTML + "<td>" + items_data[i]['commentId'] + "</td>";
+                innerHTML = innerHTML + "<td>" + items_data[i]['reviewerName'] + "</td>";
                 // innerHTML = innerHTML + "<td>" + items_data[i]['houseId'] + "</td>";
-                innerHTML = innerHTML + "<td>" + timeConverter(items_data[i]['timestamp']) + "</td>";
+                innerHTML = innerHTML + "<td>" + items_data[i]['timestamp'] + "</td>";
                 innerHTML = innerHTML + "<td>" + items_data[i]['content'] + "</td>";
                 // innerHTML = innerHTML + "<td>" + items_data['address']['zip'] + "</td>";
                 innerHTML = innerHTML + "</tr>";
@@ -762,7 +803,6 @@ function houseDetailRerender() {
             innerHTML = innerHTML + "<td style='width:33%;text-align:center;'> page " + (now_page[parseInt(caller_num)]+1) + "</td>";
             innerHTML = innerHTML + "<td style='width:33%;text-align:right;'><button type=\"button\" class=\"btn btn-default\" id=\"nextPage\">Next Page</button><td>";
             innerHTML = innerHTML + "</tbody></table><br><br>";
-
             /* end of button of page */
 
             /* end of comment part */
@@ -774,16 +814,16 @@ function houseDetailRerender() {
 
                 innerHTML = innerHTML + "<label for=\"commentContent\">Comment Content</label>";
 
-                innerHTML = innerHTML + "<div class=\"stars\">";
-                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-1\" id=\"star-1\" />";
+                innerHTML = innerHTML + "<div class=\"stars\" id=\"stars\">";
+                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-1\" id=\"star-1\" value=\"1\"/>";
                 innerHTML = innerHTML + "<label class=\"star-1\" for=\"star-1\">1</label>";
-                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-2\" id=\"star-2\" />";
+                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-2\" id=\"star-2\" value=\"2\"/>";
                 innerHTML = innerHTML + "<label class=\"star-2\" for=\"star-2\">2</label>";
-                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-3\" id=\"star-3\" />";
+                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-3\" id=\"star-3\" value=\"3\"/>";
                 innerHTML = innerHTML + "<label class=\"star-3\" for=\"star-3\">3</label>";
-                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-4\" id=\"star-4\" />";
+                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-4\" id=\"star-4\" value=\"4\"/>";
                 innerHTML = innerHTML + "<label class=\"star-4\" for=\"star-4\">4</label>";
-                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-5\" id=\"star-5\" />";
+                innerHTML = innerHTML + "<input type=\"radio\" name=\"star\" class=\"star-5\" id=\"star-5\" value=\"5\"/>";
                 innerHTML = innerHTML + "<label class=\"star-5\" for=\"star-5\">5</label>";
 
                 innerHTML = innerHTML + '<span></span></div><hr style="margin-top:5px; margin-bottom: 10px">';
@@ -805,24 +845,25 @@ function houseDetailRerender() {
                             return accumulater;
                         }
                         , {});
-                    submitForm(formData, service_data['message']['house']['Item']['houseId'], caller_num);
+                    submitForm(formData, service_data['house']['houseId'], caller_num);
                 });
             }
-
             else {
-                innerHTML = innerHTML + "<button type=\"button\" class=\"btn btn-default\" id=\"jumpLogin\" data-toggle=\"modal\" data-target=\"#loginModal\">Please Login</button>";
+                innerHTML = innerHTML + "<button type=\"button\" class=\"btn btn-default\" id=\"jumpLogin\" data-toggle=\"modal\" data-target=\"#loginModal\">Login to make a comment</button>";
                 $("#houseContent").html(innerHTML);
                 $('#jumpLogin').click(function () {
                     // alert("Close!");
                     document.getElementById("houseInfoClose").click();
                     // document.getElementById("loginNavElement").click();
                 });
+
             }
 
             $('#nextPage').click(function () {
                 // document.getElementById("houseInfoClose").click();
                 // document.getElementById("loginNavElement").click();
                 // alert("Next Page!");
+                // console.log(service_data['message']['comment'].length);
                 // alert(commentLength);
                 if (commentLength>=10){
                     now_page[parseInt(caller_num)]++;
