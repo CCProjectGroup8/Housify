@@ -204,7 +204,7 @@
                             <div style="padding-left: 0;">
                                 <div class="form-group">
                                     <label for="profileEmail">Email</label>
-                                    <input type="text" class="form-control" id="profileEmail" placeholder="Email" name="email">
+                                    <input required type="text" class="form-control" id="profileEmail" placeholder="Email" name="email">
                                 </div>
                             </div>
                         </div>
@@ -213,8 +213,8 @@
                             <!-- sex -->
                             <div class="form-inline form-group col-md-6">
                                 <label >Gender</label> <br>
-                                <label class="radio-inline"> <input type="radio" id='gender2' name="gender" value="male">Male  </label>
-                                <label class="radio-inline" style="margin-left:0;"> <input type="radio" id='gender1' name="gender" value="female">Female</label>
+                                <label class="radio-inline"> <input required type="radio" id='gender2' name="gender" value="male">Male  </label>
+                                <label class="radio-inline" style="margin-left:0;"> <input required type="radio" id='gender1' name="gender" value="female">Female</label>
 
                             </div>
 
@@ -255,7 +255,7 @@
                             <label for="signUpDate">Date of Birth</label>
 
                             <div class="form-group input-group input-group-unstyled">
-                                <input type="text" name="date_of_birth" class="form-control" placeholder="Date of Birth" id="signUpDate"/>
+                                <input required type="text" name="date_of_birth" class="form-control" placeholder="Date of Birth" id="signUpDate"/>
                                 <span class="input-group-addon add-on">
                                 <i class=" fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                                 </span>
@@ -264,11 +264,29 @@
 
                     </div>
 
+                    <div class="form-group">
+                        <label>Which of the following most closely matches your job title?</label>
+
+                        <select class="form-control" id="profileSelect">
+                            <option value="0">Intern</option>
+                            <option value="1">Entry Level</option>
+                            <option value="2">Analyst / Associate</option>
+                            <option value="3">Manager</option>
+                            <option value="4">Senior Manager</option>
+                            <option value="6">Director</option>
+                            <option value="7">Vice President</option>
+                            <option value="8">Senior Vice President</option>
+                            <option value="9">C level executive (CIO, CTO, COO, CMO, Etc)</option>
+                            <option value="10">President or CEO</option>
+                            <option value="11">Owner</option>
+                        </select>
+                    </div>
+
                     <button type="submit" class="btn btn-default">Update</button>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="profileClose" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
