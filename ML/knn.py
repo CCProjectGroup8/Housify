@@ -4,6 +4,7 @@ import sys
 import datetime
 from decimal import *
 from sklearn.neighbors import KNeighborsClassifier
+import config as key
 
 def recommend():
 	# def getRes():
@@ -15,8 +16,8 @@ def recommend():
 	
 	# Get service resource
 	dynamodb = boto3.resource('dynamodb',
-	                          aws_access_key_id = '',
-	                          aws_secret_access_key = '',
+	                          aws_access_key_id = key.aws['accessKeyId'],
+	                          aws_secret_access_key = key.aws['secretAccessKey'],
 	                          region_name = 'us-east-1'
 	                          )
 	usertable = dynamodb.Table('user')
