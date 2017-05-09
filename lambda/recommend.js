@@ -8,21 +8,34 @@ AWS.config.update({
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
-var getHouses = function(event, callback) {
-    var results = [];
-    docClient.scan({
-        TableName: 'houseairbnb'
+var getRecommend = function(event, callback) {
+    docClient.get({
+        TableName: 'user',
+        Key:{
+            "username": event.username,
+            // "token": event.query.token
+        }
     }, function(err, data) {
         if (err) {
             callback(err)
         } else {
-            for (var i = 0; i < Math.min(data.Items.length, 10); i++)
-            {
-                results.push(data.Items[i]);
-            }
-            callback(null, {'results': results});
+            docClient.get({
+                TableName: 'recommendresult',
+                Key:{
+                    "username": data.Item.userId,
+                    // "token": event.query.token
+                }
+            }, function(err, data2) {
+                if (err) {
+                    callback(err)
+                } else {
+                    callback(null, {'recommend': data2.Item.recommendation});
+                }
+            });
         }
     });
+    
+    
 }
 
 exports.handler = (event, context, callback) => {
@@ -44,7 +57,7 @@ exports.handler = (event, context, callback) => {
     
     switch (event.httpMethod) {
         case 'GET':
-            getHouses(event, done);
+            getRecommend(event, done);
             break;
         default:
             done(new Error('Unsupported method "${event.httpMethod}"'));
