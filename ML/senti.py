@@ -7,9 +7,13 @@ from google.cloud import language
 from watson_developer_cloud import NaturalLanguageUnderstandingV1
 import watson_developer_cloud.natural_language_understanding.features.v1 as \
     features
+import config as key
 
 
-dynamodb = boto3.resource('dynamodb', aws_access_key_id = '...', aws_secret_access_key = '...', region_name = 'us-east-1')
+dynamodb = boto3.resource('dynamodb', 
+                          aws_access_key_id = key.aws['accessKeyId'], 
+                          aws_secret_access_key = key.aws['secretAccessKey'],
+                          region_name = 'us-east-1')
 
 #nlu = NaturalLanguageUnderstandingV1(version='2017-02-27',
                                 #     username="...",
