@@ -120,15 +120,15 @@ def recommend():
 					try:
 						if neighbor == j['username']:
 							copyresult = j['recommendation']
-						itempredict = {
-							'username' : i['userId'],
-							'recommendation': copyresult
-						}
-						print "itempredict"
-						print itempredict
-						response = rectalbe.put_item(
-							Item=itempredict
-						)
+							itempredict = {
+								'username' : i['userId'],
+								'recommendation': copyresult
+							}
+							print "itempredict"
+							print itempredict
+							response = rectalbe.put_item(
+								Item=itempredict
+							)
 					except:
 						continue
 
@@ -214,15 +214,15 @@ def recommend():
 							try:
 								if neighbor == j['username']:
 									copyresult = j['recommendation']
-								itempredict = {
-									'username': i['userId'],
-									'recommendation': copyresult
-								}
-								print "itempredict"
-								print itempredict
-								response = rectalbe.put_item(
-									Item=itempredict
-								)
+									itempredict = {
+										'username': i['userId'],
+										'recommendation': copyresult
+									}
+									print "itempredict"
+									print itempredict
+									response = rectalbe.put_item(
+										Item=itempredict
+									)
 
 							except:
 								continue
