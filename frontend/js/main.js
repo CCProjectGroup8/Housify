@@ -107,7 +107,7 @@ function render_items() {
     now_page = [];
     $.ajax({
         type: "GET",
-        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod',
+        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod?page=' + now_item_page,
         crossDomain: true,
         contentType: 'application/json',
         // data: JSON.stringify(cleanData),
@@ -227,7 +227,7 @@ function itemRerender() {
     now_page = [];
     $.ajax({
         type: "GET",
-        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod',
+        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod?page=' + now_item_page,
         crossDomain: true,
         contentType: 'application/json',
         // data: JSON.stringify(cleanData),
@@ -319,16 +319,17 @@ function itemRerender() {
             }
 
             $('#itemNextPage').click(function () {
-                // alert("itemNextPage!");
                 if (itemLength>=10){
                     now_item_page++;
+                    // alert("itemNextPage!");
                     itemRerender();
                 }
             });
             $('#itemPrePage').click(function () {
-                // alert("itemPrePage!");
+                alert("itemPrePage!");
                 if (now_item_page != 0) {
                     now_item_page--;
+                    // alert("itemNextPage!");
                     itemRerender();
                 }
             });
