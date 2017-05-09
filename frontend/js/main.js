@@ -485,18 +485,32 @@ function timeConverter(UNIX_timestamp) {
 }
 
 function houseDetail() {
-    // alert("add item!");
-    // alert("houseDetail");
-    // if (jwt_token==""){
-    //     alert("Please sign in first.");
-    //     return;
-    // }
-    cleanData = {};
     commentLength = 0;
     // console.log(cleanData);
     caller_num = event.target.value;
     caller_id = items_id[parseInt(event.target.value)];
     // console.log(caller_id);
+
+    cleanData = {};
+    cleanData['username'] = localStorage.getItem('username');
+    // console.log(localStorage.getItem('username'));
+    cleanData['houseId'] = caller_id;
+    /* log post */
+    $.ajax({
+        type: "POST",
+        url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/logdata',
+        crossDomain: true,
+        contentType: 'application/json',
+        data: JSON.stringify(cleanData),
+        dataType: 'json',
+        success: function (service_data) {
+            alert('Helaoshi shi shabi!');
+        },
+        error: function (e) {
+            alert("Fail to upload log data.");
+        }
+    });
+    /* detail post */
     $.ajax({
         type: "GET",
         url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/house/' + caller_id + "?page=" + now_page[parseInt(caller_num)],
