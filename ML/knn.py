@@ -139,16 +139,16 @@ def recommend():
 	                for j in response2['Items']:
 	                    try:
 	                        if neighbor == j['username']:
-	                            copyresult = j['recommendation']
-	                        itempredict = {
-	                            'username': i['userId'],
-	                            'recommendation': copyresult
-	                        }
-	                        print "itempredict"
-	                        print itempredict
-	                        response = rectalbe.put_item(
-	                            Item=itempredict
-	                        )
+	                        	copyresult = j['recommendation']
+					itempredict = {
+					    'username': i['userId'],
+					    'recommendation': copyresult
+					}
+					print "itempredict"
+					print itempredict
+					response = rectalbe.put_item(
+					    Item=itempredict
+					)
 	
 	                    except:
 	                        continue
@@ -193,16 +193,16 @@ def recommend():
 	              for j in response2['Items']:
 	                  try:
 	                      if neighbor == j['username']:
-	                          copyresult = j['recommendation']
-	                      itempredict = {
-	                          'username': i['userId'],
-	                          'recommendation': copyresult
-	                      }
-	                      print "itempredict"
-	                      print itempredict
-	                      response = rectalbe.put_item(
-	                          Item=itempredict
-	                      )
+					copyresult = j['recommendation']
+					itempredict = {
+						'username': i['userId'],
+						'recommendation': copyresult
+					}
+					print "itempredict"
+					print itempredict
+					response = rectalbe.put_item(
+						Item=itempredict
+					)
 	                  except:
 	                      continue
 	
