@@ -7,13 +7,14 @@ from pyspark.mllib.recommendation import ALS
 import math
 import boto3
 import getRes
+import knn
 
 result = getRes.getRes()
 
 # get table heree
 dynamodb = boto3.resource('dynamodb',
-                          aws_access_key_id = '...',
-                          aws_secret_access_key = '...',
+                          aws_access_key_id = '',
+                          aws_secret_access_key = '',
                           region_name = 'us-east-1'
                           )
 recommendtable= dynamodb.Table('recommendresult')
@@ -132,3 +133,4 @@ for key in result:
 		Item = recresult
 	)		
 
+	knn.recommend()
