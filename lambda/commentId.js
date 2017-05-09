@@ -4,8 +4,6 @@ var AWS = require('aws-sdk');
 AWS.config.update({
     region: "us-east-1",
     endpoint: "https://dynamodb.us-east-1.amazonaws.com",
-    accessKeyId: '...',
-    secretAccessKey: '...'
 });
 
 var docClient = new AWS.DynamoDB.DocumentClient();
@@ -28,7 +26,7 @@ var getComment = function(event, callback) {
 
 var editComment = function(event, callback) {
     var params = {
-        TableName: "comment",
+        TableName: "commentair",
         Key:{
             "commentId": event.body.commentId
         },
@@ -49,7 +47,7 @@ var editComment = function(event, callback) {
 
 var deleteComment = function(event, callback) {
     docClient.delete({
-        TableName: 'comment',
+        TableName: 'commentair',
         Key:{
             "commentId": event.body.commentId,
             // "token": event.query.token
