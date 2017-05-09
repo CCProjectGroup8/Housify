@@ -128,14 +128,28 @@ while True:
 		}
 		recresult['recommendation'] = {}
 		
-		recresult['recommendation']['houseId'] = []
-		recresult['recommendation']['score'] = []
-	
+	#	recresult['recommendation']['houseId'] = []
+	#	recresult['recommendation']['score'] = []
+	#
+	#	for item in result[key]:
+	#		recresult['recommendation']['houseId'].append(item[1])
+	#		recresult['recommendation']['score'].append(item[2])
+
+		houseId = []
+		score = []
+
 		for item in result[key]:
-			recresult['recommendation']['houseId'].append(item[1])
-			recresult['recommendation']['score'].append(item[2])
+			houseId.append(item[1])
+			score.append(item[2])
+
+		houseId = [x for (y, x) in sorted(zip(score, houseId))]
+		score = sorted(score)
+		
+		recresult['recommendation']['houseId'] = houseId[::-1]
+		recresult['recommendation']['score'] = score[::-1]
+		
 		print "putrecommend for"
-		print key
+		print recresult['recommendation']
 		response = recommendtable.put_item(
 			Item = recresult
 		)		
