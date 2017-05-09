@@ -138,14 +138,17 @@ function render_items() {
                     position: new google.maps.LatLng(items_data[i]['address']['coordinate']['lat'], items_data[i]['address']['coordinate']['lng']),
                     map: map
                 });
-                var infowindow = new google.maps.InfoWindow({
-                    content: items_data[i]['title']
-                });
-                marker.addListener('click', function () {
-                    map.setZoom(13);
-                    map.setCenter(marker.getPosition());
-                    infowindow.open(marker.get('map'), marker);
-                });
+
+                enableMarker(marker, items_data[i]['title']);
+                // var infowindow = new google.maps.InfoWindow({
+                //     content: items_data[i]['title']
+                // });
+                // marker.addListener('click', function () {
+                //     map.setZoom(13);
+                //     map.setCenter(marker.getPosition());
+                //     console.log(marker.position.lat(), marker.position.lng());
+                //     infowindow.open(marker.get('map'), marker);
+                // });
 
                 // end of map part
 
@@ -220,6 +223,17 @@ function render_items() {
     });
 }
 
+function enableMarker(marker, message) {
+    var infowindow = new google.maps.InfoWindow({
+        content: message
+    });
+
+    marker.addListener('click', function () {
+        infowindow.open(marker.get('map'), marker);
+    });
+}
+
+
 function itemRerender() {
     itemLength = 0;
 
@@ -254,18 +268,21 @@ function itemRerender() {
 
                 // map part
 
-                marker = new google.maps.Marker({
+                var marker = new google.maps.Marker({
                     position: new google.maps.LatLng(items_data[i]['address']['coordinate']['lat'], items_data[i]['address']['coordinate']['lng']),
                     map: map
                 });
-                var infowindow = new google.maps.InfoWindow({
-                    content: items_data[i]['title']
-                });
-                marker.addListener('click', function () {
-                    map.setZoom(13);
-                    map.setCenter(marker.getPosition());
-                    infowindow.open(marker.get('map'), marker);
-                });
+
+                enableMarker(marker, items_data[i]['title']);
+
+                // var infowindow = new google.maps.InfoWindow({
+                //     content: items_data[i]['title']
+                // });
+                // marker.addListener('click', function () {
+                //     map.setZoom(13);
+                //     map.setCenter(marker.getPosition());
+                //     infowindow.open(marker.get('map'), marker);
+                // });
 
                 // end of map part
 
@@ -571,7 +588,7 @@ function houseDetail() {
             // innerHTML = innerHTML + "<th>#</th>";
             innerHTML = innerHTML + "<th>Reviewer</th>";
             // innerHTML = innerHTML + "<th>ID</th>";
-            innerHTML = innerHTML + "<th>Time</th>";
+            innerHTML = innerHTML + "<th>Stars</th>";
             innerHTML = innerHTML + "<th>Content</th>";
             // innerHTML = innerHTML + "<th>Zip</th>";
             innerHTML = innerHTML + "</tr></thead>";
@@ -582,6 +599,7 @@ function houseDetail() {
                 innerHTML = innerHTML + "<tr>";
                 innerHTML = innerHTML + "<td>" + items_data[i]['reviewerName'] + "</td>";
                 // innerHTML = innerHTML + "<td>" + items_data[i]['houseId'] + "</td>";
+                //@todo: change timestamp to starts
                 innerHTML = innerHTML + "<td>" + items_data[i]['timestamp'] + "</td>";
                 innerHTML = innerHTML + "<td>" + items_data[i]['content'] + "</td>";
                 // innerHTML = innerHTML + "<td>" + items_data['address']['zip'] + "</td>";
@@ -948,7 +966,7 @@ function initMap() {
             function (position) {
                 init_position['lat'] = position.coords.latitude;
                 init_position['lng'] = position.coords.longitude;
-                console.log(init_position);
+                console.log("current position: ",init_position);
                 map.setZoom(11);
                 map.setCenter({lat: init_position['lat'], lng: init_position['lng']});
             }
