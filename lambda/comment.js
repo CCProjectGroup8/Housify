@@ -4,55 +4,86 @@ var AWS = require('aws-sdk');
 AWS.config.update({
     region: "us-east-1",
     endpoint: "https://dynamodb.us-east-1.amazonaws.com",
-    accessKeyId: '...',
-    secretAccessKey: '...'
 });
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
-var newId = function () {
-  // Math.random should be unique because of its seeding algorithm.
-  // Convert it to base 36 (numbers + letters), and grab the first 9 characters
-  // after the decimal.
-  return '_' + Math.random().toString(36).substr(2, 9);
-};
+// var newId = function () {
+//   // Math.random should be unique because of its seeding algorithm.
+//   // Convert it to base 36 (numbers + letters), and grab the first 9 characters
+//   // after the decimal.
+//   return Math.random().toString(10).substr(2, 9);
+// };
 
 var postComment = function(event, callback) {
+    var params = {
+        TableName: "user",
+        Key:{
+            "username": event.body.username
+        },
+        UpdateExpression: "set isNew =:n",
+        ExpressionAttributeValues:{
+            ":n":false
+        },
+        ReturnValues:"UPDATED_NEW"
+    };
+    docClient.update(params, function(err, data) {
+        if (err) {
+            callback(err)
+        } else {
+            
+        }
+    });
     var date = new Date().valueOf();
-    var id = newId();
-    docClient.put({
-        TableName: 'comment',
-        Item: {
-            'commentId': id,
-            'houseId': event.body.houseId,
-            'content': event.body.content,
-            'timestamp': date,
-            'username': event.body.username,
-            'rating': event.body.rating
+    var id = "0" + new Date().getTime();
+    docClient.get({
+        TableName: 'user',
+        Key:{
+            "username": event.body.username,
+            // "token": event.query.token
         }
     }, function(err, data) {
         if (err) {
             callback(err)
         } else {
-            docClient.update({
-                TableName: 'house',
-                Key:{
-                    "houseId": event.body.houseId,
-                },
-                ReturnValues: 'ALL_NEW',
-                UpdateExpression: 'set #comment = list_append(if_not_exists(#comment, :empty_list), :com)',
-                ExpressionAttributeNames: {
-                  '#comment': 'comment'
-                },
-                ExpressionAttributeValues: {
-                  ':com': [{"commentId": id}],
-                  ':empty_list': []
+            console.log(data);
+            var userId = data.Item.userId;
+            docClient.put({
+                TableName: 'comments',
+                Item: {
+                    'commentId': id,
+                    'houseId': event.body.houseId,
+                    'content': event.body.content,
+                    'timestamp': date,
+                    'reviewerName': event.body.username,
+                    'reviewerId': userId,
+                    'rating': event.body.rating
                 }
-            }, function(err, data2) {
+            }, function(err, data) {
                 if (err) {
                     callback(err)
                 } else {
-                    callback(null, {'status': 'success'});
+                    docClient.update({
+                        TableName: 'houseairbnb',
+                        Key:{
+                            "houseId": event.body.houseId,
+                        },
+                        ReturnValues: 'ALL_NEW',
+                        UpdateExpression: 'set #comment = list_append(if_not_exists(#comment, :empty_list), :com)',
+                        ExpressionAttributeNames: {
+                          '#comment': 'comment'
+                        },
+                        ExpressionAttributeValues: {
+                          ':com': [{"commentId": id, "ourUser": true}],
+                          ':empty_list': []
+                        }
+                    }, function(err, data2) {
+                        if (err) {
+                            callback(err)
+                        } else {
+                            callback(null, {'status': 'success'});
+                        }
+                    });
                 }
             });
         }

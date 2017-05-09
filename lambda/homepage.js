@@ -4,24 +4,34 @@ var AWS = require('aws-sdk');
 AWS.config.update({
     region: "us-east-1",
     endpoint: "https://dynamodb.us-east-1.amazonaws.com",
-    accessKeyId: '...',
-    secretAccessKey: '...'
 });
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
 var homepage = function(event, callback) {
     var results = [];
+    
+    var page = parseInt(event.page);
+    // console.log("=-=-==-=-=-=-=-=-=-=-=-=- page: "+page);
     docClient.scan({
-        TableName: 'house'
+        TableName: 'houseairbnb'
     }, function(err, data) {
         if (err) {
             callback(err)
         } else {
             for (var i = 0; i < data.Items.length; i++)
             {
-                results.push(data.Items[i]);
+                if (i >= page * 10 && i < (page + 1) * 10)
+                {
+                    // console.log("i >= page * 10 && i < (page + 1) * 10 = " + (i >= page * 10 && i < (page + 1) * 10));
+                    // console.log("page+1 * 10 = "+ ((page + 1) * 10));
+                    // console.log("i = " + i);
+                    // console.log("data.Items[i] = "+data.Items[i]);
+                    results.push(data.Items[i]);
+                }
             }
+            // console.log("result size = " + results.length);
+            // console.log("data.Item.length = " + data.Items.length);
             callback(null, {'results': results});
         }
     });
