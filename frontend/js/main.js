@@ -825,7 +825,8 @@ function houseDetail() {
                     //     }
                     // }
                     // console.log(ratio);
-                    submitForm(formData, service_data['house']['houseId'], caller_num);
+                    submitForm(formData, caller_id, caller_num);
+                    // submitForm(formData, service_data['house']['houseId'], caller_num);
                 });
             }
             else {
@@ -1018,7 +1019,8 @@ function houseDetailRerender() {
                             return accumulater;
                         }
                         , {});
-                    submitForm(formData, service_data['house']['houseId'], caller_num);
+                    // submitForm(formData, service_data['house']['houseId'], caller_num);
+                    submitForm(formData, caller_id, caller_num);
                 });
             }
             else {
