@@ -145,6 +145,18 @@ while True:
 		houseId = [x for (y, x) in sorted(zip(score, houseId))]
 		score = sorted(score)
 		
+		hashset = set()
+		list_len = len(houseId)
+		offset = 0
+		for index in range(list_len):
+			i = index - offset
+			if (houseId[i] in hashset):
+				del houseId[i]
+				del score[i]
+				offset = offset + 1
+			else:
+				hashset.add(houseId[i])
+	
 		recresult['recommendation']['houseId'] = houseId[::-1]
 		recresult['recommendation']['score'] = score[::-1]
 		
@@ -156,4 +168,4 @@ while True:
 	
 	knn.recommend()
 	print "into sleep"
-	time.sleep(30)
+	time.sleep(1)
