@@ -25,36 +25,36 @@ var accountDisplayHandler = {
     ordersInfoNavElement: $("#ordersInfoNavElement"),
     houseNavElement: $("#houseNavElement")
 };
-
-var handler = StripeCheckout.configure({
-    key: 'pk_test_zsMITwkFAOrv7IiPAY2jCm11',
-    image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
-    locale: 'auto',
-    token: function (token) {
-        cleanData = {};
-        cleanData['resource'] = "order";
-        cleanData['stripeToken'] = token.id;
-        cleanData['stripeEmail'] = accountDisplayHandler.userName;
-        console.log(cleanData);
-        $.ajax({
-            type: "POST",
-            url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/orderpayment',
-            crossDomain: true,
-            contentType: 'application/json',
-            data: JSON.stringify(cleanData),
-            dataType: 'json',
-            success: function (service_data) {
-                // accountDisplayHandler.cartNavElement.hide();
-                innerHTML = "";
-                $("#houseContent").html(innerHTML);
-            },
-            error: function (e) {
-                alert("Unable to purchase.");
-            }
-        });
-
-    }
-});
+//
+// var handler = StripeCheckout.configure({
+//     key: 'pk_test_zsMITwkFAOrv7IiPAY2jCm11',
+//     image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+//     locale: 'auto',
+//     token: function (token) {
+//         cleanData = {};
+//         cleanData['resource'] = "order";
+//         cleanData['stripeToken'] = token.id;
+//         cleanData['stripeEmail'] = accountDisplayHandler.userName;
+//         console.log(cleanData);
+//         $.ajax({
+//             type: "POST",
+//             url: 'https://dh0y47otf3.execute-api.us-west-2.amazonaws.com/prod/customer/orderpayment',
+//             crossDomain: true,
+//             contentType: 'application/json',
+//             data: JSON.stringify(cleanData),
+//             dataType: 'json',
+//             success: function (service_data) {
+//                 // accountDisplayHandler.cartNavElement.hide();
+//                 innerHTML = "";
+//                 $("#houseContent").html(innerHTML);
+//             },
+//             error: function (e) {
+//                 alert("Unable to purchase.");
+//             }
+//         });
+//
+//     }
+// });
 
 accountDisplayHandler.logOut = function () {
     this.userName = null;
@@ -546,9 +546,9 @@ function houseDetail() {
 
             items_data['title'] = (items_data['title']!=null) ? items_data['title']: "";
             console.log(items_data['title']);
-            items_data['size'] =  (items_data['size']!=null) ? items_data['title']: "";
-            items_data['address']['street'] =  (items_data['address']['street']!=null) ? items_data['title']: "";
-            items_data['address']['zip'] = (items_data['address']['zip']!=null) ? items_data['title']: "";
+            items_data['size'] =  (items_data['size']!=null) ? items_data['size']: "";
+            items_data['address']['street'] =  (items_data['address']['street']!=null) ? items_data['address']['street']: "";
+            items_data['address']['zip'] = (items_data['address']['zip']!=null) ? items_data['address']['zip']: "";
             // items_data = items_data['Item'];
             innerHTML = "";
             // console.log(items_data);
@@ -604,8 +604,8 @@ function houseDetail() {
                 innerHTML = innerHTML + "<tr>";
                 innerHTML = innerHTML + "<td>" + items_data[i]['reviewerName'] + "</td>";
                 // innerHTML = innerHTML + "<td>" + items_data[i]['houseId'] + "</td>";
-                //@todo: change timestamp to starts
-                innerHTML = innerHTML + "<td>" + items_data[i]['timestamp'] + "</td>";
+
+                innerHTML = innerHTML + "<td>" + items_data[i]['rating'] + "</td>";
                 innerHTML = innerHTML + "<td>" + items_data[i]['content'] + "</td>";
                 // innerHTML = innerHTML + "<td>" + items_data['address']['zip'] + "</td>";
                 innerHTML = innerHTML + "</tr>";
@@ -812,7 +812,7 @@ function houseDetailRerender() {
                 innerHTML = innerHTML + "<tr>";
                 innerHTML = innerHTML + "<td>" + items_data[i]['reviewerName'] + "</td>";
                 // innerHTML = innerHTML + "<td>" + items_data[i]['houseId'] + "</td>";
-                innerHTML = innerHTML + "<td>" + items_data[i]['timestamp'] + "</td>";
+                innerHTML = innerHTML + "<td>" + items_data[i]['rating'] + "</td>";
                 innerHTML = innerHTML + "<td>" + items_data[i]['content'] + "</td>";
                 // innerHTML = innerHTML + "<td>" + items_data['address']['zip'] + "</td>";
                 innerHTML = innerHTML + "</tr>";
