@@ -105,6 +105,8 @@ function render_items() {
 
     cleanData = {};
     now_page = [];
+    items_id = [];
+
     $.ajax({
         type: "GET",
         url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod?page=' + now_item_page,
@@ -245,6 +247,8 @@ function itemRerender() {
 
     cleanData = {};
     now_page = [];
+    items_id = [];
+
     $.ajax({
         type: "GET",
         url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod?page=' + now_item_page,
@@ -372,6 +376,8 @@ function render_items_login() {
 
     cleanData = {};
     now_page = [];
+    items_id = [];
+
     $.ajax({
         type: "GET",
         url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod/recommend?username=' + localStorage.getItem('username'),
@@ -1162,8 +1168,10 @@ function ResponseHandler(e, item_id) {
 $(document).ready(function () {
 
     if (localStorage.getItem('username')!=null){
+        // alert("haha!");
         render_items_login();
     } else {
+        // alert("helaoshihaoshuai");
         render_items();
     }
     accountDisplayHandler.logOut();
