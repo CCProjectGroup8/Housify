@@ -39,13 +39,13 @@ def recommend():
 
 				# get features
 				features = []
-				if i['sex'] == 'Male':
+				if i['sex'] == 'male':
 					sex = 1
 				else:
 					sex = 0
 				features.append(sex)
 
-				birth_year = i['dob'].split("-")[0]
+				birth_year = i['dob'].split("/")[2]
 				current_year = datetime.datetime.now().year
 				age = int(current_year) - int(birth_year)
 				features.append(age)
@@ -66,13 +66,13 @@ def recommend():
 				if i['isNew'] == False:
 					# get features
 					features = []
-					if i['sex'] == 'Male':
+					if i['sex'] == 'male':
 						sex = 1
 					else:
 						sex = 0
 					features.append(sex)
 
-					birth_year = i['dob'].split("-")[0]
+					birth_year = i['dob'].split("/")[2]
 					current_year = datetime.datetime.now().year
 					age = int(current_year) - int(birth_year)
 					features.append(age)
@@ -92,13 +92,13 @@ def recommend():
 			if i['isNew'] == True:
 				# get features
 				f_new = []
-				if i['sex'] == 'Male':
+				if i['sex'] == 'male':
 					sex = 1
 				else:
 					sex = 0
 				f_new.append(sex)
 
-				birth_year = i['dob'].split("-")[0]
+				birth_year = i['dob'].split("/")[2]
 				current_year = datetime.datetime.now().year
 				age = int(current_year) - int(birth_year)
 				f_new.append(age)
@@ -166,13 +166,13 @@ def recommend():
 				if i['isNew'] == True:
 					# get features
 					f_new = []
-					if i['sex'] == 'Male':
+					if i['sex'] == 'male':
 						sex = 1
 					else:
 						sex = 0
 					f_new.append(sex)
 
-					birth_year = i['dob'].split("-")[0]
+					birth_year = i['dob'].split("/")[2]
 					current_year = datetime.datetime.now().year
 					age = int(current_year) - int(birth_year)
 					f_new.append(age)
