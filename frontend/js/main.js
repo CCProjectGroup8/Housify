@@ -357,6 +357,102 @@ function itemRerender() {
     });
 }
 
+function render_items_login() {
+    itemLength = 0;
+
+    cleanData = {};
+    now_page = [];
+    $.ajax({
+        type: "GET",
+        url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod/recommend?username=' + localStorage.getItem('username'),
+        crossDomain: true,
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (service_data) {
+            // console.log('service_data: ' + service_data);
+            // console.log(service_data);
+            items_data = service_data['msg']['result'];
+            
+            // for (var item in items_data) {
+            //     itemLength++;
+            // }
+            itemLength = items_data.length;
+            // alert('this shit length is '+ items_data.length);
+            innerHTML = "";
+            $("#container").html(innerHTML);
+            var count = 0;
+
+            for (var i = 0; i < itemLength; i++) {
+                items_id.push(items_data[i]);
+                now_page.push(0);
+               
+
+                count++;
+                // alert('fired one ajax request');
+                // console.log('items_data[i]: fuck this i '+i);
+                innerHTML = "";
+
+                result_data = service_data['msg']['result'];
+
+                // for (var i=0;i<result_data.length(); i++){
+                // console.log(result_data[i]);
+                
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(result_data[i]['house_detail']['address']['coordinate']['lat'], result_data[i]['house_detail']['address']['coordinate']['lng']),
+                    map: map
+                });
+
+                enableMarker(marker, result_data['title']);
+
+                if (i % 2 == 1) {
+                    innerHTML = innerHTML + "<div class=\"row\">";
+                }
+
+
+                innerHTML = innerHTML + "<div class=\"col-sm-6 col-md-4\">";
+                innerHTML = innerHTML + "<div class=\"thumbnail\">";
+
+                innerHTML = innerHTML + "<img src=\"";
+                innerHTML = innerHTML + result_data[i]['house_detail']['picture_url'];
+                innerHTML = innerHTML + "\">";
+
+                innerHTML = innerHTML + "<div class=\"caption\">";
+                innerHTML = innerHTML + "<h3>" + result_data[i]['house_detail']['size'] + "</h3>";
+                innerHTML = innerHTML + "<p>" + result_data[i]['house_detail']['address']['street'] + "</p>";
+                innerHTML = innerHTML + "<p>" + result_data[i]['house_detail']['address']['zip'] + "</p>";
+
+                innerHTML = innerHTML + "<button type=\"button\" class=\"btn btn-default\" id=\"item" + i + "\" value=\"" + i + "\" href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</button>";
+                innerHTML = innerHTML + "</div></div></div>";
+
+                // console.log(count);
+                if (i % 2 == 0) {
+                    innerHTML = innerHTML + "</div>";
+                }
+            
+                // if ((i == itemLength-1) && (itemLength % 2 != 1)) {
+                //     innerHTML = innerHTML + "</div>";
+                // }
+                // console.log(innerHTML);
+                $("#container").append(innerHTML);
+
+                target_string = "#item" + i;
+                $(target_string).click(function () {
+                    houseDetail();
+                });
+                        
+                   
+            }
+            // alert('now we should have innerHTML ');
+            // console.log(innerHTML);
+            
+        },
+        error: function (e) {
+            console.log(e);
+            alert("Unable to retrieve your data.");
+        }
+    });
+}
+
 accountDisplayHandler.userInfo = function () {
     // alert("should render user info");
     // console.log(jwt_token);
@@ -1024,8 +1120,11 @@ function ResponseHandler(e, item_id) {
 
 $(document).ready(function () {
 
-    render_items();
-
+    if (localStorage.getItem('username')!=''){
+        render_items_login();
+    } else {
+        render_items();
+    }
     accountDisplayHandler.logOut();
 
     /* new comment function */
