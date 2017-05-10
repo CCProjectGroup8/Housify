@@ -116,19 +116,23 @@ function render_items() {
             // alert('get normal results back');
             // console.log(service_data);
             items_data = service_data['message'];
+            console.log('one');
+            console.log(items_data);
             items_data = items_data['results'];
             // console.log(items_data);
-            for (var item in items_data) {
+            //for (var item in items_data) {
                 // console.log(item);
-                itemLength++;
-            }
+              //  itemLength++;
+            //}
+            itemLength= items_data.length;
             // console.log(itemLength);
             innerHTML = "";
-
-            for (var i = 0; i < itemLength; i++) {
+            console.log(items_data.length);
+            for (var i = 0; i < items_data.length; i++) {
                 // console.log("i= " + i + "\n");
-                // console.log(items_data[i]['houseId']);
-                items_id.push(items_data[i]['houseId']);
+                console.log("item_render"+items_data[i]);
+                //items_id.push(items_data[i]['houseId']);
+                items_id.push(items_data[i]);
                 now_page.push(0);
                 // coords.push(items_data[i]['address']['coordinate']['lat']);
                 // coords.push(items_data[i]['address']['coordinate']['lng']);
@@ -172,7 +176,7 @@ function render_items() {
                 innerHTML = innerHTML + "\">";
 
                 innerHTML = innerHTML + "<div class=\"caption\">";
-                innerHTML = innerHTML + "<h3>" + items_data[i]['size'] + "</h3>";
+                innerHTML = innerHTML + "<h3>" + items_data[i]['title'] + "</h3>";
                 innerHTML = innerHTML + "<p>" + items_data[i]['address']['street'] + "</p>";
                 innerHTML = innerHTML + "<p>" + items_data[i]['address']['zip'] + "</p>";
 
@@ -195,7 +199,7 @@ function render_items() {
             innerHTML = innerHTML + "</tbody></table><br><br>" + "</div>";
 
             $("#container").html(innerHTML);
-            for (var i = 0; i < itemLength; i++) {
+            for (var i = 0; i < items_data.length; i++) {
                 target_string = "#item" + i;
                 $(target_string).click(function () {
                     houseDetail();
@@ -203,7 +207,7 @@ function render_items() {
             }
 
             $('#itemNextPage').click(function () {
-                if (itemLength>=10){
+                if (items_data.length>=10){
                     now_item_page++;
                     // alert("itemNextPage!");
                     itemRerender();
@@ -251,19 +255,23 @@ function itemRerender() {
         success: function (service_data) {
             // console.log(service_data);
             items_data = service_data['message'];
+            console.log('two');
+            console.log(items_data);
             items_data = items_data['results'];
             // console.log(items_data);
-            for (var item in items_data) {
+            //for (var item in items_data) {
                 // console.log(item);
-                itemLength++;
-            }
+              //  itemLength++;
+            //}
+            itemLength= items_data.length;
             // console.log(itemLength);
             innerHTML = "";
 
             for (var i = 0; i < itemLength; i++) {
                 // console.log("i= " + i + "\n");
                 // console.log(items_data[i]['houseId']);
-                items_id.push(items_data[i]['houseId']);
+                //items_id.push(items_data[i]['houseId']);
+                items_id.push(items_data[i]);
                 now_page.push(0);
                 // coords.push(items_data[i]['address']['coordinate']['lat']);
                 // coords.push(items_data[i]['address']['coordinate']['lng']);
@@ -307,7 +315,7 @@ function itemRerender() {
                 innerHTML = innerHTML + "\">";
 
                 innerHTML = innerHTML + "<div class=\"caption\">";
-                innerHTML = innerHTML + "<h3>" + items_data[i]['size'] + "</h3>";
+                innerHTML = innerHTML + "<h3>" + items_data[i]['title'] + "</h3>";
                 innerHTML = innerHTML + "<p>" + items_data[i]['address']['street'] + "</p>";
                 innerHTML = innerHTML + "<p>" + items_data[i]['address']['zip'] + "</p>";
 
@@ -383,6 +391,8 @@ function render_items_login() {
             }
 
             items_data = service_data['msg']['result'];
+            console.log('three');
+            console.log(items_data);
             // alert('special delivery for ziba');
             // for (var item in items_data) {
             //     itemLength++;
@@ -393,7 +403,7 @@ function render_items_login() {
             innerHTML = "";
             $("#container").html(innerHTML);
             var count = 0;
-
+            result_data= items_data;
             for (var i = 0; i < itemLength; i++) {
                 items_id.push(items_data[i]);
                 now_page.push(0);
@@ -404,7 +414,7 @@ function render_items_login() {
                 // console.log('items_data[i]: fuck this i '+i);
                 innerHTML = "";
 
-                result_data = service_data['msg']['result'];
+                //result_data = service_data['msg']['result'];
 
                 // for (var i=0;i<result_data.length(); i++){
                 // console.log(result_data[i]);
@@ -429,10 +439,12 @@ function render_items_login() {
                 innerHTML = innerHTML + "\">";
 
                 innerHTML = innerHTML + "<div class=\"caption\">";
-                innerHTML = innerHTML + "<h3>" + result_data[i]['house_detail']['size'] + "</h3>";
+                innerHTML = innerHTML + "<h3>" + result_data[i]['house_detail']['title'] + "</h3>";
                 innerHTML = innerHTML + "<p>" + result_data[i]['house_detail']['address']['street'] + "</p>";
                 innerHTML = innerHTML + "<p>" + result_data[i]['house_detail']['address']['zip'] + "</p>";
-
+                if (result_data[i]['recom_score']!=null){
+               		innerHTML = innerHTML + "<p>Recommendation Score : <b>" + result_data[i]['recom_score'] + "</b></p>";
+                }
                 innerHTML = innerHTML + "<button type=\"button\" class=\"btn btn-default\" id=\"item" + i + "\" value=\"" + i + "\" href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</button>";
                 innerHTML = innerHTML + "</div></div></div>";
 
@@ -624,7 +636,16 @@ function houseDetail() {
     // console.log(cleanData);
     caller_num = event.target.value;
     console.log('items_id: '+items_id);
-    caller_id = items_id[parseInt(event.target.value)]['house_detail']['houseId'];
+    console.log(items_id[parseInt(event.target.value)]);
+    if (items_id[parseInt(event.target.value)]['house_detail']==null){
+    	caller_id= items_id[parseInt(event.target.value)]['houseId'];
+    	console.log('item_id_next_house:'+items_id[parseInt(event.target.value)]['houseId']);
+    }else{
+    	caller_id=items_id[parseInt(event.target.value)]['house_detail']['houseId'];
+    	console.log('item_id_next_house:'+items_id[parseInt(event.target.value)]['house_detail']['houseId']);
+    }
+    //console.log('item_id_next_house:'+items_id[parseInt(event.target.value)]['houseId']);
+    //caller_id = items_id[parseInt(event.target.value)]['houseId'];
     console.log(caller_id);
 
     cleanData = {};
@@ -659,7 +680,7 @@ function houseDetail() {
 
             console.log(service_data);
             if (service_data) items_data = service_data['house'];
-
+            console.log('items_data '+items_data);
             items_data['title'] = (items_data['title']!=null) ? items_data['title']: "";
             console.log(items_data['title']);
             items_data['size'] =  (items_data['size']!=null) ? items_data['size']: "";
@@ -883,6 +904,7 @@ function houseDetailRerender() {
             // innerHTML = innerHTML + "<th>#</th>";
             innerHTML = innerHTML + "<th>Name</th>";
             // innerHTML = innerHTML + "<th>ID</th>";
+            innerHTML = innerHTML + "<th>Title</th>";
             innerHTML = innerHTML + "<th>Size</th>";
             innerHTML = innerHTML + "<th>Street</th>";
             innerHTML = innerHTML + "<th>Zip</th>";
@@ -898,7 +920,6 @@ function houseDetailRerender() {
 
             innerHTML = innerHTML + "<tr>";
             // innerHTML = innerHTML + "<th scope=\"row\">" + "</th>";
-            innerHTML = innerHTML + "<td>" + items_data['title'] + "</td>";
             // innerHTML = innerHTML + "<td>" + items_data[i]['houseId'] + "</td>";
             innerHTML = innerHTML + "<td>" + items_data['size'] + "</td>";
             innerHTML = innerHTML + "<td>" + items_data['address']['street'] + "</td>";
