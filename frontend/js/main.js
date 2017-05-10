@@ -113,7 +113,7 @@ function render_items() {
         // data: JSON.stringify(cleanData),
         dataType: 'json',
         success: function (service_data) {
-            alert('get normal results back');
+            // alert('get normal results back');
             // console.log(service_data);
             items_data = service_data['message'];
             items_data = items_data['results'];
@@ -220,7 +220,7 @@ function render_items() {
         },
         error: function (e) {
             console.log(e);
-            alert("Unable to retrieve your data in render items.");
+            // alert("Unable to retrieve your data in render items.");
         }
     });
 }
@@ -354,7 +354,7 @@ function itemRerender() {
             });
         },
         error: function (e) {
-            alert("Unable to retrieve your data in item rerender.");
+            // alert("Unable to retrieve your data in item rerender.");
         }
     });
 }
@@ -377,7 +377,7 @@ function render_items_login() {
 
 
             if (service_data.msg==="no recommendation") {
-                alert('no recommendation');
+                // alert('no recommendation');
                 itemRerender();
 
             }
@@ -388,7 +388,7 @@ function render_items_login() {
             //     itemLength++;
             // }
             // console.log(service_data);
-            // itemLength = items_data.length;
+            itemLength = items_data.length;
             // alert('this shit length is '+ items_data.length);
             innerHTML = "";
             $("#container").html(innerHTML);
@@ -461,7 +461,7 @@ function render_items_login() {
         error: function (e) {
             console.log('err: ');
             console.log(e);
-            alert("Unable to retrieve your data in item render login.");
+            // alert("Unable to retrieve your data in item render login.");
 
             itemRerender();
         }
@@ -503,7 +503,7 @@ accountDisplayHandler.userInfo = function () {
         },
         error: function (e) {
 
-           alert("Unable to retrieve your data.");
+           // alert("Unable to retrieve your data.");
            console.log(e);
         }
     });
