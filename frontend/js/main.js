@@ -542,8 +542,13 @@ function houseDetail() {
         success: function (service_data) {
 
             console.log(service_data);
-            if (service_data)
-            items_data = service_data['house'];
+            if (service_data) items_data = service_data['house'];
+
+            items_data['title'] = (items_data['title']!=null) ? items_data['title']: "";
+            console.log(items_data['title']);
+            items_data['size'] =  (items_data['size']!=null) ? items_data['title']: "";
+            items_data['address']['street'] =  (items_data['address']['street']!=null) ? items_data['title']: "";
+            items_data['address']['zip'] = (items_data['address']['zip']!=null) ? items_data['title']: "";
             // items_data = items_data['Item'];
             innerHTML = "";
             // console.log(items_data);
