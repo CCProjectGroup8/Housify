@@ -180,7 +180,7 @@ function render_items() {
                 innerHTML = innerHTML + "<div class=\"caption\">";
                 innerHTML = innerHTML + "<h3>" + items_data[i]['title'] + "</h3>";
                 innerHTML = innerHTML + "<p>" + items_data[i]['address']['street'] + "</p>";
-                innerHTML = innerHTML + "<p>" + items_data[i]['address']['zip'] + "</p>";
+                innerHTML = innerHTML + "<p>Zip: " + items_data[i]['address']['zip'] + "</p>";
 
                 innerHTML = innerHTML + "<button type=\"button\" class=\"btn btn-default\" id=\"item" + i + "\" value=\"" + i + "\" href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</button>";
                 // innerHTML = innerHTML + "<a href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</a>";
@@ -216,7 +216,7 @@ function render_items() {
                 }
             });
             $('#itemPrePage').click(function () {
-                alert("itemPrePage!");
+                // alert("itemPrePage!");
                 if (now_item_page != 0) {
                     now_item_page--;
                     // alert("itemNextPage!");
@@ -321,7 +321,7 @@ function itemRerender() {
                 innerHTML = innerHTML + "<div class=\"caption\">";
                 innerHTML = innerHTML + "<h3>" + items_data[i]['title'] + "</h3>";
                 innerHTML = innerHTML + "<p>" + items_data[i]['address']['street'] + "</p>";
-                innerHTML = innerHTML + "<p>" + items_data[i]['address']['zip'] + "</p>";
+                innerHTML = innerHTML + "<p>Zip: " + items_data[i]['address']['zip'] + "</p>";
 
                 innerHTML = innerHTML + "<button type=\"button\" class=\"btn btn-default\" id=\"item" + i + "\" value=\"" + i + "\" href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</button>";
                 // innerHTML = innerHTML + "<a href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</a>";
@@ -447,9 +447,9 @@ function render_items_login() {
                 innerHTML = innerHTML + "<div class=\"caption\">";
                 innerHTML = innerHTML + "<h3>" + result_data[i]['house_detail']['title'] + "</h3>";
                 innerHTML = innerHTML + "<p>" + result_data[i]['house_detail']['address']['street'] + "</p>";
-                innerHTML = innerHTML + "<p>" + result_data[i]['house_detail']['address']['zip'] + "</p>";
+                innerHTML = innerHTML + "<p>Zip: " + result_data[i]['house_detail']['address']['zip'] + "</p>";
                 if (result_data[i]['recom_score']!=null){
-               		innerHTML = innerHTML + "<p>Recommendation Score : <b>" + result_data[i]['recom_score'] + "</b></p>";
+               		innerHTML = innerHTML + "<p style=\"color:#F00\">Recommendation Score : <b>" + result_data[i]['recom_score'] + "</b></p>";
                 }
                 innerHTML = innerHTML + "<button type=\"button\" class=\"btn btn-default\" id=\"item" + i + "\" value=\"" + i + "\" href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</button>";
                 innerHTML = innerHTML + "</div></div></div>";
@@ -469,8 +469,7 @@ function render_items_login() {
                 $(target_string).click(function () {
                     houseDetail();
                 });
-                        
-                   
+                                    
             }
             // alert('now we should have innerHTML ');
             // console.log(innerHTML);
