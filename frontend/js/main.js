@@ -113,6 +113,7 @@ function render_items() {
         // data: JSON.stringify(cleanData),
         dataType: 'json',
         success: function (service_data) {
+            alert('get normal results back');
             // console.log(service_data);
             items_data = service_data['message'];
             items_data = items_data['results'];
@@ -218,7 +219,8 @@ function render_items() {
             });
         },
         error: function (e) {
-            alert("Unable to retrieve your data.");
+            console.log(e);
+            alert("Unable to retrieve your data in render items.");
         }
     });
 }
@@ -352,7 +354,7 @@ function itemRerender() {
             });
         },
         error: function (e) {
-            alert("Unable to retrieve your data.");
+            alert("Unable to retrieve your data in item rerender.");
         }
     });
 }
@@ -370,13 +372,23 @@ function render_items_login() {
         dataType: 'json',
         success: function (service_data) {
             // console.log('service_data: ' + service_data);
-            // console.log(service_data);
+            console.log('service_data: ');
+            console.log(service_data);
+
+
+            if (service_data.msg==="no recommendation") {
+                alert('no recommendation');
+                itemRerender();
+
+            }
+
             items_data = service_data['msg']['result'];
-            
+            // alert('special delivery for ziba');
             // for (var item in items_data) {
             //     itemLength++;
             // }
-            itemLength = items_data.length;
+            // console.log(service_data);
+            // itemLength = items_data.length;
             // alert('this shit length is '+ items_data.length);
             innerHTML = "";
             $("#container").html(innerHTML);
@@ -447,8 +459,11 @@ function render_items_login() {
             
         },
         error: function (e) {
+            console.log('err: ');
             console.log(e);
-            alert("Unable to retrieve your data.");
+            alert("Unable to retrieve your data in item render login.");
+
+            itemRerender();
         }
     });
 }
@@ -474,20 +489,22 @@ accountDisplayHandler.userInfo = function () {
            console.log(service_data);
            data = service_data['message']['results']['Item'];
            // console.log(data['email']);
-           $( '#profileEmail' ).val(data['email']);
-           $( '#profileAddr' ).val(data['address']['street']);
-           $( '#profileCity' ).val(data['address']['city']);
-           $( '#profileZipcode' ).val(data['address']['zip']);
+           if(data['email']) $( '#profileEmail' ).val(data['email']);
+           if (data['address']&&data['address']['street']) $( '#profileAddr' ).val(data['address']['street']);
+           if (data['address']&&data['address']['city']) $( '#profileCity' ).val(data['address']['city']);
+           if (data['address']&&data['address']['zip']) $( '#profileZipcode' ).val(data['address']['zip']);
            if(data['sex']=='female'){
                 console.log("female");
                 $( '#gender1' ).prop("checked", true);
            } else {
                 $( '#gender2' ).prop("checked", true);
            }
-           $( '#signUpDate' ).val(data['dob']);
+           if (data['dob']) $( '#signUpDate' ).val(data['dob']);
         },
         error: function (e) {
+
            alert("Unable to retrieve your data.");
+           console.log(e);
         }
     });
 }
@@ -554,6 +571,7 @@ function submitProfileForm(formData){
     cleanData['street'] = formData['address'] ? formData['address']: "" ;
     cleanData['zip'] = formData['zipcode'] ? formData['zipcode']: "" ;
     cleanData['sex'] = formData['gender'] ? formData['gender']: "" ;
+    cleanData['dob'] = $('#signUpDate').val() ;
     console.log(cleanData);
 
         // "username": "ziba2",
@@ -1120,7 +1138,7 @@ function ResponseHandler(e, item_id) {
 
 $(document).ready(function () {
 
-    if (localStorage.getItem('username')!=''){
+    if (localStorage.getItem('username')!=null){
         render_items_login();
     } else {
         render_items();

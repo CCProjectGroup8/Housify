@@ -116,7 +116,7 @@ $('#signUpForm').submit(function(e){
         //register user in db
         $.ajax({
             type: "POST",
-            url: 'https://eu1cndvl5h.execute-api.us-east-1.amazonaws.com/prod/user',
+            url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod/user',
             crossDomain: true,
             contentType: 'application/json',
 
