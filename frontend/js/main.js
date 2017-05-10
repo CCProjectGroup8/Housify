@@ -16,6 +16,8 @@ itemLength = 0;
 
 now_page = [];
 
+is_recommendation = 0;
+
 var accountDisplayHandler = {
     userName: null,
     loginNavElement: $("#loginNavElement"),
@@ -101,6 +103,8 @@ function getCookie(key) {
 }
 
 function render_items() {
+    document.getElementById('brandName').innerHTML = "Housify | all houses";
+
     itemLength = 0;
 
     cleanData = {};
@@ -180,7 +184,7 @@ function render_items() {
                 innerHTML = innerHTML + "<div class=\"caption\">";
                 innerHTML = innerHTML + "<h3>" + items_data[i]['title'] + "</h3>";
                 innerHTML = innerHTML + "<p>" + items_data[i]['address']['street'] + "</p>";
-                innerHTML = innerHTML + "<p>Zip: " + items_data[i]['address']['zip'] + "</p>";
+                // innerHTML = innerHTML + "<p>Zip: " + items_data[i]['address']['zip'] + "</p>";
 
                 innerHTML = innerHTML + "<button type=\"button\" class=\"btn btn-default\" id=\"item" + i + "\" value=\"" + i + "\" href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</button>";
                 // innerHTML = innerHTML + "<a href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</a>";
@@ -243,6 +247,8 @@ function enableMarker(marker, message) {
 
 
 function itemRerender() {
+    document.getElementById('brandName').innerHTML = "Housify | all houses";
+
     itemLength = 0;
 
     cleanData = {};
@@ -321,7 +327,7 @@ function itemRerender() {
                 innerHTML = innerHTML + "<div class=\"caption\">";
                 innerHTML = innerHTML + "<h3>" + items_data[i]['title'] + "</h3>";
                 innerHTML = innerHTML + "<p>" + items_data[i]['address']['street'] + "</p>";
-                innerHTML = innerHTML + "<p>Zip: " + items_data[i]['address']['zip'] + "</p>";
+                // innerHTML = innerHTML + "<p>Zip: " + items_data[i]['address']['zip'] + "</p>";
 
                 innerHTML = innerHTML + "<button type=\"button\" class=\"btn btn-default\" id=\"item" + i + "\" value=\"" + i + "\" href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</button>";
                 // innerHTML = innerHTML + "<a href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</a>";
@@ -372,6 +378,8 @@ function itemRerender() {
 }
 
 function render_items_login() {
+    document.getElementById('brandName').innerHTML = "Housify | recommend for " + localStorage.getItem('username');
+
     itemLength = 0;
 
     cleanData = {};
@@ -447,7 +455,7 @@ function render_items_login() {
                 innerHTML = innerHTML + "<div class=\"caption\">";
                 innerHTML = innerHTML + "<h3>" + result_data[i]['house_detail']['title'] + "</h3>";
                 innerHTML = innerHTML + "<p>" + result_data[i]['house_detail']['address']['street'] + "</p>";
-                innerHTML = innerHTML + "<p>Zip: " + result_data[i]['house_detail']['address']['zip'] + "</p>";
+                // innerHTML = innerHTML + "<p>Zip: " + result_data[i]['house_detail']['address']['zip'] + "</p>";
                 if (result_data[i]['recom_score']!=null){
                		innerHTML = innerHTML + "<p style=\"color:#F00\">Recommendation Score : <b>" + result_data[i]['recom_score'] + "</b></p>";
                 }
@@ -1167,10 +1175,10 @@ function ResponseHandler(e, item_id) {
 $(document).ready(function () {
 
     if (localStorage.getItem('username')!=null){
-        // alert("haha!");
+        is_recommendation = 1;
         render_items_login();
     } else {
-        // alert("helaoshihaoshuai");
+        is_recommendation = 0;
         render_items();
     }
     accountDisplayHandler.logOut();
@@ -1203,10 +1211,15 @@ $(document).ready(function () {
     });
     
     $("#brandName").click(function () {
-        
-        // window.location.reload();
-        
-        render_items();
+        if (is_recommendation){
+            is_recommendation = 0;
+            render_items();
+        } else {
+            if (localStorage.getItem('username')!=null){
+                is_recommendation = 1;
+                render_items_login();
+            }
+        }   
     });
 
     $("#datetimepicker").datetimepicker({
