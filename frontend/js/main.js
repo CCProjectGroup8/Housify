@@ -623,7 +623,8 @@ function houseDetail() {
     commentLength = 0;
     // console.log(cleanData);
     caller_num = event.target.value;
-    caller_id = items_id[parseInt(event.target.value)];
+    console.log('items_id: '+items_id);
+    caller_id = items_id[parseInt(event.target.value)]['house_detail']['houseId'];
     console.log(caller_id);
 
     cleanData = {};
@@ -646,6 +647,7 @@ function houseDetail() {
         }
     });
     /* detail post */
+    console.log(caller_id);
     $.ajax({
         type: "GET",
         url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod/house/' + caller_id + "?page=" + now_page[parseInt(caller_num)],
@@ -707,7 +709,7 @@ function houseDetail() {
             // innerHTML = innerHTML + "<th>#</th>";
             innerHTML = innerHTML + "<th>Reviewer</th>";
             // innerHTML = innerHTML + "<th>ID</th>";
-            innerHTML = innerHTML + "<th>Stars</th>";
+            innerHTML = innerHTML + "<th>Rating</th>";
             innerHTML = innerHTML + "<th>Content</th>";
             // innerHTML = innerHTML + "<th>Zip</th>";
             innerHTML = innerHTML + "</tr></thead>";
@@ -915,7 +917,7 @@ function houseDetailRerender() {
             // innerHTML = innerHTML + "<th>#</th>";
             innerHTML = innerHTML + "<th>Reviewer</th>";
             // innerHTML = innerHTML + "<th>ID</th>";
-            innerHTML = innerHTML + "<th>Time</th>";
+            innerHTML = innerHTML + "<th>Rating</th>";
             innerHTML = innerHTML + "<th>Content</th>";
             // innerHTML = innerHTML + "<th>Zip</th>";
             innerHTML = innerHTML + "</tr></thead>";
@@ -1171,28 +1173,14 @@ $(document).ready(function () {
     $("#usernameNavElement").click(function () {
         accountDisplayHandler.userInfo();
     });
-    $("#ordersInfoNavElement").click(function () {
-        accountDisplayHandler.ordersInfo();
+    
+    $("#brandName").click(function () {
+        
+        // window.location.reload();
+        
+        render_items();
     });
-    // $( "#houseNavElement" ).click(function() {
-    //     accountDisplayHandler.houseInfo();
-    // });
 
-    // $( "#logoutNavElement" ).click(function() {
-    //     accountDisplayHandler.logOut();
-    // });
-
-    $("#emptyCart").click(function () {
-        accountDisplayHandler.emptyCart();
-    });
-    $("#paymentButton").click(function (e) {
-        handler.open({
-            name: 'Cart',
-            description: 'Payment for books',
-            amount: 2000
-        });
-        e.preventDefault();
-    });
     $("#datetimepicker").datetimepicker({
         pickTime: false
     });
