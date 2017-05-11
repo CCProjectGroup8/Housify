@@ -116,28 +116,17 @@ function render_items() {
         url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod?page=' + now_item_page,
         crossDomain: true,
         contentType: 'application/json',
-        // data: JSON.stringify(cleanData),
         dataType: 'json',
         success: function (service_data) {
-            // alert('get normal results back');
-            // console.log(service_data);
             items_data = service_data['message'];
             console.log('one');
             console.log(items_data);
             items_data = items_data['results'];
-            // console.log(items_data);
-            //for (var item in items_data) {
-                // console.log(item);
-              //  itemLength++;
-            //}
             itemLength= items_data.length;
-            // console.log(itemLength);
             innerHTML = "";
             console.log(items_data.length);
             for (var i = 0; i < items_data.length; i++) {
-                // console.log("i= " + i + "\n");
                 console.log("item_render"+items_data[i]);
-                //items_id.push(items_data[i]['houseId']);
                 items_id.push(items_data[i]);
                 now_page.push(0);
                 // coords.push(items_data[i]['address']['coordinate']['lat']);
