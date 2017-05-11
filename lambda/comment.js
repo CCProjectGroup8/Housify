@@ -3,7 +3,7 @@ var AWS = require('aws-sdk');
 
 AWS.config.update({
     region: "us-east-1",
-    endpoint: "https://dynamodb.us-east-1.amazonaws.com",
+    endpoint: "https://dynamodb.us-east-1.amazonaws.com"
 });
 
 var docClient = new AWS.DynamoDB.DocumentClient();
@@ -35,7 +35,7 @@ var postComment = function(event, callback) {
         }
     });
     var date = new Date().valueOf();
-    var id = "0" + new Date().getTime();
+    var id = "0" + new Date().getTime().toString().substring(4, 13);
     docClient.get({
         TableName: 'user',
         Key:{
@@ -48,6 +48,8 @@ var postComment = function(event, callback) {
         } else {
             console.log(data);
             var userId = data.Item.userId;
+            var rating = parseInt(event.body.rating);
+            console.log(userId);
             docClient.put({
                 TableName: 'comments',
                 Item: {
@@ -57,7 +59,7 @@ var postComment = function(event, callback) {
                     'timestamp': date,
                     'reviewerName': event.body.username,
                     'reviewerId': userId,
-                    'rating': event.body.rating
+                    'rating': rating
                 }
             }, function(err, data) {
                 if (err) {
