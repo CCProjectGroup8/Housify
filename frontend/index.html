@@ -34,6 +34,9 @@
     <script src="./assets/gateway/lib/url-template/url-template.js"></script>
     <script src="./assets/gateway/apigClient.js"></script>
     <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/async/0.2.7/async.min.js"></script> -->
+    <script type="text/javascript">
+        
+    </script>
 
 </head>
 <body>
@@ -49,6 +52,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a id="brandName" class="navbar-brand" href="#">Housify</a>
+                <a id="tagContent"></a>
             </div>
             <div class="navbar-collapse" id="navRight">
                 <ul class="nav navbar-nav navbar-right">
@@ -282,6 +286,68 @@
                             <option value="11">Owner</option>
                         </select>
                     </div>
+
+                    <div class="form-group">
+                        <label>Which of the following best match your budget range?</label>
+
+                        <select class="form-control" id="profileBudget">
+                            <option value="0">0 - 100</option>
+                            <option value="1">100 - 200</option>
+                            <option value="2">200 - 300</option>
+                            <option value="3">300 - 400</option>
+                            <option value="4">400 - 500</option>
+                            <option value="6">500 +</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Which of the following fit your preference house type?</label>
+
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                House
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Entire Apartment
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Bedroom
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Which of the following cancel policy do you prefer?</label>
+
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Strict
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Flexible
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Moderate
+                            </label>
+                        </div>
+                    </div>
+
+
 
                     <button type="submit" class="btn btn-default">Update</button>
                 </form>

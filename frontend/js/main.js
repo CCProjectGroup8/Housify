@@ -16,6 +16,8 @@ itemLength = 0;
 
 now_page = [];
 
+is_recommendation = 0;
+
 var accountDisplayHandler = {
     userName: null,
     loginNavElement: $("#loginNavElement"),
@@ -101,34 +103,31 @@ function getCookie(key) {
 }
 
 function render_items() {
+    document.getElementById('brandName').innerHTML = "Housify | all houses";
+
     itemLength = 0;
 
     cleanData = {};
     now_page = [];
+    items_id = [];
+
     $.ajax({
         type: "GET",
         url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod?page=' + now_item_page,
         crossDomain: true,
         contentType: 'application/json',
-        // data: JSON.stringify(cleanData),
         dataType: 'json',
         success: function (service_data) {
-            // alert('get normal results back');
-            // console.log(service_data);
             items_data = service_data['message'];
+            console.log('one');
+            console.log(items_data);
             items_data = items_data['results'];
-            // console.log(items_data);
-            for (var item in items_data) {
-                // console.log(item);
-                itemLength++;
-            }
-            // console.log(itemLength);
+            itemLength= items_data.length;
             innerHTML = "";
-
-            for (var i = 0; i < itemLength; i++) {
-                // console.log("i= " + i + "\n");
-                // console.log(items_data[i]['houseId']);
-                items_id.push(items_data[i]['houseId']);
+            console.log(items_data.length);
+            for (var i = 0; i < items_data.length; i++) {
+                console.log("item_render"+items_data[i]);
+                items_id.push(items_data[i]);
                 now_page.push(0);
                 // coords.push(items_data[i]['address']['coordinate']['lat']);
                 // coords.push(items_data[i]['address']['coordinate']['lng']);
@@ -172,9 +171,9 @@ function render_items() {
                 innerHTML = innerHTML + "\">";
 
                 innerHTML = innerHTML + "<div class=\"caption\">";
-                innerHTML = innerHTML + "<h3>" + items_data[i]['size'] + "</h3>";
+                innerHTML = innerHTML + "<h3>" + items_data[i]['title'] + "</h3>";
                 innerHTML = innerHTML + "<p>" + items_data[i]['address']['street'] + "</p>";
-                innerHTML = innerHTML + "<p>" + items_data[i]['address']['zip'] + "</p>";
+                // innerHTML = innerHTML + "<p>Zip: " + items_data[i]['address']['zip'] + "</p>";
 
                 innerHTML = innerHTML + "<button type=\"button\" class=\"btn btn-default\" id=\"item" + i + "\" value=\"" + i + "\" href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</button>";
                 // innerHTML = innerHTML + "<a href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</a>";
@@ -195,7 +194,7 @@ function render_items() {
             innerHTML = innerHTML + "</tbody></table><br><br>" + "</div>";
 
             $("#container").html(innerHTML);
-            for (var i = 0; i < itemLength; i++) {
+            for (var i = 0; i < items_data.length; i++) {
                 target_string = "#item" + i;
                 $(target_string).click(function () {
                     houseDetail();
@@ -203,14 +202,14 @@ function render_items() {
             }
 
             $('#itemNextPage').click(function () {
-                if (itemLength>=10){
+                if (items_data.length>=10){
                     now_item_page++;
                     // alert("itemNextPage!");
                     itemRerender();
                 }
             });
             $('#itemPrePage').click(function () {
-                alert("itemPrePage!");
+                // alert("itemPrePage!");
                 if (now_item_page != 0) {
                     now_item_page--;
                     // alert("itemNextPage!");
@@ -237,10 +236,14 @@ function enableMarker(marker, message) {
 
 
 function itemRerender() {
+    document.getElementById('brandName').innerHTML = "Housify | all houses";
+
     itemLength = 0;
 
     cleanData = {};
     now_page = [];
+    items_id = [];
+
     $.ajax({
         type: "GET",
         url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod?page=' + now_item_page,
@@ -251,19 +254,23 @@ function itemRerender() {
         success: function (service_data) {
             // console.log(service_data);
             items_data = service_data['message'];
+            console.log('two');
+            console.log(items_data);
             items_data = items_data['results'];
             // console.log(items_data);
-            for (var item in items_data) {
+            //for (var item in items_data) {
                 // console.log(item);
-                itemLength++;
-            }
+              //  itemLength++;
+            //}
+            itemLength= items_data.length;
             // console.log(itemLength);
             innerHTML = "";
 
             for (var i = 0; i < itemLength; i++) {
                 // console.log("i= " + i + "\n");
                 // console.log(items_data[i]['houseId']);
-                items_id.push(items_data[i]['houseId']);
+                //items_id.push(items_data[i]['houseId']);
+                items_id.push(items_data[i]);
                 now_page.push(0);
                 // coords.push(items_data[i]['address']['coordinate']['lat']);
                 // coords.push(items_data[i]['address']['coordinate']['lng']);
@@ -307,9 +314,9 @@ function itemRerender() {
                 innerHTML = innerHTML + "\">";
 
                 innerHTML = innerHTML + "<div class=\"caption\">";
-                innerHTML = innerHTML + "<h3>" + items_data[i]['size'] + "</h3>";
+                innerHTML = innerHTML + "<h3>" + items_data[i]['title'] + "</h3>";
                 innerHTML = innerHTML + "<p>" + items_data[i]['address']['street'] + "</p>";
-                innerHTML = innerHTML + "<p>" + items_data[i]['address']['zip'] + "</p>";
+                // innerHTML = innerHTML + "<p>Zip: " + items_data[i]['address']['zip'] + "</p>";
 
                 innerHTML = innerHTML + "<button type=\"button\" class=\"btn btn-default\" id=\"item" + i + "\" value=\"" + i + "\" href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</button>";
                 // innerHTML = innerHTML + "<a href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</a>";
@@ -360,10 +367,14 @@ function itemRerender() {
 }
 
 function render_items_login() {
+    document.getElementById('brandName').innerHTML = "Housify | recommend for " + localStorage.getItem('username');
+
     itemLength = 0;
 
     cleanData = {};
     now_page = [];
+    items_id = [];
+
     $.ajax({
         type: "GET",
         url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod/recommend?username=' + localStorage.getItem('username'),
@@ -383,6 +394,8 @@ function render_items_login() {
             }
 
             items_data = service_data['msg']['result'];
+            console.log('three');
+            console.log(items_data);
             // alert('special delivery for ziba');
             // for (var item in items_data) {
             //     itemLength++;
@@ -393,7 +406,7 @@ function render_items_login() {
             innerHTML = "";
             $("#container").html(innerHTML);
             var count = 0;
-
+            result_data= items_data;
             for (var i = 0; i < itemLength; i++) {
                 items_id.push(items_data[i]);
                 now_page.push(0);
@@ -404,7 +417,7 @@ function render_items_login() {
                 // console.log('items_data[i]: fuck this i '+i);
                 innerHTML = "";
 
-                result_data = service_data['msg']['result'];
+                //result_data = service_data['msg']['result'];
 
                 // for (var i=0;i<result_data.length(); i++){
                 // console.log(result_data[i]);
@@ -429,10 +442,12 @@ function render_items_login() {
                 innerHTML = innerHTML + "\">";
 
                 innerHTML = innerHTML + "<div class=\"caption\">";
-                innerHTML = innerHTML + "<h3>" + result_data[i]['house_detail']['size'] + "</h3>";
+                innerHTML = innerHTML + "<h3>" + result_data[i]['house_detail']['title'] + "</h3>";
                 innerHTML = innerHTML + "<p>" + result_data[i]['house_detail']['address']['street'] + "</p>";
-                innerHTML = innerHTML + "<p>" + result_data[i]['house_detail']['address']['zip'] + "</p>";
-
+                // innerHTML = innerHTML + "<p>Zip: " + result_data[i]['house_detail']['address']['zip'] + "</p>";
+                if (result_data[i]['recom_score']!=null){
+               		innerHTML = innerHTML + "<p style=\"color:#F00\">Recommendation Score : <b>" + result_data[i]['recom_score'] + "</b></p>";
+                }
                 innerHTML = innerHTML + "<button type=\"button\" class=\"btn btn-default\" id=\"item" + i + "\" value=\"" + i + "\" href=\"#\" data-toggle=\"modal\" data-target=\"#houseInfoModal\">Details</button>";
                 innerHTML = innerHTML + "</div></div></div>";
 
@@ -451,8 +466,7 @@ function render_items_login() {
                 $(target_string).click(function () {
                     houseDetail();
                 });
-                        
-                   
+                                    
             }
             // alert('now we should have innerHTML ');
             // console.log(innerHTML);
@@ -623,7 +637,17 @@ function houseDetail() {
     commentLength = 0;
     // console.log(cleanData);
     caller_num = event.target.value;
-    caller_id = items_id[parseInt(event.target.value)];
+    console.log('items_id: '+items_id);
+    console.log(items_id[parseInt(event.target.value)]);
+    if (items_id[parseInt(event.target.value)]['house_detail']==null){
+    	caller_id= items_id[parseInt(event.target.value)]['houseId'];
+    	console.log('item_id_next_house:'+items_id[parseInt(event.target.value)]['houseId']);
+    }else{
+    	caller_id=items_id[parseInt(event.target.value)]['house_detail']['houseId'];
+    	console.log('item_id_next_house:'+items_id[parseInt(event.target.value)]['house_detail']['houseId']);
+    }
+    //console.log('item_id_next_house:'+items_id[parseInt(event.target.value)]['houseId']);
+    //caller_id = items_id[parseInt(event.target.value)]['houseId'];
     console.log(caller_id);
 
     cleanData = {};
@@ -646,6 +670,7 @@ function houseDetail() {
         }
     });
     /* detail post */
+    console.log(caller_id);
     $.ajax({
         type: "GET",
         url: 'https://a4j8o4le0e.execute-api.us-east-1.amazonaws.com/prod/house/' + caller_id + "?page=" + now_page[parseInt(caller_num)],
@@ -657,7 +682,7 @@ function houseDetail() {
 
             console.log(service_data);
             if (service_data) items_data = service_data['house'];
-
+            console.log('items_data '+items_data);
             items_data['title'] = (items_data['title']!=null) ? items_data['title']: "";
             console.log(items_data['title']);
             items_data['size'] =  (items_data['size']!=null) ? items_data['size']: "";
@@ -707,7 +732,7 @@ function houseDetail() {
             // innerHTML = innerHTML + "<th>#</th>";
             innerHTML = innerHTML + "<th>Reviewer</th>";
             // innerHTML = innerHTML + "<th>ID</th>";
-            innerHTML = innerHTML + "<th>Stars</th>";
+            innerHTML = innerHTML + "<th>Rating</th>";
             innerHTML = innerHTML + "<th>Content</th>";
             // innerHTML = innerHTML + "<th>Zip</th>";
             innerHTML = innerHTML + "</tr></thead>";
@@ -789,7 +814,8 @@ function houseDetail() {
                     //     }
                     // }
                     // console.log(ratio);
-                    submitForm(formData, service_data['house']['houseId'], caller_num);
+                    submitForm(formData, caller_id, caller_num);
+                    // submitForm(formData, service_data['house']['houseId'], caller_num);
                 });
             }
             else {
@@ -881,6 +907,7 @@ function houseDetailRerender() {
             // innerHTML = innerHTML + "<th>#</th>";
             innerHTML = innerHTML + "<th>Name</th>";
             // innerHTML = innerHTML + "<th>ID</th>";
+            innerHTML = innerHTML + "<th>Title</th>";
             innerHTML = innerHTML + "<th>Size</th>";
             innerHTML = innerHTML + "<th>Street</th>";
             innerHTML = innerHTML + "<th>Zip</th>";
@@ -896,7 +923,6 @@ function houseDetailRerender() {
 
             innerHTML = innerHTML + "<tr>";
             // innerHTML = innerHTML + "<th scope=\"row\">" + "</th>";
-            innerHTML = innerHTML + "<td>" + items_data['title'] + "</td>";
             // innerHTML = innerHTML + "<td>" + items_data[i]['houseId'] + "</td>";
             innerHTML = innerHTML + "<td>" + items_data['size'] + "</td>";
             innerHTML = innerHTML + "<td>" + items_data['address']['street'] + "</td>";
@@ -915,7 +941,7 @@ function houseDetailRerender() {
             // innerHTML = innerHTML + "<th>#</th>";
             innerHTML = innerHTML + "<th>Reviewer</th>";
             // innerHTML = innerHTML + "<th>ID</th>";
-            innerHTML = innerHTML + "<th>Time</th>";
+            innerHTML = innerHTML + "<th>Rating</th>";
             innerHTML = innerHTML + "<th>Content</th>";
             // innerHTML = innerHTML + "<th>Zip</th>";
             innerHTML = innerHTML + "</tr></thead>";
@@ -982,7 +1008,8 @@ function houseDetailRerender() {
                             return accumulater;
                         }
                         , {});
-                    submitForm(formData, service_data['house']['houseId'], caller_num);
+                    // submitForm(formData, service_data['house']['houseId'], caller_num);
+                    submitForm(formData, caller_id, caller_num);
                 });
             }
             else {
@@ -1139,8 +1166,10 @@ function ResponseHandler(e, item_id) {
 $(document).ready(function () {
 
     if (localStorage.getItem('username')!=null){
+        is_recommendation = 1;
         render_items_login();
     } else {
+        is_recommendation = 0;
         render_items();
     }
     accountDisplayHandler.logOut();
@@ -1171,28 +1200,19 @@ $(document).ready(function () {
     $("#usernameNavElement").click(function () {
         accountDisplayHandler.userInfo();
     });
-    $("#ordersInfoNavElement").click(function () {
-        accountDisplayHandler.ordersInfo();
+    
+    $("#brandName").click(function () {
+        if (is_recommendation){
+            is_recommendation = 0;
+            render_items();
+        } else {
+            if (localStorage.getItem('username')!=null){
+                is_recommendation = 1;
+                render_items_login();
+            }
+        }   
     });
-    // $( "#houseNavElement" ).click(function() {
-    //     accountDisplayHandler.houseInfo();
-    // });
 
-    // $( "#logoutNavElement" ).click(function() {
-    //     accountDisplayHandler.logOut();
-    // });
-
-    $("#emptyCart").click(function () {
-        accountDisplayHandler.emptyCart();
-    });
-    $("#paymentButton").click(function (e) {
-        handler.open({
-            name: 'Cart',
-            description: 'Payment for books',
-            amount: 2000
-        });
-        e.preventDefault();
-    });
     $("#datetimepicker").datetimepicker({
         pickTime: false
     });
