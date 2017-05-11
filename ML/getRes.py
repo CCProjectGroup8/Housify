@@ -52,7 +52,8 @@ def getRes():
 			logcnt = 0
 	else:
 		logcnt = 0
-        rates = context.create_decimal_from_float(0.4 * float(rate_site) + 0.4 * float(rate_content) + 0.2 * float(logcnt))
+        rates = context.create_decimal_from_float(0.4 * float(rate_content))
+        # rates = context.create_decimal_from_float(0.4 / 15 * float(rate_site) + 0.4 * float(rate_content) + 0.2 / 100 * float(logcnt))
 
         # tuple = (i['reviewerId'], i['houseId'], str(rates))
         # result.append(tuple)
@@ -85,7 +86,8 @@ def getRes():
 			logcnt = 0
 	  else:
 	  	logcnt = 0
-          rates = context.create_decimal_from_float(0.4 * float(rate_site) + 0.4 * float(rate_content) + 0.2 * float(logcnt))
+          rates = context.create_decimal_from_float(float(rate_content))
+          # rates = context.create_decimal_from_float(0.4 / 15 * float(rate_site) + 0.4 * float(rate_content) + 0.2 / 100 * float(logcnt))
 
           # tuple = (i['reviewerId'], i['houseId'], str(rates))
           # result.append(tuple)

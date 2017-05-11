@@ -144,18 +144,30 @@ while True:
 
 		houseId = [x for (y, x) in sorted(zip(score, houseId))]
 		score = sorted(score)
-		
+       	
 		hashset = set()
 		list_len = len(houseId)
-		offset = 0
-		for index in range(list_len):
-			i = index - offset
+		new_houseId = []
+		new_score = []
+		count = 0
+		for i in range(list_len):
 			if (houseId[i] in hashset):
-				del houseId[i]
-				del score[i]
-				offset = offset + 1
+				continue
 			else:
+				new_houseId.append(houseId[i])
+				new_score.append(score[i])
 				hashset.add(houseId[i])
+				count = count + 1
+
+#		offset = 0
+#		for index in range(list_len):
+#			i = index - offset
+#			if (houseId[i] in hashset):
+#				del houseId[i]
+#				del score[i]
+#				offset = offset + 1
+#			else:
+#				hashset.add(houseId[i])
 	
 		recresult['recommendation']['houseId'] = houseId[::-1]
 		recresult['recommendation']['score'] = score[::-1]
