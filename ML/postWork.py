@@ -57,22 +57,22 @@ print 'For testing data the RMSE is %s' % (error)
 print "predictions =  ", predictions
 print "rates_and_preds = ", rates_and_preds
 
-complete_movies_file = os.path.join(datasets_path, 'house.csv')
-complete_movies_raw_data = sc.textFile(complete_movies_file)
-complete_movies_raw_data_header = complete_movies_raw_data.take(1)[0]
+complete_houses_file = os.path.join(datasets_path, 'house.csv')
+complete_houses_raw_data = sc.textFile(complete_houses_file)
+complete_houses_raw_data_header = complete_houses_raw_data.take(1)[0]
 
-complete_movies_data = complete_movies_raw_data.filter(lambda line: line!=complete_movies_raw_data_header).map(lambda line: line.split(",")).map(lambda tokens: (int(tokens[0]),tokens[1])).cache()
-complete_movies_titles = complete_movies_data.map(lambda x: (int(x[0]),x[1]))
-print "There are %s movies in the complete dataset" % (complete_movies_titles.count())
+complete_houses_data = complete_houses_raw_data.filter(lambda line: line!=complete_houses_raw_data_header).map(lambda line: line.split(",")).map(lambda tokens: (int(tokens[0]),tokens[1])).cache()
+complete_houses_titles = complete_houses_data.map(lambda x: (int(x[0]),x[1]))
+print "There are %s houses in the complete dataset" % (complete_houses_titles.count())
 
 
 def get_counts_and_averages(ID_and_ratings_tuple):
     nratings = len(ID_and_ratings_tuple[1])
     return ID_and_ratings_tuple[0], (nratings, float(sum(x for x in ID_and_ratings_tuple[1]))/nratings)
 
-movie_ID_with_ratings_RDD = (complete_ratings_data.map(lambda x: (x[1], x[2])).groupByKey())
-movie_ID_with_avg_ratings_RDD = movie_ID_with_ratings_RDD.map(get_counts_and_averages)
-movie_rating_counts_RDD = movie_ID_with_avg_ratings_RDD.map(lambda x: (x[0], x[1][0]))
+house_ID_with_ratings_RDD = (complete_ratings_data.map(lambda x: (x[1], x[2])).groupByKey())
+house_ID_with_avg_ratings_RDD = house_ID_with_ratings_RDD.map(get_counts_and_averages)
+house_rating_counts_RDD = house_ID_with_avg_ratings_RDD.map(lambda x: (x[0], x[1][0]))
 		
 
 while True:
@@ -91,37 +91,37 @@ while True:
 		new_ratings_model = ALS.train(complete_data_with_new_ratings_RDD, best_rank, seed=seed, 
 		                              iterations=iterations, lambda_=regularization_parameter)
 		
-		new_user_ratings_ids = map(lambda x: x[1], new_user_ratings) # get just movie IDs
+		new_user_ratings_ids = map(lambda x: x[1], new_user_ratings) # get just house IDs
 		# keep just those not on the ID list (thanks Lei Li for spotting the error!)
-		new_user_unrated_movies_RDD = (complete_movies_data.filter(lambda x: x[0] not in new_user_ratings_ids).map(lambda x: (new_user_ID, x[0])))
+		new_user_unrated_houses_RDD = (complete_houses_data.filter(lambda x: x[0] not in new_user_ratings_ids).map(lambda x: (new_user_ID, x[0])))
 		
-		# Use the input RDD, new_user_unrated_movies_RDD, with new_ratings_model.predictAll() to predict new ratings for the movies
-		new_user_recommendations_RDD = new_ratings_model.predictAll(new_user_unrated_movies_RDD)
+		# Use the input RDD, new_user_unrated_houses_RDD, with new_ratings_model.predictAll() to predict new ratings for the houses
+		new_user_recommendations_RDD = new_ratings_model.predictAll(new_user_unrated_houses_RDD)
 		
 		# Transform new_user_recommendations_RDD into pairs of the form (Movie ID, Predicted Rating)
 		new_user_recommendations_rating_RDD = new_user_recommendations_RDD.map(lambda x: (x.product, x.rating))
 		print new_user_recommendations_rating_RDD.take(5)
 		new_user_recommendations_rating_title_and_count_RDD = \
-		    new_user_recommendations_rating_RDD.join(complete_movies_titles).join(movie_rating_counts_RDD)
+		    new_user_recommendations_rating_RDD.join(complete_houses_titles).join(house_rating_counts_RDD)
 		new_user_recommendations_rating_title_and_count_RDD.take(3)
 		
 		new_user_recommendations_rating_title_and_count_RDD = \
 		    new_user_recommendations_rating_title_and_count_RDD.map(lambda r: (r[1][0][1], r[1][0][0], r[1][1]))
 		    
-		#top_movies = new_user_recommendations_rating_title_and_count_RDD.filter(lambda r: r[2]>=25).takeOrdered(25, key=lambda x: -x[1])
-		top_movies = new_user_recommendations_rating_RDD.takeOrdered(25, key=lambda x: -x[1])
+		#top_houses = new_user_recommendations_rating_title_and_count_RDD.filter(lambda r: r[2]>=25).takeOrdered(25, key=lambda x: -x[1])
+		top_houses = new_user_recommendations_rating_RDD.takeOrdered(25, key=lambda x: -x[1])
 		
 		
-		print map(str, top_movies)
+		print map(str, top_houses)
 		
-		for i in xrange(len(top_movies)):
+		for i in xrange(len(top_houses)):
 			pass
-		#	print top_movies[i][1]	
+		#	print top_houses[i][1]	
 			
 		
-		#top_movies = new_user_recommendations_rating_RDD.takeOrdered(25, key=lambda x: -x[1])
+		#top_houses = new_user_recommendations_rating_RDD.takeOrdered(25, key=lambda x: -x[1])
 		#
-		#print top_movies
+		#print top_houses
 		
 		recresult = {
 			'username' : key
