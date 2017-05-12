@@ -3,7 +3,7 @@ var AWS = require('aws-sdk');
 
 AWS.config.update({
     region: "us-east-1",
-    endpoint: "https://dynamodb.us-east-1.amazonaws.com",
+    endpoint: "https://dynamodb.us-east-1.amazonaws.com"
 });
 
 var docClient = new AWS.DynamoDB.DocumentClient();
@@ -16,26 +16,39 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 // };
 
 var log = function(event, callback) {
-    var id = '1' + new Date().getTime();
+    var id = '1' + new Date().getTime().toString().substring(4, 13);
     var date = new Date().valueOf();
-    docClient.put({
-        TableName: 'log',
-        Item: {
-            'logId': id,
-            'username': event.body.username,
-            'housId': event.body.houseId,
-            'timestamp': date
-        },
-        Expected: {
-            username: {Exists: false}
+    docClient.get({
+        TableName: 'user',
+        Key:{
+            "username": event.body.username,
+            // "token": event.query.token
         }
     }, function(err, data) {
         if (err) {
             callback(err)
         } else {
-            callback(null, {'status': 'success'});
+            docClient.put({
+                TableName: 'log',
+                Item: {
+                    'logId': id,
+                    'userId': data.Item.userId,
+                    'houseId': event.body.houseId,
+                    'timestamp': date
+                },
+                Expected: {
+                    username: {Exists: false}
+                }
+            }, function(err, data2) {
+                if (err) {
+                    callback(err)
+                } else {
+                    callback(null, {'status': 'success'});
+                }
+            });
         }
     });
+    
 }
 
 
